@@ -28,13 +28,12 @@ Can be used as a simple anti spam bot without any extra features.
 7) From now on you can start the bot with `node tunneler` command.
 
 ## Configuration
-`config/settings.json` contains settings for the bot. The settings are server specific.
+`config/settings.json` contains settings for the bot. The settings are server specific. If the used server cannot be found from the settings, default settings will be used instead.
 
-Use your server's id to recognize the server, see the included default settings.json for examples.
+You can use your server's id to identificate the server for the bot.
 
+**enable_anti_spam_filtering:** Enables automatic anti-spam measures if set to true. Enabled by default.
 
-**enable_anti_spam_filtering:** Enables automatic anti-spam measures if set to true.
+**enable_quiet_mode:** Enables quiet mode to anti spam capabilities. No information about the banned spammer is given. Enabled by default.
 
-**enable_quiet_mode:** When true, automatic actions are done in silence. Otherwise the bot will inform the channel about the bot.
-
-**enable_client_commands:** Various special features that can be activated with client commands, eg. `@Tunneler ping`
+**enable_client_commands:** Various special features that can be activated with client commands, eg. `@Tunneler ping`. These are disabled by default.

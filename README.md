@@ -7,6 +7,8 @@ Can be used as a simple anti spam bot without any extra features.
 
 2) NPM (should come with the Node).
 
+3) Registered [Discord application](https://discordapp.com/developers/applications/me/). Must be registered as a client.
+
 ## Installation
 1) Clone this project to your local computer.
 

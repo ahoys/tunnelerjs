@@ -1,14 +1,18 @@
 {
-  "bot_name": "tunneler",
-  "bot_about": "I was crafted by the mighty hands of Raunhofer aka Strogg.r, Feb 4. 2017. My purpose in this world is hazy, perhaps I'm just a simple tunneler?",
-  "bot_mention": [
-    "Yes, sire?",
-    "Do you await some ominous sign or portent from the Undergods of Fire and Soil?",
-    "It is the Witching Hour. Curses are half-price.",
-    "Hic! Your creatures demand cakesh and fine winesh.",
-    "Micro-piglets stalk this server. Beware!",
-    "Let's party like it's 2017!"
-  ],
+  "name": "Tunneler",
+  "about": {
+    "success_0": "I was crafted by the mighty hands of Raunhofer aka Strogg.r, Feb 4. 2017. My purpose in this world is hazy, perhaps I'm just a simple tunneler?"
+  },
+  "defaultResponse": {
+    "success_0": [
+      "Yes, sire?",
+      "Do you await some ominous sign or portent from the Undergods of Fire and Soil?",
+      "It is the Witching Hour. Curses are half-price.",
+      "Hic! Your creatures demand cakesh and fine winesh.",
+      "Micro-piglets stalk this server. Beware!",
+      "Let's party like it's 2017!"
+    ]
+  },
   "selectFromClients": {
     "success_0": "The following ",
     "success_1": " have been selected:",
@@ -16,5 +20,9 @@
     "fail_1": "Really? You want me to select from zero users? Well, here they are: ",
     "fail_2": "Emm... It's a bit empty here.",
     "name_strings": ["minions", "peasants", "dwarfs", "elves", "hairy beasts", "imps"]
+  },
+  "ping": {
+    "success_0": "Pong in ",
+    "success_1": " ms."
   }
 }

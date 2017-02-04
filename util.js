@@ -1,5 +1,5 @@
-const Auth = require('./auth.json');
-const CommandsStr = require('./commands.json');
+const Auth = require('./config/auth.json');
+const CommandsStr = require('./config/commands.json');
 module.exports = () => {
 
     const module = {};

@@ -1,0 +1,19 @@
+{
+  "guilds": {
+    "277194040401854464": {
+      "enable_anti_spam_filtering": true,
+      "enable_quiet_mode": true,
+      "enable_client_commands": true
+    },
+    "107493413754003456": {
+      "enable_anti_spam_filtering": true,
+      "enable_quiet_mode": false,
+      "enable_client_commands": false
+    },
+    "106724985292193792": {
+      "enable_anti_spam_filtering": true,
+      "enable_quiet_mode": false,
+      "enable_client_commands": false
+    }
+  }
+}

@@ -10,7 +10,8 @@ module.exports = (client) => {
      * @returns {*}
      */
     module.defaultResponse = (Message) => {
-        Message.channel.send(Strings.bot_mention[Math.floor(Math.random() * Strings.bot_mention.length)]);
+        Message.channel.send(Strings.defaultResponse.success_0[Math.floor(Math.random() *
+            Strings.defaultResponse.success_0.length)]);
     };
 
     /**
@@ -18,7 +19,7 @@ module.exports = (client) => {
      * @param Message
      */
     module.about = (Message) => {
-        Message.channel.send(Strings.bot_about);
+        Message.channel.send(Strings.about.success_0);
     };
 
     /**
@@ -26,7 +27,7 @@ module.exports = (client) => {
      * @param Message
      */
     module.ping = (Message) => {
-        Message.reply(`pong in ${client.ping} ms. `);
+        Message.reply(`${Strings.ping.success_0}${Math.round(client.ping)}${Strings.ping.success_1}`);
     };
 
     /**

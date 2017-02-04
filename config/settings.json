@@ -1,4 +1,9 @@
 {
+  "default": {
+    "enable_anti_spam_filtering": true,
+    "enable_quiet_mode": true,
+    "enable_client_commands": false
+  },
   "guilds": {
     "277194040401854464": {
       "enable_anti_spam_filtering": true,

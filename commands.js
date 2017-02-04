@@ -1,4 +1,4 @@
-const Strings = require('./strings.json');
+const Strings = require('./config/strings.json');
 module.exports = (client) => {
 
     const module = {};

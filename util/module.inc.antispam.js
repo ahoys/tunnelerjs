@@ -1,8 +1,10 @@
 const Immutable = require('immutable');
+const Strings = require('../config/strings.json');
 module.exports = () => {
 
     const module = {};
     let messageLog = new Immutable.OrderedMap({});
+    let warningLog = new Immutable.Map({});
 
     /**
      * Empties message log buffer now and then, avoiding buffer overflows.
@@ -94,21 +96,38 @@ module.exports = () => {
             const occurrences = module.getOccurrences(userLog, message);
             count = occurrences > count ? occurrences : count;
         });
-        console.log(userLog, count);
         return count;
+    };
+
+    /**
+     * Clears user's history.
+     * @param gId
+     * @param uId
+     */
+    module.clearUserHistory = (gId, uId) => {
+        if (messageLog.has(gId)) {
+            let guildLog = messageLog.get(gId);
+            if (guildLog.has(uId)) {
+                guildLog = guildLog.set(uId, []);
+                messageLog = messageLog.set(gId, guildLog);
+                return true;
+            }
+        }
+        return false;
     };
 
     /**
      * Returns whether the message can be considered as spam.
      * @param uId
      * @param gId
-     * @param message
+     * @param messageObject
      * @param settingsContainer
      */
-    module.isSpam = (uId, gId, message, settingsContainer) => {
+    module.isSpam = (uId, gId, messageObject, settingsContainer) => {
 
         // By default nothing is spam.
         let spam = false;
+        const message = messageObject.content;
 
         // Verify message log.
         if (!messageLog.has(gId)) {
@@ -128,6 +147,20 @@ module.exports = () => {
             spam = module.getMessageIdenticalLinksCount(message) > settingsContainer['anti_spam_max_identical_urls_in_message'] ||
                 module.getTotalIdenticalLinksCount(userLog) > settingsContainer['anti_spam_max_identical_urls_in_total'] ||
                 module.getTotalIdenticalMessagesCount(userLog) > settingsContainer['anti_spam_max_identical_messages_total'];
+        }
+
+        // Handle warnings.
+        if (spam && settingsContainer['anti_spam_warning_count_before_ban'] > 0) {
+            const userWarnings = warningLog.has(uId) ? Number(warningLog.get(uId)) + 1 : 1 ;
+            warningLog = warningLog.set(uId, userWarnings);
+            if (warningLog.get(uId) <= settingsContainer['anti_spam_warning_count_before_ban']) {
+                // Let the poor fell pass this time, but warn him.
+                if (module.clearUserHistory(gId, uId)) {
+                    spam = false;
+                    messageObject.reply(Strings.module_antiSpam.warning_0);
+                    console.log('Warned a user about spamming.')
+                }
+            }
         }
 
         // Make sure the logs don't grow too big.

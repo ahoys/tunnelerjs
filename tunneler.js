@@ -7,6 +7,12 @@ const Strings = require('./config/strings.json');
 const AntiSpam = require('./util/module.inc.antispam')();
 const Immutable = require('immutable');
 
+const Ban = require('./util/module.inc.ban')();
+
+const About = require('./commands/module.inc.about.js')();
+const Mention = require('./commands/module.inc.mention.js')();
+const Select = require('./commands/module.inc.select.js')();
+
 let guildSettings = new Immutable.Map({});
 
 client.login(Auth.token);
@@ -61,9 +67,18 @@ client.on('message', Message => {
         if (
             settingsContainer !== undefined &&
             settingsContainer['enable_anti_spam_filtering'] &&
-            AntiSpam.isSpam(guild.id, Message.author.id, Message.content, settingsContainer)
+            AntiSpam.isSpam(guild.id, Message.author.id, Message, settingsContainer)
         ) {
-            console.log('INFO: Spam detected from', Message.author.username);
+            // Ban the filthy peasant.
+            const target = Message.member;
+            if (Ban.execute(target)) {
+                // Ban successful.
+                if (!settingsContainer['enable_quiet_mode']) {
+                    Message.channel.send(`${Strings.action_ban.spam.success_0} ` +
+                        `${target.user.username}` +
+                        ` ${Strings.action_ban.spam.success_1}`);
+                }
+            }
         }
 
         // Client commands.

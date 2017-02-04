@@ -1,0 +1,7 @@
+{
+  "command_mapping": {
+    "default": "defaultResponse",
+    "about": "about",
+    "ping": "ping"
+  }
+}

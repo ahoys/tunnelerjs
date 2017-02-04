@@ -9,23 +9,95 @@ module.exports = () => {
     let monitoredClients = new immutable.Map({});
 
     /**
-     * Returns settings for a guild.
-     * @param Message
-     * @returns {{enable_anti_spam_filtering: boolean, enable_quiet_mode: boolean, enable_client_commands: boolean, max_repeat_of_message: number, max_urls_in_message: number, max_identical_urls_in_message: number, operators: Array}}
+     * Returns settings for a singly guild.
+     * @param gId
+     * @returns {{enable_anti_spam_filtering: boolean, enable_quiet_mode: boolean,
+     * enable_client_commands: boolean, max_repeat_of_message: number,
+     * max_urls_in_message: number, max_identical_urls_in_message: number, operators: Array}}
      */
-    module.getGuildSettings = (Message) => {
-        const guild = Message.guild;
-        return Settings.guilds.hasOwnProperty(guild.id)
-            ? Settings.guilds[guild.id]
-            : {
+    module.getGuildSettings = (gId) => {
+        if (Settings.guilds.hasOwnProperty(gId)) {
+
+            // Guild specific settings provided by the owner.
+            const readSettings = Settings.guilds[gId];
+
+            readSettings['enable_anti_spam_filtering'] =
+                readSettings['enable_anti_spam_filtering'] !== undefined &&
+                readSettings['enable_anti_spam_filtering'].isBoolean
+                    ? readSettings['enable_anti_spam_filtering']
+                    : true ;
+
+            readSettings['enable_quiet_mode'] =
+                readSettings['enable_quiet_mode'] !== undefined &&
+                readSettings['enable_quiet_mode'].isBoolean
+                    ? readSettings['enable_quiet_mode']
+                    : false ;
+
+            readSettings['enable_client_commands'] =
+                readSettings['enable_client_commands'] !== undefined &&
+                readSettings['enable_client_commands'].isBoolean
+                    ? readSettings['enable_client_commands']
+                    : false ;
+
+            readSettings['anti_spam_mute_instead_of_ban'] =
+                readSettings['anti_spam_mute_instead_of_ban'] !== undefined &&
+                readSettings['anti_spam_mute_instead_of_ban'].isBoolean
+                    ? readSettings['anti_spam_mute_instead_of_ban']
+                    : false ;
+
+            readSettings['anti_spam_allow_unsafe_url_suffixes'] =
+                readSettings['anti_spam_allow_unsafe_url_suffixes'] !== undefined &&
+                readSettings['anti_spam_allow_unsafe_url_suffixes'].isBoolean
+                    ? readSettings['anti_spam_allow_unsafe_url_suffixes']
+                    : false ;
+
+            readSettings['anti_spam_max_identical_urls_in_message'] =
+                readSettings['anti_spam_max_identical_urls_in_message'] !== undefined &&
+                !readSettings['anti_spam_max_identical_urls_in_message'].isNaN
+                    ? Math.floor(readSettings['anti_spam_max_identical_urls_in_message'])
+                    : 4 ;
+
+            readSettings['anti_spam_max_identical_urls_in_total'] =
+                readSettings['anti_spam_max_identical_urls_in_total'] !== undefined &&
+                !readSettings['anti_spam_max_identical_urls_in_total'].isNaN
+                    ? Math.floor(readSettings['anti_spam_max_identical_urls_in_total'])
+                    : 2 ;
+
+            readSettings['anti_spam_max_identical_messages_total'] =
+                readSettings['anti_spam_max_identical_messages_total'] !== undefined &&
+                !readSettings['anti_spam_max_identical_messages_total'].isNaN
+                    ? Math.floor(readSettings['anti_spam_max_identical_messages_total'])
+                    : 8 ;
+
+            readSettings['anti_spam_safe_url_suffixes'] =
+                readSettings['anti_spam_safe_url_suffixes'] !== undefined &&
+                readSettings['anti_spam_safe_url_suffixes'].constructor === Array
+                    ? Math.floor(readSettings['anti_spam_safe_url_suffixes'])
+                    : 2 ;
+
+            readSettings['anti_spam_warning_count_before_ban'] =
+                readSettings['anti_spam_warning_count_before_ban'] !== undefined &&
+                !readSettings['anti_spam_warning_count_before_ban'].isNaN
+                    ? Math.floor(readSettings['anti_spam_warning_count_before_ban'])
+                    : 2 ;
+
+            return readSettings;
+        } else {
+            // Default settings.
+            // This list must include all the available settings!
+            return {
                 "enable_anti_spam_filtering": true,
                 "enable_quiet_mode": false,
-                "enable_client_commands": false,
-                "max_repeat_of_message": 8,
-                "max_urls_in_message": 4,
-                "max_identical_urls_in_message": 2,
-                "operators": []
-            } ;
+                "enable_client_commands": true,
+                "anti_spam_mute_instead_of_ban": false,
+                "anti_spam_allow_unsafe_url_suffixes": false,
+                "anti_spam_max_identical_urls_in_message": 2,
+                "anti_spam_max_identical_urls_in_total": 3,
+                "anti_spam_max_identical_messages_total": 8,
+                "anti_spam_safe_url_suffixes": ["com", "net", "org", "gov", "edu"],
+                "anti_spam_warning_count_before_ban": 1
+            }
+        }
     };
 
     /**
@@ -111,7 +183,7 @@ module.exports = () => {
                 content = content.split(' ', 2);
                 if (CommandsStr['command_mapping'].hasOwnProperty(content[0])) {
                     // We'll wrap the command this way because we might want to use multiple different command words
-                    // for the same functions.
+                    // for the same util.
                     return {
                         cmd: CommandsStr['command_mapping'][content[0]],
                         str: content[1]

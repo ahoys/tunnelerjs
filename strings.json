@@ -8,5 +8,13 @@
     "Hic! Your creatures demand cakesh and fine winesh.",
     "Micro-piglets stalk this server. Beware!",
     "Let's party like it's 2017!"
-  ]
+  ],
+  "selectFromClients": {
+    "success_0": "The following ",
+    "success_1": " have been selected:",
+    "fail_0": "Nonsense! First type select and then the amount of members to select. eg: `select 6`.",
+    "fail_1": "Really? You want me to select from zero users? Well, here they are: ",
+    "fail_2": "Emm... It's a bit empty here.",
+    "name_strings": ["minions", "peasants", "dwarfs", "elves", "hairy beasts", "imps"]
+  }
 }

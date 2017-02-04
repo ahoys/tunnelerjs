@@ -23,6 +23,8 @@ module.exports = () => {
                 // The command will not be processed if it cannot be found from the command mapping (commands.json).
                 content = content.split(' ', 2);
                 if (CommandsStr['command_mapping'].hasOwnProperty(content[0])) {
+                    // We'll wrap the command this way because we might want to use multiple different command words
+                    // for the same functions.
                     return {
                         cmd: CommandsStr['command_mapping'][content[0]],
                         str: content[1]

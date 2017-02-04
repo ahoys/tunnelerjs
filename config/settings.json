@@ -1,24 +1,31 @@
 {
-  "default": {
-    "enable_anti_spam_filtering": true,
-    "enable_quiet_mode": true,
-    "enable_client_commands": false
-  },
   "guilds": {
     "277194040401854464": {
       "enable_anti_spam_filtering": true,
-      "enable_quiet_mode": true,
-      "enable_client_commands": true
+      "enable_quiet_mode": false,
+      "enable_client_commands": true,
+      "max_repeat_of_message": 8,
+      "max_urls_in_message": 4,
+      "max_identical_urls_in_message": 2,
+      "operators": []
     },
     "107493413754003456": {
       "enable_anti_spam_filtering": true,
       "enable_quiet_mode": false,
-      "enable_client_commands": false
+      "enable_client_commands": false,
+      "max_repeat_of_message": 8,
+      "max_urls_in_message": 4,
+      "max_identical_urls_in_message": 2,
+      "operators": []
     },
     "106724985292193792": {
       "enable_anti_spam_filtering": true,
       "enable_quiet_mode": false,
-      "enable_client_commands": false
+      "enable_client_commands": false,
+      "max_repeat_of_message": 8,
+      "max_urls_in_message": 8,
+      "max_identical_urls_in_message": 2,
+      "operators": []
     }
   }
 }

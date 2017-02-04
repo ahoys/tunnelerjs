@@ -24,5 +24,11 @@
   "ping": {
     "success_0": "Pong in ",
     "success_1": " ms."
+  },
+  "action_ban": {
+    "spam": {
+      "success_0": "Ha, a peasant got axed. User",
+      "success_1": "was banned for spamming."
+    }
   }
 }

@@ -12,7 +12,7 @@ Can be used as a simple anti spam bot without any extra features.
 
 2) Create `auth.json` file into /config dir.
 
-3) Input your [application](https://discordapp.com/developers/applications/me/277192029069377537) credentials into the `auth.json` file.
+3) Input your [application](https://discordapp.com/developers/applications/me/) credentials into the `auth.json` file.
 
 ```
 {

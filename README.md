@@ -43,22 +43,22 @@ Use your server's id (e.g. `"123123123123123123"`) to identificate the server fo
 
 **"anti_spam_allow_unsafe_url_suffixes":** Immediately removes links with unsafe extensions. `true: enabled, false: disabled`
 
-**"anti_spam_max_identical_urls_in_message":** How many identical urls there can be in a message before a warning or ban.
+**"anti_spam_max_identical_urls_in_message":** How many identical urls there can be in a message before a warning or ban. `Number`
 
-**"anti_spam_max_identical_urls_in_total":** How many identical urls there can be in the last 8 messages before a warning or ban.
+**"anti_spam_max_identical_urls_in_total":** How many identical urls there can be in the last 8 messages before a warning or ban. `Number`
 
-**"anti_spam_max_identical_messages_total":** How many identical messages there can be in the last 8 messages before a warning or ban.
+**"anti_spam_max_identical_messages_total":** How many identical messages there can be in the last 8 messages before a warning or ban. `Number`
 
-**"anti_spam_safe_url_suffixes":** List of safe URL-extensions.
+**"anti_spam_safe_url_suffixes":** List of safe URL-extensions. `Number`
 
-**"anti_spam_warning_count_before_ban":** How many warnings are given before banning the user.
+**"anti_spam_warning_count_before_ban":** How many warnings are given before banning the user. `Number`
 
 ## Custom commands (optional)
 You can also script your own custom commands. Here's how you can integrate them with the bot:
 
 1) Add your script into `/commands` dir. Please see the correct syntax from the other command files.
 
-2) Add your command into command mapping `/config/commands.json`. The key is the command word inputted by a client, the value is the actual mapped command script. For example `module.inc.about` turns into `about`. You can have multiple command words for a singular command script.
+2) Add your command into command mapping `/config/commands.json`. The key is the command word inputted by a client, the value is the actual mapped command script. For example `module.inc.about` turns into `about`. You can have multiple command words for a single command script.
 
 3) Register your command in `tunneler.js`, `const commands`. There should be sufficient amount of examples present.
 

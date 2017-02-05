@@ -30,6 +30,7 @@ module.exports = () => {
     module.execute = (messageObject, count) => {
         if (
             count !== undefined &&
+            messageObject.guild !== null &&
             !isNaN(count) &&
             count > 0
         ) {
@@ -60,7 +61,11 @@ module.exports = () => {
             messageObject.reply(Strings.commands.select.fail_1);
         } else {
             // Failed attempt, invalid command.
-            messageObject.reply(Strings.commands.select.fail_0);
+            if (messageObject.guild === null) {
+                messageObject.reply(Strings.commands.select.fail_3);
+            } else {
+                messageObject.reply(Strings.commands.select.fail_0);
+            }
         }
     };
 

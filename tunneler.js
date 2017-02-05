@@ -44,6 +44,14 @@ client.on('ready', () => {
         console.log(`Serving ${client.guilds.array().length} server(s).`);
     }
 
+    // Set settings for the owner.
+    if (Auth.owner !== undefined && Auth.owner !== '') {
+        guildSettings = guildSettings.set(Auth.owner, Settings.getGuildSetting(Auth.owner, true));
+        console.log(`Owner ${Auth.owner} registered.`);
+    } else {
+        console.log(`Parameter "owner" is not set in Auth.json.`);
+    }
+
     // Set settings for each guild.
     client.guilds.forEach((guild) => {
         guildSettings = guildSettings.set(guild.id, Settings.getGuildSetting(guild.id));
@@ -72,48 +80,61 @@ client.on('guildCreate', (guild) => {
  */
 client.on('message', Message => {
     try {
-        // Load guild settings.
-        const guild = Message.guild;
-        const settingsContainer = guildSettings.has(guild.id)
-            ? guildSettings.get(guild.id)
-            : {};
 
-        // Anti spam measures.
+        // Identify the message source.
+        const sourceId = Message.guild !== null
+            ? Message.guild.id
+            : Message.author !== null ? Message.author.id : undefined;
+        const owner = sourceId === Auth.owner;
+
+        // We'll listen messages only if on a guild or from the owner.
         if (
-            settingsContainer !== undefined &&
-            settingsContainer['enable_anti_spam_filtering'] &&
-            AntiSpam.isSpam(guild.id, Message.author.id, Message, settingsContainer)
+            sourceId !== undefined &&
+            (Message.guild !== null || owner)
         ) {
-            // Ban the filthy peasant.
-            const target = Message.member;
-            if (Ban.execute(target)) {
-                // Ban successful.
-                if (!settingsContainer['enable_quiet_mode']) {
-                    Message.channel.send(`${Strings.util.antispam.success_0}` +
-                        `${target.user.username}` +
-                        `${Strings.util.antispam.success_1}`);
+
+            // Load guild settings.
+            const settingsContainer = guildSettings.has(sourceId)
+                ? guildSettings.get(sourceId)
+                : {};
+
+            // Anti spam measures.
+            if (
+                settingsContainer !== undefined &&
+                settingsContainer['enable_anti_spam_filtering'] &&
+                AntiSpam.isSpam(sourceId, Message.author.id, Message, settingsContainer)
+            ) {
+                // Ban the filthy peasant.
+                const target = Message.member;
+                if (Ban.execute(target)) {
+                    // Ban successful.
+                    if (!settingsContainer['enable_quiet_mode']) {
+                        Message.channel.send(`${Strings.util.antispam.success_0}` +
+                            `${target.user.username}` +
+                            `${Strings.util.antispam.success_1}`);
+                    }
                 }
             }
-        }
 
-        // Client commands.
-        if (
-            settingsContainer !== undefined &&
-            settingsContainer['enable_client_commands']
-        ) {
-            const commandContainer = Command.getContainer(Message, Auth.id);
-            if (commandContainer.hasOwnProperty('cmd')) {
-                // Message should always be provided for special actions, but the content should always
-                // be read from the commandContainer. Public strings are not safe!
-                if (commands.hasOwnProperty(commandContainer['cmd'])) {
-                    const command = commands[commandContainer['cmd']];
-                    try {
-                        command.execute(Message, commandContainer['str']);
-                    } catch (e) {
-                        console.log(`Executing command (${commandContainer['cmd']}) failed. Please check your code.`)
+            // Client commands.
+            if (
+                settingsContainer !== undefined &&
+                settingsContainer['enable_client_commands']
+            ) {
+                const commandContainer = Command.getContainer(Message, Auth.id);
+                if (commandContainer.hasOwnProperty('cmd')) {
+                    // Message should always be provided for special actions, but the content should always
+                    // be read from the commandContainer. Public strings are not safe!
+                    if (commands.hasOwnProperty(commandContainer['cmd'])) {
+                        const command = commands[commandContainer['cmd']];
+                        try {
+                            command.execute(Message, commandContainer['str']);
+                        } catch (e) {
+                            console.log(`Executing command (${commandContainer['cmd']}) failed. Please check your code.`)
+                        }
+                    } else {
+                        console.log(`Invalid command (${commandContainer['cmd']}) inputted.`);
                     }
-                } else {
-                    console.log(`Invalid command (${commandContainer['cmd']}) inputted.`);
                 }
             }
         }

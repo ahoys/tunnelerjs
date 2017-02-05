@@ -6,11 +6,12 @@ module.exports = () => {
     /**
      * Returns settings for a single guild.
      * @param gId
+     * @param owner
      * @returns {{enable_anti_spam_filtering: boolean, enable_quiet_mode: boolean,
      * enable_client_commands: boolean, max_repeat_of_message: number,
      * max_urls_in_message: number, max_identical_urls_in_message: number, operators: Array}}
      */
-    module.getGuildSetting = (gId) => {
+    module.getGuildSetting = (gId, owner) => {
         if (Settings.guilds.hasOwnProperty(gId)) {
 
             // Guild specific settings provided by the owner.
@@ -80,12 +81,12 @@ module.exports = () => {
         } else {
             // Default settings.
             // This list must include all the available settings!
-            console.log(`Default settings read for ${gid}.`);
+            if (!owner) console.log(`Default settings read for ${gId}.`);
             return {
-                "enable_anti_spam_filtering": true,
+                "enable_anti_spam_filtering": owner ? false : true,
                 "enable_quiet_mode": false,
-                "enable_client_commands": false,
-                "anti_spam_allow_unsafe_url_suffixes": false,
+                "enable_client_commands": owner ? true : false,
+                "anti_spam_allow_unsafe_url_suffixes": owner ? true : false,
                 "anti_spam_log_length": 16,
                 "anti_spam_max_identical_urls_in_message": 2,
                 "anti_spam_max_identical_urls_in_total": 3,

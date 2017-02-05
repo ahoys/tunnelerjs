@@ -9,7 +9,7 @@
   },
   "commands": {
     "version": {
-      "success_0": "tunnelerjs v.0.94."
+      "success_0": "tunnelerjs v.0.95."
     },
     "about": {
       "success_0": "I was crafted by the mighty hands of Raunhofer aka Strogg.r, Feb 4. 2017. My purpose in this world is unclear, perhaps I'm just a simple tunneler?"
@@ -34,6 +34,7 @@
       "fail_0": "Nonsense! First type select and then the amount of members to select. e.g. `select 6`.",
       "fail_1": "Really? You want me to select from zero users? Well, here they are: ",
       "fail_2": "Emm... It's a bit empty here.",
+      "fail_3": "This is a private chat, remember? I'm not selecting anyone.",
       "name_strings": ["minions", "peasants", "dwarfs", "elves", "hairy beasts", "imps"]
     }
   }

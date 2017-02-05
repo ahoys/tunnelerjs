@@ -36,6 +36,13 @@
       "fail_2": "Emm... It's a bit empty here.",
       "fail_3": "This is a private chat, remember? I'm not selecting anyone.",
       "name_strings": ["minions", "peasants", "dwarfs", "elves", "hairy beasts", "imps"]
+    },
+    "say": {
+      "success_0": "Okay, I'll say it.",
+      "fail_0": "Your message is invalid. Your message's length can be 16 words at max and have no special characters.",
+      "fail_1": "What's the point? You just said it.",
+      "fail_2": "The second parameter should be the targeted channel or server. eg. `say 123123123123 hey there!`",
+      "fail_3": "Could not find a such channel."
     }
   }
 }

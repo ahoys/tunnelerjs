@@ -4,6 +4,7 @@
     "about": "about",
     "ping": "ping",
     "select": "select",
-    "version": "version"
+    "version": "version",
+    "say": "say"
   }
 }

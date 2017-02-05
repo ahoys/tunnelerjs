@@ -7,7 +7,7 @@ const Auth = require("./config/auth.json");
 const Strings = require('./config/strings.json');
 
 // Utilities
-const Settings = require('./util/module.inc.settings')();
+const Settings = require('./util/module.inc.setting.js')();
 const Ban = require('./util/module.inc.ban')();
 const AntiSpam = require('./util/module.inc.antispam')();
 const Command = require('./util/module.inc.command')();
@@ -117,7 +117,6 @@ client.on('message', Message => {
                 }
             }
         }
-
     } catch (e) {
         console.log(e.stack);
         console.log(process.version);

@@ -9,7 +9,6 @@ module.exports = () => {
      * @returns {*}
      */
     module.shuffle = (array) => {
-        console.log('shuffle', array);
         if (array.constructor === Array) {
             let temp, current, top = array.length;
             if (top) while (--top) {
@@ -29,7 +28,6 @@ module.exports = () => {
      * @param count
      */
     module.execute = (messageObject, count) => {
-        console.log(count);
         if (
             count !== undefined &&
             !isNaN(count) &&
@@ -45,7 +43,6 @@ module.exports = () => {
                     i++;
                 }
             });
-            console.log('i: ', i, members);
             if (i > 0) {
                 // Remove excess markings if only a one user.
                 members = i === 1 ? members.replace(',', '') : members;

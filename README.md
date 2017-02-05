@@ -45,6 +45,8 @@ Use your server's id (e.g. `"123123123123123123"`) to identificate the server fo
 
 **"anti_spam_allow_unsafe_url_suffixes":** Immediately removes links with unsafe extensions. `true: enabled, false: disabled`
 
+**"anti_spam_log_length":** Length of the user specific log. This should always be higher than the other max-setting numbers below. `Number`
+
 **"anti_spam_max_identical_urls_in_message":** How many identical urls there can be in a message before a warning or ban. `Number`
 
 **"anti_spam_max_identical_urls_in_total":** How many identical urls there can be in the last 8 messages before a warning or ban. `Number`

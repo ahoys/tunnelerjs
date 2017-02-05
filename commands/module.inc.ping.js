@@ -1,9 +1,14 @@
-module.exports = () => {
+const Strings = require('../config/strings.json');
+module.exports = (client) => {
 
     const module = {};
 
-    module.execute = () => {
-        console.log('ping');
+    /**
+     * Executes a ping command.
+     * @param messageObject
+     */
+    module.execute = (messageObject) => {
+        messageObject.reply(`${Strings.ping.success_0}${Math.round(client.ping)}${Strings.ping.success_1}`);
     };
 
     return module;

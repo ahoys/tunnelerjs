@@ -103,7 +103,6 @@ client.on('message', Message => {
             if (commandContainer.hasOwnProperty('cmd')) {
                 // Message should always be provided for special actions, but the content should always
                 // be read from the commandContainer. Public strings are not safe!
-                console.log('command: ', commandContainer['cmd']);
                 if (commands.hasOwnProperty(commandContainer['cmd'])) {
                     const command = commands[commandContainer['cmd']];
                     command.execute(Message, commandContainer['str']);

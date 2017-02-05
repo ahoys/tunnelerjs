@@ -16,8 +16,6 @@ module.exports = () => {
             // Guild specific settings provided by the owner.
             const readSettings = Settings.guilds[gId];
 
-            console.log('0: ', readSettings['enable_client_commands']);
-
             readSettings['enable_anti_spam_filtering'] =
                 readSettings['enable_anti_spam_filtering'] !== undefined &&
                 typeof(readSettings['enable_anti_spam_filtering']) === "boolean"

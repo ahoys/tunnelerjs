@@ -8,7 +8,7 @@ module.exports = () => {
      * @param messageObject
      */
     module.execute = (messageObject) => {
-        messageObject.reply(Strings.version.success_0);
+        messageObject.reply(Strings.commands.version.success_0);
     };
 
     return module;

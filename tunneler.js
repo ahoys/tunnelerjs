@@ -89,9 +89,9 @@ client.on('message', Message => {
             if (Ban.execute(target)) {
                 // Ban successful.
                 if (!settingsContainer['enable_quiet_mode']) {
-                    Message.channel.send(`${Strings.action_ban.spam.success_0} ` +
+                    Message.channel.send(`${Strings.util.antispam.success_0}` +
                         `${target.user.username}` +
-                        ` ${Strings.action_ban.spam.success_1}`);
+                        `${Strings.util.antispam.success_1}`);
                 }
             }
         }

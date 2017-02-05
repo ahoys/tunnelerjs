@@ -8,7 +8,7 @@ module.exports = () => {
      * @param messageObject
      */
     module.execute = (messageObject) => {
-        messageObject.channel.send(Strings.about.success_0);
+        messageObject.channel.send(Strings.commands.about.success_0);
     };
 
     return module;

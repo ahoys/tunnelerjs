@@ -46,21 +46,21 @@ module.exports = () => {
             if (i > 0) {
                 // Remove excess markings if only a one user.
                 members = i === 1 ? members.replace(',', '') : members;
-                const msg = `${Strings.select.success_0}` +
-                    `${Strings.select.name_strings[Math.floor(Math.random()
-                        * Strings.select.name_strings.length)]}` +
-                    `${Strings.select.success_1} `;
+                const msg = `${Strings.commands.select.success_0}` +
+                    `${Strings.commands.select.name_strings[Math.floor(Math.random()
+                        * Strings.commands.select.name_strings.length)]}` +
+                    `${Strings.commands.select.success_1} `;
                 messageObject.channel.send(`${msg}${members}.`);
             } else {
                 // Failed attempt, the guild is empty.
-                messageObject.reply(Strings.select.fail_2);
+                messageObject.reply(Strings.commands.select.fail_2);
             }
         } else if (count === '0') {
             // Failed attempt, trying to pick from zero.
-            messageObject.reply(Strings.select.fail_1);
+            messageObject.reply(Strings.commands.select.fail_1);
         } else {
             // Failed attempt, invalid command.
-            messageObject.reply(Strings.select.fail_0);
+            messageObject.reply(Strings.commands.select.fail_0);
         }
     };
 

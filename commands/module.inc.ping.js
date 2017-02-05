@@ -8,7 +8,7 @@ module.exports = (client) => {
      * @param messageObject
      */
     module.execute = (messageObject) => {
-        messageObject.reply(`${Strings.ping.success_0}${Math.round(client.ping)}${Strings.ping.success_1}`);
+        messageObject.reply(`${Strings.commands.ping.success_0}${Math.round(client.ping)}${Strings.commands.ping.success_1}`);
     };
 
     return module;

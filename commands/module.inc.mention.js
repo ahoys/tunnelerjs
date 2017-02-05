@@ -8,8 +8,8 @@ module.exports = () => {
      * @param messageObject
      */
     module.execute = (messageObject) => {
-        messageObject.channel.send(Strings.mention.success_0[Math.floor(Math.random() *
-            Strings.mention.success_0.length)]);
+        messageObject.channel.send(Strings.commands.mention.success_0[Math.floor(Math.random() *
+            Strings.commands.mention.success_0.length)]);
     };
 
     return module;

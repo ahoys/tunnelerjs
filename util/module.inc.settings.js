@@ -16,63 +16,59 @@ module.exports = () => {
             // Guild specific settings provided by the owner.
             const readSettings = Settings.guilds[gId];
 
+            console.log('0: ', readSettings['enable_client_commands']);
+
             readSettings['enable_anti_spam_filtering'] =
                 readSettings['enable_anti_spam_filtering'] !== undefined &&
-                readSettings['enable_anti_spam_filtering'].isBoolean
+                typeof(readSettings['enable_anti_spam_filtering']) === "boolean"
                     ? readSettings['enable_anti_spam_filtering']
                     : true ;
 
             readSettings['enable_quiet_mode'] =
                 readSettings['enable_quiet_mode'] !== undefined &&
-                readSettings['enable_quiet_mode'].isBoolean
+                typeof(readSettings['enable_quiet_mode']) === "boolean"
                     ? readSettings['enable_quiet_mode']
                     : false ;
 
             readSettings['enable_client_commands'] =
                 readSettings['enable_client_commands'] !== undefined &&
-                readSettings['enable_client_commands'].isBoolean
+                typeof(readSettings['enable_client_commands']) === "boolean"
                     ? readSettings['enable_client_commands']
-                    : false ;
-
-            readSettings['anti_spam_mute_instead_of_ban'] =
-                readSettings['anti_spam_mute_instead_of_ban'] !== undefined &&
-                readSettings['anti_spam_mute_instead_of_ban'].isBoolean
-                    ? readSettings['anti_spam_mute_instead_of_ban']
                     : false ;
 
             readSettings['anti_spam_allow_unsafe_url_suffixes'] =
                 readSettings['anti_spam_allow_unsafe_url_suffixes'] !== undefined &&
-                readSettings['anti_spam_allow_unsafe_url_suffixes'].isBoolean
+                typeof(readSettings['anti_spam_allow_unsafe_url_suffixes']) === "boolean"
                     ? readSettings['anti_spam_allow_unsafe_url_suffixes']
                     : false ;
 
             readSettings['anti_spam_max_identical_urls_in_message'] =
                 readSettings['anti_spam_max_identical_urls_in_message'] !== undefined &&
-                !readSettings['anti_spam_max_identical_urls_in_message'].isNaN
+                !isNaN(readSettings['anti_spam_max_identical_urls_in_message'])
                     ? Math.floor(readSettings['anti_spam_max_identical_urls_in_message'])
                     : 4 ;
 
             readSettings['anti_spam_max_identical_urls_in_total'] =
                 readSettings['anti_spam_max_identical_urls_in_total'] !== undefined &&
-                !readSettings['anti_spam_max_identical_urls_in_total'].isNaN
+                !isNaN(readSettings['anti_spam_max_identical_urls_in_total'])
                     ? Math.floor(readSettings['anti_spam_max_identical_urls_in_total'])
                     : 2 ;
 
             readSettings['anti_spam_max_identical_messages_total'] =
                 readSettings['anti_spam_max_identical_messages_total'] !== undefined &&
-                !readSettings['anti_spam_max_identical_messages_total'].isNaN
+                !isNaN(readSettings['anti_spam_max_identical_messages_total'])
                     ? Math.floor(readSettings['anti_spam_max_identical_messages_total'])
                     : 8 ;
 
             readSettings['anti_spam_safe_url_suffixes'] =
                 readSettings['anti_spam_safe_url_suffixes'] !== undefined &&
                 readSettings['anti_spam_safe_url_suffixes'].constructor === Array
-                    ? Math.floor(readSettings['anti_spam_safe_url_suffixes'])
-                    : 2 ;
+                    ? readSettings['anti_spam_safe_url_suffixes']
+                    : ["com", "net", "org", "gov", "edu"] ;
 
             readSettings['anti_spam_warning_count_before_ban'] =
                 readSettings['anti_spam_warning_count_before_ban'] !== undefined &&
-                !readSettings['anti_spam_warning_count_before_ban'].isNaN
+                !isNaN(readSettings['anti_spam_warning_count_before_ban'])
                     ? Math.floor(readSettings['anti_spam_warning_count_before_ban'])
                     : 2 ;
 
@@ -80,11 +76,11 @@ module.exports = () => {
         } else {
             // Default settings.
             // This list must include all the available settings!
+            console.log(`Default settings read for ${gid}.`);
             return {
                 "enable_anti_spam_filtering": true,
                 "enable_quiet_mode": false,
-                "enable_client_commands": true,
-                "anti_spam_mute_instead_of_ban": false,
+                "enable_client_commands": false,
                 "anti_spam_allow_unsafe_url_suffixes": false,
                 "anti_spam_max_identical_urls_in_message": 2,
                 "anti_spam_max_identical_urls_in_total": 3,

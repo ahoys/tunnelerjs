@@ -13,9 +13,11 @@ const AntiSpam = require('./util/module.inc.antispam')();
 const Command = require('./util/module.inc.command')();
 
 // Commands
-const About = require('./commands/module.inc.about.js')();
-const Mention = require('./commands/module.inc.mention.js')();
-const Select = require('./commands/module.inc.select.js')();
+const commands = {
+    "about": require('./commands/module.inc.about.js')(),
+    "mention": require('./commands/module.inc.mention.js')(),
+    "select": require('./commands/module.inc.select.js')()
+};
 
 const MAX_SERVERS = 8;
 
@@ -98,6 +100,11 @@ client.on('message', Message => {
             settingsContainer['enable_client_commands']
         ) {
             const commandContainer = Command.getContainer(Message, Auth.id);
+            if (commandContainer.hasOwnProperty('cmd')) {
+                // Message should always be provided for special actions, but the content should always
+                // be read from the commandContainer. Public strings are not safe!
+                commands[commandContainer.cmd].execute(Message, commandContainer.str);
+            }
         }
 
     } catch (e) {
@@ -105,37 +112,4 @@ client.on('message', Message => {
         console.log(process.version);
         console.log('Error: Failed to process a message.');
     }
-    //
-    //
-    //
-    //
-    // // Handle spamming.
-    // if (
-    //     Boolean(settingsContainer.enable_anti_spam_filtering) &&
-    //     Util.isSpam(Message, settingsContainer)
-    // ) {
-    //     const user = Message.member;
-    //     if (!settingsContainer['enable_quiet_mode']) {
-    //         Message.channel.send(`${Strings.action_ban.spam.success_0} ` +
-    //             `${user.user.username}` +
-    //             ` ${Strings.action_ban.spam.success_1}`);
-    //     }
-    //
-    //     if (user.bannable) {
-    //         const ban = user.ban(1);
-    //         ban.then((val) => {
-    //             console.log(`Successfully banned: ${user.username}`);
-    //         }).catch((reason) => {
-    //             console.log('Ban failed: ', reason);
-    //         });
-    //     }
-    // }
-    //
-    // const commandContainer = Util.handleMessage(Message);
-    // if (commandContainer.hasOwnProperty('cmd')) {
-    //     // Message should always be provided, commandContainer should be used if you are about to
-    //     // read the content of the user generated message.
-    //     // NEVER read the message.content directly from a Message.
-    //     Commands[commandContainer.cmd](Message, commandContainer);
-    // }
 });

@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const Util = require('./util')();
 const Immutable = require('immutable');
 
 // Strings
@@ -42,7 +41,7 @@ client.on('ready', () => {
 
     // Set settings for each guild.
     client.guilds.forEach((guild) => {
-        guildSettings = guildSettings.set(guild.id, Util.getGuildSettings(guild.id));
+        guildSettings = guildSettings.set(guild.id, Settings.getGuildSetting(guild.id));
         console.log(`Settings registered for ${guild.name} by ${guild.owner.user.username}. Members: ${guild.memberCount}.`);
     });
 });
@@ -60,7 +59,7 @@ client.on('disconnected', () => {
  */
 client.on('guildCreate', (guild) => {
     console.log('Joined to a new guild: ', guild.name);
-    guildSettings.set(guild.id, Util.getGuildSettings(guild.id));
+    guildSettings.set(guild.id, Settings.getGuildSetting(guild.id));
 });
 
 /**

@@ -25,7 +25,7 @@
       ]
     },
     "ping": {
-      "success_0": "Pong in ",
+      "success_0": "pong in ",
       "success_1": " ms."
     },
     "select": {

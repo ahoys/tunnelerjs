@@ -1,17 +1,23 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const Auth = require("./config/auth.json");
-const Commands = require('./commands')(client);
 const Util = require('./util')();
-const Strings = require('./config/strings.json');
-const AntiSpam = require('./util/module.inc.antispam')();
 const Immutable = require('immutable');
 
-const Ban = require('./util/module.inc.ban')();
+// Strings
+const Auth = require("./config/auth.json");
+const Strings = require('./config/strings.json');
 
+// Utilities
+const Settings = require('./util/module.inc.settings')();
+const Ban = require('./util/module.inc.ban')();
+const AntiSpam = require('./util/module.inc.antispam')();
+
+// Commands
 const About = require('./commands/module.inc.about.js')();
 const Mention = require('./commands/module.inc.mention.js')();
 const Select = require('./commands/module.inc.select.js')();
+
+const MAX_SERVERS = 8;
 
 let guildSettings = new Immutable.Map({});
 
@@ -23,16 +29,21 @@ client.login(Auth.token);
 client.on('ready', () => {
 
     // Make sure the capacity is not exceeded.
-    if (client.guilds.array().length > 16) {
-        console.log('Too many concurrent servers: ', client.guilds.array().length > 16);
+    if (client.guilds.array().length > MAX_SERVERS) {
+        console.log(`Too many concurrent servers (${client.guilds.array().length > 16}).`);
+        console.log(`Servers are limited because anti spam features must stay efficient.`);
+        console.log(`If you'd like to bypass this check, see tunneler.js or make an another Application.`);
+        console.log('Closing down...');
         process.exit(1);
     } else {
-        console.log(`Logged in as ${client.user.username}, serving ${client.guilds.array().length} server(s).`);
+        console.log(`Successfully logged in as  ${client.user.username}.`);
+        console.log(`Serving ${client.guilds.array().length} server(s).`);
     }
 
     // Set settings for each guild.
     client.guilds.forEach((guild) => {
         guildSettings = guildSettings.set(guild.id, Util.getGuildSettings(guild.id));
+        console.log(`Settings registered for ${guild.name} by ${guild.owner.user.username}. Members: ${guild.memberCount}.`);
     });
 });
 

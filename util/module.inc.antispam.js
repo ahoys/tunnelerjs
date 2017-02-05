@@ -158,7 +158,7 @@ module.exports = () => {
                 if (module.clearUserHistory(gId, uId)) {
                     spam = false;
                     messageObject.reply(Strings.module_antiSpam.warning_0);
-                    console.log('Warned a user about spamming.')
+                    console.log(`Warned an user (${messageObject.member.user.username}) about spamming.`)
                 }
             }
         }

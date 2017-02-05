@@ -10,6 +10,7 @@ const Strings = require('./config/strings.json');
 const Settings = require('./util/module.inc.settings')();
 const Ban = require('./util/module.inc.ban')();
 const AntiSpam = require('./util/module.inc.antispam')();
+const Command = require('./util/module.inc.command')();
 
 // Commands
 const About = require('./commands/module.inc.about.js')();
@@ -96,7 +97,7 @@ client.on('message', Message => {
             settingsContainer !== undefined &&
             settingsContainer['enable_client_commands']
         ) {
-
+            const commandContainer = Command.getContainer(Message, Auth.id);
         }
 
     } catch (e) {

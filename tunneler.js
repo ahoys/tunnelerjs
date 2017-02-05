@@ -106,7 +106,11 @@ client.on('message', Message => {
                 // be read from the commandContainer. Public strings are not safe!
                 if (commands.hasOwnProperty(commandContainer['cmd'])) {
                     const command = commands[commandContainer['cmd']];
-                    command.execute(Message, commandContainer['str']);
+                    try {
+                        command.execute(Message, commandContainer['str']);
+                    } catch (e) {
+                        console.log(`Executing command (${commandContainer['cmd']}) failed. Please check your code.`)
+                    }
                 } else {
                     console.log(`Invalid command (${commandContainer['cmd']}) inputted.`);
                 }

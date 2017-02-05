@@ -40,7 +40,7 @@ client.on('ready', () => {
         console.log('Closing down...');
         process.exit(1);
     } else {
-        console.log(`Successfully logged in as  ${client.user.username}.`);
+        console.log(`Successfully logged in as ${client.user.username}.`);
         console.log(`Serving ${client.guilds.array().length} server(s).`);
     }
 

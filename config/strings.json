@@ -16,7 +16,7 @@
       "Let's party like it's 2017!"
     ]
   },
-  "selectFromClients": {
+  "select": {
     "success_0": "The following ",
     "success_1": " have been selected:",
     "fail_0": "Nonsense! First type select and then the amount of members to select. eg: `select 6`.",

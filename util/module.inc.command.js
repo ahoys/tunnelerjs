@@ -18,7 +18,7 @@ module.exports = () => {
             messageObject.content.length < 128
         ) {
             // Remove mention id and reformat the command by removing anything unnecessary.
-            let content = Message.content.replace(/\s+/g, ' ').replace(`<@${mId}> `, '').toLowerCase().trim();
+            let content = messageObject.content.replace(/\s+/g, ' ').replace(`<@${mId}> `, '').toLowerCase().trim();
             // We'll only allow some very specific characters because of security reasons.
             if (/^[a-zA-Z0-9.,!?\-= ]+$/.test(content)) {
                 // The command will not be processed if it cannot be found from the command mapping (commands.json).

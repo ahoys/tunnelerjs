@@ -1,8 +1,8 @@
 {
   "command_mapping": {
-    "default": "defaultResponse",
+    "default": "mention",
     "about": "about",
     "ping": "ping",
-    "select": "selectFromClients"
+    "select": "select"
   }
 }

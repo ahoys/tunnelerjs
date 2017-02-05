@@ -40,6 +40,12 @@ module.exports = () => {
                     ? readSettings['anti_spam_allow_unsafe_url_suffixes']
                     : false ;
 
+            readSettings['anti_spam_log_length'] =
+                readSettings['anti_spam_log_length'] !== undefined &&
+                !isNaN(readSettings['anti_spam_log_length'])
+                    ? Math.floor(readSettings['anti_spam_log_length'])
+                    : 16 ;
+
             readSettings['anti_spam_max_identical_urls_in_message'] =
                 readSettings['anti_spam_max_identical_urls_in_message'] !== undefined &&
                 !isNaN(readSettings['anti_spam_max_identical_urls_in_message'])
@@ -80,6 +86,7 @@ module.exports = () => {
                 "enable_quiet_mode": false,
                 "enable_client_commands": false,
                 "anti_spam_allow_unsafe_url_suffixes": false,
+                "anti_spam_log_length": 16,
                 "anti_spam_max_identical_urls_in_message": 2,
                 "anti_spam_max_identical_urls_in_total": 3,
                 "anti_spam_max_identical_messages_total": 8,

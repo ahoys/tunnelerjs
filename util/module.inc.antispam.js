@@ -10,13 +10,14 @@ module.exports = () => {
      * Empties message log buffer now and then, avoiding buffer overflows.
      * @param gId
      * @param uId
+     * @param logLength
      */
-    module.refreshMessageLog = (gId, uId) => {
+    module.refreshMessageLog = (gId, uId, logLength) => {
         if (messageLog.has(gId)) {
             let guildLog = messageLog.get(gId);
             if (guildLog.has(uId)) {
                 let userLog = guildLog.get(uId);
-                if (userLog.length >= 8) {
+                if (userLog.length >= logLength) {
                     userLog.shift();
                     guildLog = guildLog.set(uId, userLog);
                     messageLog = messageLog.set(gId, guildLog);
@@ -164,7 +165,7 @@ module.exports = () => {
         }
 
         // Make sure the logs don't grow too big.
-        module.refreshMessageLog(gId, uId);
+        module.refreshMessageLog(gId, uId, settingsContainer['anti_spam_log_length'] ? settingsContainer['anti_spam_log_length'] : 8);
 
         // Return the result of spamming.
         return spam;

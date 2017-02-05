@@ -3,6 +3,7 @@
     "default": "mention",
     "about": "about",
     "ping": "ping",
-    "select": "select"
+    "select": "select",
+    "version": "version"
   }
 }

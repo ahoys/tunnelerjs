@@ -17,7 +17,8 @@ const commands = {
     "about": require('./commands/module.inc.about.js')(),
     "mention": require('./commands/module.inc.mention.js')(),
     "select": require('./commands/module.inc.select.js')(),
-    "ping": require('./commands/module.inc.ping')(client)
+    "ping": require('./commands/module.inc.ping')(client),
+    "version": require('./commands/module.inc.version')()
 };
 
 const MAX_SERVERS = 8;

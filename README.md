@@ -30,6 +30,8 @@ Can be used as a simple anti spam bot without any extra features.
 
 6) From now on you can start the bot with a `node tunneler` command. Remember, you can also create a .bat file for the startup process.
 
+7) Invite the bot to your servers via a regular web browser. Use the following url: `https://discordapp.com/oauth2/authorize?&client_id=YOUR_APP_CLIENT_ID_HERE&scope=bot&permissions=0 `.
+
 ## Configuration (optional)
 `config/settings.json` contains settings for the bot. The settings are server (guild) specific. If the used server cannot be found from the settings, default settings will be used instead.
 

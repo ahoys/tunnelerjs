@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const Immutable = require('immutable');
+const spam = require('spam-detect');
 
 // Strings
 const Auth = require("./config/auth.json");
@@ -98,6 +99,13 @@ client.on('message', Message => {
             const settingsContainer = guildSettings.has(sourceId)
                 ? guildSettings.get(sourceId)
                 : {};
+
+            try {
+                console.log(`Experimental probability: ` +
+                    `${spam.getSpamProbability('m').probability}.${spam.getSpamProbability('m').severity}`);
+            } catch (e) {
+                console.log('Experimental probability failed to execute.');
+            }
 
             // Anti spam measures.
             if (

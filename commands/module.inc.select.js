@@ -28,6 +28,7 @@ module.exports = () => {
      * @param count
      */
     module.execute = (messageObject, count) => {
+        count = count[1];
         if (
             count !== undefined &&
             messageObject.guild !== null &&

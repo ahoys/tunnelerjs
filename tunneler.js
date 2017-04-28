@@ -17,7 +17,8 @@ const Settings = require('./util/module.inc.settings')(Debug);
 // This loads the localization and other pre-set strings.
 // The second parameter should match the strings given in config/strings.json.
 // Default values should always be given!
-const Strings = require('./util/module.inc.strings')(Debug, Settings.get('default_localization'));
+const Strings = require('./util/module.inc.strings')(
+    Debug, Settings.get('default_localization'));
 
 // Auth
 // Loads the essential authentication information.

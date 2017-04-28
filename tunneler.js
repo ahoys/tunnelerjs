@@ -1,13 +1,13 @@
+// Core requirements.
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const Immutable = require('immutable');
 
-// Strings
-const Auth = require("./config/auth.json");
-const Strings = require('./config/strings.json');
-
 // Utilities
+console.log('[MAIN] Initializing...');
 const Settings = require('./util/module.inc.setting.js')();
+const Auth = require('./util/fnc.inc.getValidAuth')();
+const Strings = require('./config/strings.json');
 const Ban = require('./util/module.inc.ban')();
 const AntiSpam = require('./util/module.inc.antispam')();
 const Command = require('./util/module.inc.command')();

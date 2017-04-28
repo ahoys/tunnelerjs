@@ -3,10 +3,14 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const Immutable = require('immutable');
 
+// Debug
+const developmentDebug = true;
+const Debug = require('./util/module.inc.debug')(developmentDebug);
+Debug.print('Initializing...', 'MAIN');
+
 // Utilities
-console.log('[MAIN] Initializing...');
-const Settings = require('./util/module.inc.setting.js')();
-const Auth = require('./util/module.inc.getValidAuth')();
+const Settings = require('./util/module.inc.setting.js')(Debug);
+const Auth = require('./util/module.inc.getValidAuth')(Debug);
 const Strings = require('./config/strings.json');
 const Ban = require('./util/module.inc.ban')();
 const AntiSpam = require('./util/module.inc.antispam')();

@@ -11,6 +11,7 @@ module.exports = (Debug, lang = 'en') => {
     }
     // Load the resource file.
     const StringsJSON = require('../config/strings.json');
+    Debug.print('Strings file strings.json loaded.', 'STRINGS SUCCESS');
     // Make sure a valid language is given.
     if (typeof lang !== 'string' || lang.length < 1) {
         Debug.print('Invalid localization parameter given. The process will now exit.', 'STRINGS ERROR');

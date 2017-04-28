@@ -7,7 +7,6 @@ const Immutable = require('immutable');
 // You should set developmentDebug to false when in production.
 const developmentDebug = true;
 const Debug = require('./util/module.inc.debug')(developmentDebug);
-Debug.print('Initializing...', 'MAIN');
 
 // Strings
 // This loads the localization and other pre-set strings.

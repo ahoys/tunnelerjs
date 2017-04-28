@@ -1,4 +1,5 @@
 {
+  "default_localization": "en",
   "guilds": {
     "123123123123123123": {
       "enable_anti_spam_filtering": true,

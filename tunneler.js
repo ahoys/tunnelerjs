@@ -6,7 +6,7 @@ const Immutable = require('immutable');
 // Utilities
 console.log('[MAIN] Initializing...');
 const Settings = require('./util/module.inc.setting.js')();
-const Auth = require('./util/fnc.inc.getValidAuth')();
+const Auth = require('./util/module.inc.getValidAuth')();
 const Strings = require('./config/strings.json');
 const Ban = require('./util/module.inc.ban')();
 const AntiSpam = require('./util/module.inc.antispam')();

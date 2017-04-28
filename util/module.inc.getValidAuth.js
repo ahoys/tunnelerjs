@@ -1,5 +1,5 @@
 const fs = require('fs');
-const getValidAuth = () => {
+module.exports = () => {
     if (!fs.existsSync('./config/auth.json')) {
         console.log('[AUTH ERROR] config/auth.json is missing. The process will now exit.');
         process.exit(1);
@@ -20,4 +20,3 @@ const getValidAuth = () => {
     console.log('[AUTH SUCCESS] Authentication file validation.');
     return Auth;
 };
-module.exports = getValidAuth;

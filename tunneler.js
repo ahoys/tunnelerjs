@@ -24,10 +24,13 @@ const Strings = require('./util/module.inc.strings')(
 // Loads the essential authentication information.
 const Auth = require('./util/module.inc.auth')(Debug);
 
+// Commands
+// All the official and custom commands are loaded here.
+const Commands = require('./util/module.inc.commands')(Debug);
+
 // Utilities
 const Ban = require('./util/module.inc.ban')();
 const AntiSpam = require('./util/module.inc.antispam')();
-const Command = require('./util/module.inc.command')();
 
 // Commands
 const commands = {

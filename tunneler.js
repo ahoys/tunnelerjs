@@ -8,15 +8,15 @@ const Immutable = require('immutable');
 const developmentDebug = true;
 const Debug = require('./util/module.inc.debug')(developmentDebug);
 
+// Settings
+// All the required application specific settings are found here.
+const Settings = require('./util/module.inc.settings')(Debug);
+
 // Strings
 // This loads the localization and other pre-set strings.
 // The second parameter should match the strings given in config/strings.json.
 // Default values should always be given!
 const Strings = require('./util/module.inc.strings')(Debug, 'en');
-
-// Settings
-// All the required application specific settings are found here.
-const Settings = require('./util/module.inc.settings')(Debug);
 
 // Utilities
 const Auth = require('./util/module.inc.auth')(Debug);

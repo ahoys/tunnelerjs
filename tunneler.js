@@ -19,8 +19,11 @@ const Settings = require('./util/module.inc.settings')(Debug);
 // Default values should always be given!
 const Strings = require('./util/module.inc.strings')(Debug, Settings.get('default_localization'));
 
-// Utilities
+// Auth
+// Loads the essential authentication information.
 const Auth = require('./util/module.inc.auth')(Debug);
+
+// Utilities
 const Ban = require('./util/module.inc.ban')();
 const AntiSpam = require('./util/module.inc.antispam')();
 const Command = require('./util/module.inc.command')();

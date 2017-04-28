@@ -1,5 +1,13 @@
 {
-  "name": "Tunneler",
+  "name": {
+    "default": "Tunneler"
+  },
+  "version": {
+    "default": "1.0"
+  },
+  "source": {
+    "default": "https://github.com/ahoys/tunnelerjs"
+  },
   "util": {
     "antispam": {
       "success_0": "Ha, a peasant got axed. ",

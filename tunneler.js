@@ -4,14 +4,20 @@ const client = new Discord.Client();
 const Immutable = require('immutable');
 
 // Debug
+// You should set developmentDebug to false when in production.
 const developmentDebug = true;
 const Debug = require('./util/module.inc.debug')(developmentDebug);
 Debug.print('Initializing...', 'MAIN');
 
+// Strings
+// This loads the localization and other pre-set strings.
+// The second parameter should match the strings given in config/strings.json.
+// Default values should always be given!
+const Strings = require('./util/module.inc.string')(Debug, 'en');
+
 // Utilities
 const Settings = require('./util/module.inc.setting')(Debug);
 const Auth = require('./util/module.inc.auth')(Debug);
-const Strings = require('./config/strings.json');
 const Ban = require('./util/module.inc.ban')();
 const AntiSpam = require('./util/module.inc.antispam')();
 const Command = require('./util/module.inc.command')();

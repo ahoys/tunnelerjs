@@ -10,6 +10,7 @@ const Debug = require('./util/module.inc.debug')(developmentDebug);
 
 // Settings
 // All the required application specific settings are found here.
+// Settings are read-only.
 const Settings = require('./util/module.inc.settings')(Debug);
 
 // Strings

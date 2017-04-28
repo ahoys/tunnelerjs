@@ -9,8 +9,8 @@ const Debug = require('./util/module.inc.debug')(developmentDebug);
 Debug.print('Initializing...', 'MAIN');
 
 // Utilities
-const Settings = require('./util/module.inc.setting.js')(Debug);
-const Auth = require('./util/module.inc.getValidAuth')(Debug);
+const Settings = require('./util/module.inc.setting')(Debug);
+const Auth = require('./util/module.inc.auth')(Debug);
 const Strings = require('./config/strings.json');
 const Ban = require('./util/module.inc.ban')();
 const AntiSpam = require('./util/module.inc.antispam')();

@@ -33,7 +33,6 @@ module.exports = (debugEnabled) => {
                 // An existing file.
                 const stats = fs.statSync(filepath);
                 const fileSizeInBytes = stats.size;
-                console.log(fileSizeInBytes);
                 if (fileSizeInBytes > 50000000) {
                     // The log file is larger than 50 MB, time to reset.
                     fs.truncate(filepath, 0, (err) => {

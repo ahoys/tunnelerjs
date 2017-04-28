@@ -8,6 +8,9 @@
   "source": {
     "default": "https://github.com/ahoys/tunnelerjs"
   },
+  "author": {
+    "default": "Ari Höysniemi"
+  },
   "util": {
     "antispam": {
       "success_0": "Ha, a peasant got axed. ",

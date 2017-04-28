@@ -12,7 +12,7 @@ const Debug = require('./util/module.inc.debug')(developmentDebug);
 // This loads the localization and other pre-set strings.
 // The second parameter should match the strings given in config/strings.json.
 // Default values should always be given!
-const Strings = require('./util/module.inc.string')(Debug, 'en');
+const Strings = require('./util/module.inc.strings')(Debug, 'en');
 
 // Settings
 // All the required application specific settings are found here.

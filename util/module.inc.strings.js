@@ -6,14 +6,14 @@ module.exports = (Debug, lang = 'en') => {
     const module = {};
     // Make sure strings.json exists.
     if (!fs.existsSync('./config/strings.json')) {
-        Debug.print('config/strings.json is missing. The process will now exit.', 'STRING ERROR');
+        Debug.print('config/strings.json is missing. The process will now exit.', 'STRINGS ERROR');
         process.exit(1);
     }
     // Load the resource file.
     const StringsJSON = require('../config/strings.json');
     // Make sure a valid language is given.
     if (typeof lang !== 'string' || lang.length < 1) {
-        Debug.print('Invalid localization parameter given. The process will now exit.', 'STRING ERROR');
+        Debug.print('Invalid localization parameter given. The process will now exit.', 'STRINGS ERROR');
         process.exit(1);
     }
     /**
@@ -23,7 +23,7 @@ module.exports = (Debug, lang = 'en') => {
         try {
             return StringsJSON.name.loc || StringsJSON.name.default;
         } catch (e) {
-            Debug.print('Returning name failed.', 'STRING ERROR');
+            Debug.print('Returning name failed.', 'STRINGS ERROR');
             return '';
         }
     }
@@ -34,7 +34,7 @@ module.exports = (Debug, lang = 'en') => {
         try {
             return StringsJSON.version.loc || StringsJSON.version.default;
         } catch (e) {
-            Debug.print('Returning version failed.', 'STRING ERROR');
+            Debug.print('Returning version failed.', 'STRINGS ERROR');
             return '';
         }
     }
@@ -52,11 +52,11 @@ module.exports = (Debug, lang = 'en') => {
                 const path = strArr.reduce((o, n) => o[n], StringsJSON);
                 return path.loc || path.default;
             } else {
-                Debug.pring('Invalid string type.', 'STRING ERROR');
+                Debug.pring('Invalid string type.', 'STRINGS ERROR');
                 return '';
             }
         } catch (e) {
-            Debug.print('Returning string failed.', 'STRING ERROR');
+            Debug.print('Returning string failed.', 'STRINGS ERROR');
             return '';
         }
     }

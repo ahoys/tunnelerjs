@@ -14,8 +14,11 @@ const Debug = require('./util/module.inc.debug')(developmentDebug);
 // Default values should always be given!
 const Strings = require('./util/module.inc.string')(Debug, 'en');
 
+// Settings
+// All the required application specific settings are found here.
+const Settings = require('./util/module.inc.settings')(Debug);
+
 // Utilities
-const Settings = require('./util/module.inc.setting')(Debug);
 const Auth = require('./util/module.inc.auth')(Debug);
 const Ban = require('./util/module.inc.ban')();
 const AntiSpam = require('./util/module.inc.antispam')();
@@ -35,7 +38,7 @@ const MAX_SERVERS = 8;
 
 let guildSettings = new Immutable.Map({});
 
-client.login(Auth.token);
+// client.login(Auth.token);
 
 /**
  * An initial connection handler.

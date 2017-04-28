@@ -1,8 +1,38 @@
-const Settings = require('../config/settings.json');
-module.exports = () => {
-
+/**
+ * Implements settings functionality.
+ */
+const fs = require('fs');
+module.exports = (Debug) => {
     const module = {};
-
+    // Make sure strings.json exists.
+    if (!fs.existsSync('./config/settings.json')) {
+        Debug.print('config/settings.json is missing. The process will now exit.', 'SETTINGS ERROR');
+        process.exit(1);
+    }
+    // Load the resource file.
+    const SettingsJSON = require('../config/settings.json');
+    Debug.print('Settings file settings.json loaded.', 'SETTINGS SUCCESS');
+    /**
+     * Returns a setting value.
+     */
+    module.get = (strArr) => {
+        try {
+            // The string(s) should be presented in an array.
+            if (typeof strArr === 'string') {
+                strArr = [strArr];
+            }
+            if (strArr.constructor === Array) {
+                // Construct the full path and find the setting.
+                return strArr.reduce((o, n) => o[n], SettingsJSON);
+            } else {
+                Debug.print('Invalid string type.', 'SETTINGS ERROR');
+                return undefined;
+            }
+        } catch (e) {
+            Debug.print('Returning settings value failed.', 'SETTINGS ERROR');
+            return undefined;
+        }
+    }
     /**
      * Returns settings for a single guild.
      * @param gId

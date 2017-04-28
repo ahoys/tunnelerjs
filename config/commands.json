@@ -1,4 +1,7 @@
 {
+  "commands_access": {
+    "pings": ["all"]
+  },
   "command_mapping": {
     "default": "mention",
     "about": "about",

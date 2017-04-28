@@ -26,7 +26,7 @@ const Auth = require('./util/module.inc.auth')(Debug);
 
 // Commands
 // All the official and custom commands are loaded here.
-const Commands = require('./util/module.inc.commands')(Debug);
+const Commands = require('./util/module.inc.commands')(Debug, Auth);
 
 // Utilities
 const Ban = require('./util/module.inc.ban')();

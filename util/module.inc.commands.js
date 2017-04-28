@@ -2,7 +2,7 @@
  * Implements commands functionality.
  */
 const fs = require('fs');
-module.exports = (Debug) => {
+module.exports = (Debug, Auth) => {
     const module = {};
 
     // Init
@@ -66,6 +66,41 @@ module.exports = (Debug) => {
         } catch (e) {
             Debug.print(`Returning a command (${key}) failed.`, 'COMMANDS ERROR');
             return (() => {});
+        }
+    }
+
+    /**
+     * Returns true if the given id has access to a command.
+     */
+    module.hasAccess = (key = '', id = '0') => {
+        try {
+            if (typeof key === 'string' && typeof id === 'string') {
+                if (commandsSrc[key] === undefined) {
+                    // No such command.
+                    Debug.print(`Trying to get an access to an unknown command (${key}).`, 'COMMANDS ERROR');
+                    return false;
+                }
+                if (id === Auth.owner) {
+                    // A full access granted for the owner.
+                    // No matter whether the access exists.
+                    return true;
+                }
+                const thisAccess = commandsJSON.commands_access[key];
+                if (thisAccess === undefined) {
+                    // The access is missing.
+                    Debug.log(`Access (${key}) does not exist.`);
+                    return false;
+                }
+                if (thisAccess.indexOf('all') > -1) {
+                    // Everyone can access.
+                    return true;
+                }
+                return thisAccess.indexOf(id) > -1;
+            }
+            return false;
+        } catch (e) {
+            Debug.print(`Returning access to (${key}) failed.`, 'COMMANDS ERROR');
+            return false;
         }
     }
 

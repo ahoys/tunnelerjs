@@ -70,11 +70,11 @@ module.exports = (filepath = './console.log') => {
                     fs.truncateSync(path, 0);
                 }
                 const initLine = init ? '\n= NEW PROCESS ===========\n' : '';
-                fs.appendFileSync(path, `${initLine}${timestamp} ${msg}${errLine}\n`);
+                fs.appendFileSync(path, `${initLine}${timestamp}\n${msg}${errLine}\n\n`);
             } else {
                 // Create a new file.
                 const initLine = init ? '= NEW PROCESS ===========\n' : '';
-                fs.writeFileSync(path, `${initLine}${timestamp} ${msg}${errLine}\n`, 'utf8');
+                fs.writeFileSync(path, `${initLine}${timestamp}\n${msg}${errLine}\n\n`, 'utf8');
             }
             if (init) {
                 // 1st run.

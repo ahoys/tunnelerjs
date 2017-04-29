@@ -106,3 +106,15 @@ Client.on('messageUpdate', (oldMessage, newMessage) => {
         process.exit(1);
     }
 });
+
+/**
+ * When pins are updated.
+ */
+Client.on('channelPinsUpdate', (channel, time) => {
+    try {
+        const { id, type } = channel;
+    } catch (e) {
+        Debug.print('Channel pins update reader failed. The process will now exit.', 'MAIN ERROR', true, e);
+        process.exit(1);
+    }
+});

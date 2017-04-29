@@ -24,13 +24,14 @@ const Strings = require('./util/module.inc.strings')(
 // Loads the essential authentication information.
 const Auth = require('./util/module.inc.auth')(Debug);
 
-// Commands
-// All the official and custom commands are loaded here.
-const Commands = require('./util/module.inc.commands')(Debug, Auth);
-
 // Parser
-// The application can read the chat via parser.
+// The received messages can be sanitized with a parser before
+// further processing.
 const Parser = require('./util/module.inc.parser')(Debug);
+
+// Commands
+// All the official and custom commands are loaded and executed here.
+const Commands = require('./util/module.inc.commands')(Debug, Auth);
 
 // Utilities
 const Ban = require('./util/module.inc.ban')();

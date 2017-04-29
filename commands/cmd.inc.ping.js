@@ -1,10 +1,12 @@
 module.exports = (Debug, Strings, Client) => {
     const module = {};
-    const str_success_0 = Strings.get(['commands', 'ping', 'success_0']);
-    const str_success_1 = Strings.get(['commands', 'ping', 'success_1']);
+
+    // Command strings
+    const stringsJSON = Strings.get(['commands', 'ping']);
 
     /**
      * Returns a client ping.
+     * @returns {number}
      */
     const getPing = () => {
         return Math.round(Client.ping);
@@ -12,13 +14,14 @@ module.exports = (Debug, Strings, Client) => {
 
     /**
      * Executes this command.
+     * @returns {boolean}
      */
     module.execute = (payload) => {
         try {
             const { Message } = payload;
             if (Message) {
                 const ping = getPing();
-                Message.reply(`${str_success_0}${ping}${str_success_1}`);
+                Message.reply(`${stringsJSON['success_0']}${ping}${stringsJSON['success_1']}`);
                 return true;
             }
             return false;

@@ -33,8 +33,6 @@ module.exports = (Debug, Auth) => {
         // Inform the user if there are no commands available for some reason.
         if (Object.keys(commandsSrc).length < 1) {
             Debug.print(`There are no commands available in ${filepath}`, 'COMMANDS');
-        } else {
-            Debug.print('Commands loaded.', 'COMMANDS SUCCESS');
         }
         commandsJSON = require('../config/commands.json');
     } catch (e) {

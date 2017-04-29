@@ -23,7 +23,7 @@ module.exports = (Debug, Strings, Client) => {
             }
             return false;
         } catch (e) {
-            Debug.print('Executing ping failed.', 'PING ERROR');
+            Debug.print('Executing ping failed.', 'PING ERROR', true, e);
             return false;
         }
     };

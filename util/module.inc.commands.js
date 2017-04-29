@@ -27,16 +27,16 @@ module.exports = (Debug, Auth, Strings, Client) => {
         });
         // Make sure the call keys exist.
         if (Object.keys(commandsSrc).length > 0 && !fs.existsSync('./config/commands.json')) {
-            Debug.print('config/commands.json is missing. The process will now exit.', 'COMMANDS');
+            Debug.print('config/commands.json is missing. The process will now exit.', 'COMMANDS CRITICAL');
             process.exit(1);
         }
         // Inform the user if there are no commands available for some reason.
         if (Object.keys(commandsSrc).length < 1) {
-            Debug.print(`There are no commands available in ${filepath}`, 'COMMANDS');
+            Debug.print(`There are no commands available in ${filepath}`, 'COMMANDS WARN');
         }
         commandsJSON = require('../config/commands.json');
     } catch (e) {
-        Debug.print('Reading command files failed. The process will now exit.', 'COMMANDS');
+        Debug.print('Reading command files failed. The process will now exit.', 'COMMANDS CRITICAL');
         process.exit(1);
     }
 
@@ -86,7 +86,7 @@ module.exports = (Debug, Auth, Strings, Client) => {
                 const thisAccess = commandsJSON.commands_access[key];
                 if (thisAccess === undefined) {
                     // The access is missing.
-                    Debug.log(`Access (${key}) does not exist.`, 'COMMANDS');
+                    Debug.log(`Access (${key}) does not exist.`, 'COMMANDS WARN');
                     return false;
                 }
                 if (thisAccess.indexOf('all') > -1) {
@@ -111,7 +111,7 @@ module.exports = (Debug, Auth, Strings, Client) => {
                 key === undefined ||
                 commandsSrc[key] === undefined
             ) {
-                Debug.log(`Missing command ${key}.`, 'COMMANDS');
+                Debug.log(`Missing command ${key}.`, 'COMMANDS WARN');
                 return false;
             }
             Debug.print(`Executing ${key}`, 'COMMANDS');

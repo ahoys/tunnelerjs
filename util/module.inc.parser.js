@@ -12,7 +12,7 @@ module.exports = (Debug) => {
             // Only the following characters are allowed.
             return /^[a-zA-Z0-9.?:!;><"`',\-=@ ]+$/.test(str);
         } catch (e) {
-            Debug.print('Deciding wheter a string is safe failed.', 'PARSER ERROR');
+            Debug.print('Verifying string safetyness failed.', 'PARSER ERROR', true, e);
             return false;
         }
     }
@@ -25,7 +25,7 @@ module.exports = (Debug) => {
             // Lower case and no excess spaces.
             return str.replace(/\s+/g, ' ').toLowerCase().trim();
         } catch (e) {
-            Debug.print('Trimming a string failed.', 'PARSER ERROR');
+            Debug.print('Trimming a string failed.', 'PARSER ERROR', true, e);
             return '';
         }
     }

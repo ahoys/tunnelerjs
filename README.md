@@ -10,7 +10,7 @@ Can be used as a simple anti spam bot without any extra features.
 3) Registered [Discord application](https://discordapp.com/developers/applications/me/). Must be registered as a client.
 
 ## Installation
-1) [Download](https://github.com/ahoys/tunnelerjs/archive/master.zip) source files to your local computer.
+1) [Download](https://github.com/ahoys/tunnelerjs/archive/v.0.9.5.zip) source files to your local computer (v.0.9.5.).
 
 2) Create `auth.json` file into `/config` dir. On windows, make sure your file extensions are not hidden (default), otherwise you'll end up having e.g. `auth.json.txt` instead of `auth.json`.
 

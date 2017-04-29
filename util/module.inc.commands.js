@@ -27,7 +27,7 @@ module.exports = (Debug, Auth, Strings, Client) => {
         });
         // Make sure the call keys exist.
         if (Object.keys(commandsSrc).length > 0 && !fs.existsSync('./config/commands.json')) {
-            Debug.print('config/commands.json is missing. The process will now exit.', 'COMMANDS ERROR');
+            Debug.print('config/commands.json is missing. The process will now exit.', 'COMMANDS');
             process.exit(1);
         }
         // Inform the user if there are no commands available for some reason.
@@ -36,8 +36,7 @@ module.exports = (Debug, Auth, Strings, Client) => {
         }
         commandsJSON = require('../config/commands.json');
     } catch (e) {
-        Debug.print('Reading command files failed. The process will now exit.', 'COMMANDS ERROR');
-        console.log(e);
+        Debug.print('Reading command files failed. The process will now exit.', 'COMMANDS');
         process.exit(1);
     }
 
@@ -48,7 +47,7 @@ module.exports = (Debug, Auth, Strings, Client) => {
         try {
             return Object.keys(commandsSrc) || [];
         } catch (e) {
-            Debug.print('Returning commands failed.', 'COMMANDS ERROR');
+            Debug.print('Returning commands failed.', 'COMMANDS ERROR', true, e);
             return [];
         }
     }
@@ -63,7 +62,7 @@ module.exports = (Debug, Auth, Strings, Client) => {
             }
             return (() => {});
         } catch (e) {
-            Debug.print(`Returning a command (${key}) failed.`, 'COMMANDS ERROR');
+            Debug.print(`Returning a command (${key}) failed.`, 'COMMANDS ERROR', true, e);
             return (() => {});
         }
     }
@@ -87,7 +86,7 @@ module.exports = (Debug, Auth, Strings, Client) => {
                 const thisAccess = commandsJSON.commands_access[key];
                 if (thisAccess === undefined) {
                     // The access is missing.
-                    Debug.log(`Access (${key}) does not exist.`, 'COMMANDS ERROR');
+                    Debug.log(`Access (${key}) does not exist.`, 'COMMANDS');
                     return false;
                 }
                 if (thisAccess.indexOf('all') > -1) {
@@ -98,7 +97,7 @@ module.exports = (Debug, Auth, Strings, Client) => {
             }
             return false;
         } catch (e) {
-            Debug.print(`Returning access to (${key}) failed.`, 'COMMANDS ERROR');
+            Debug.print(`Returning access to (${key}) failed.`, 'COMMANDS ERROR', true, e);
             return false;
         }
     }
@@ -112,13 +111,13 @@ module.exports = (Debug, Auth, Strings, Client) => {
                 key === undefined ||
                 commandsSrc[key] === undefined
             ) {
-                Debug.log(`Missing command ${key}.`, 'COMMANDS ERROR');
+                Debug.log(`Missing command ${key}.`, 'COMMANDS');
                 return false;
             }
             Debug.print(`Executing ${key}`, 'COMMANDS');
             return commandsSrc[key].execute(payload);
         } catch (e) {
-            Debug.print('Executing a command failed.', 'COMMANDS ERROR');
+            Debug.print('Executing a command failed.', 'COMMANDS ERROR', true, e);
             return false;
         }
     }

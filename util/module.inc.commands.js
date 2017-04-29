@@ -2,7 +2,7 @@
  * Implements commands functionality.
  */
 const fs = require('fs');
-module.exports = (Debug, Auth) => {
+module.exports = (Debug, Auth, Strings, Client) => {
     const module = {};
 
     // Init
@@ -22,7 +22,7 @@ module.exports = (Debug, Auth) => {
                 parts[3] === 'js'
             ) {
                 // Pair a key and a command module.
-                commandsSrc[parts[2]] = require(`.${filepath}${file}`);
+                commandsSrc[parts[2]] = require(`.${filepath}${file}`)(Debug, Strings, Client);
             }
         });
         // Make sure the call keys exist.
@@ -37,6 +37,7 @@ module.exports = (Debug, Auth) => {
         commandsJSON = require('../config/commands.json');
     } catch (e) {
         Debug.print('Reading command files failed. The process will now exit.', 'COMMANDS ERROR');
+        console.log(e);
         process.exit(1);
     }
 
@@ -103,43 +104,24 @@ module.exports = (Debug, Auth) => {
     }
 
     /**
-     * Returns a command container.
-     * Container holds the command key and a parameter value for the command.
-     * @param messageObject: Discord.js Message object.
-     * @param mId: mentioned person that triggers the command.
-     * @returns {*}
+     * Executes a command.
      */
-    module.getContainer = (messageObject, mId) => {
-        if (
-            messageObject !== undefined &&
-            messageObject.isMentioned(mId) &&
-            messageObject.content !== undefined &&
-            messageObject.content.length < 128
-        ) {
-            // Remove mention id and reformat the command by removing anything unnecessary.
-            let content = messageObject.content.replace(/\s+/g, ' ').replace(`<@${mId}> `, '').toLowerCase().trim();
-            // We'll only allow some very specific characters because of security reasons.
-            if (/^[a-zA-Z0-9.?:!;"`',\-=@ ]+$/.test(content)) {
-                // The command will not be processed if it cannot be found from the command mapping (commands.json).
-                // First part is the command, second is the parameter.
-                content = content.split(' ', 16);
-                if (CommandsStr['command_mapping'].hasOwnProperty(content[0])) {
-                    // We'll wrap the command this way because we might want to use multiple different command words
-                    // for the same action.
-                    return {
-                        cmd: CommandsStr['command_mapping'][content[0]],
-                        str: content
-                    };
-                }
+    module.execute = (key, payload) => {
+        try {
+            if (
+                key === undefined ||
+                commandsSrc[key] === undefined
+            ) {
+                Debug.log('Missing command.');
+                return false;
             }
-            // The given command was not found. Enable random chattering.
-            return {
-                cmd: CommandsStr['command_mapping']['default'],
-                str: undefined
-            }
+            Debug.print(`Executing ${key}`, 'COMMANDS');
+            return commandsSrc[key].execute(payload);
+        } catch (e) {
+            Debug.print('Executing a command failed.', 'COMMANDS ERROR');
+            return false;
         }
-        return {};
-    };
+    }
 
     return module;
 };

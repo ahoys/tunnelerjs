@@ -31,7 +31,7 @@ const Parser = require('./util/module.inc.parser')(Debug);
 
 // Commands
 // All the official and custom commands are loaded and executed here.
-const Commands = require('./util/module.inc.commands')(Debug, Auth);
+const Commands = require('./util/module.inc.commands')(Debug, Auth, Strings, client);
 
 // Utilities
 const Ban = require('./util/module.inc.ban')();

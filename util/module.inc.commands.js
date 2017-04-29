@@ -92,6 +92,7 @@ module.exports = (Debug, Auth, Strings, Client) => {
                 }
                 if (thisAccess.indexOf('all') > -1) {
                     // Everyone can access.
+                    Debug.log(`Access to (${key}) is free for all.`);
                     return true;
                 }
                 if (thisAccess.indexOf(id) > -1) {

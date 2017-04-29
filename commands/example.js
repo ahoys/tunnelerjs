@@ -5,7 +5,7 @@
  * Command: COMMAND_NAME_HERE (eg. ping if the file is called cmd.inc.ping.js)
  * Author: YOUR_NAME_HERE
  */
-module.exports = (Debug, Strings, Client, key) => {
+module.exports = (Debug, Strings, Client, cmd) => {
     const module = {};
 
     // Command strings
@@ -13,7 +13,7 @@ module.exports = (Debug, Strings, Client, key) => {
     // Your strings should be inside commands.COMMAND_NAME_HERE.
     // Always provide at least a "default" language. It is used whenever the given language
     // is not available.
-    const stringsJSON = Strings.get(['commands', key]);
+    const stringsJSON = Strings.get(['commands', cmd]);
 
     /**
      * Executes this command.
@@ -33,7 +33,7 @@ module.exports = (Debug, Strings, Client, key) => {
         } catch (e) {
             // Inform about a problem.
             // This will deploy a new console message and a log entry.
-            Debug.print(`Executing ${key} failed.`, `${key.toUpperCase()} ERROR`, true, e);
+            Debug.print(`Executing ${cmd} failed.`, `${cmd.toUpperCase()} ERROR`, true, e);
             return false;
         }
     };

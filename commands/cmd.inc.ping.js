@@ -4,11 +4,11 @@
  * Command: ping
  * Author: Ari Höysniemi
  */
-module.exports = (Debug, Strings, Client, key) => {
+module.exports = (Debug, Strings, Client, cmd) => {
     const module = {};
 
     // Command strings
-    const stringsJSON = Strings.get(['commands', key]);
+    const stringsJSON = Strings.get(['commands', cmd]);
 
     /**
      * Returns a client ping.
@@ -32,7 +32,7 @@ module.exports = (Debug, Strings, Client, key) => {
             }
             return false;
         } catch (e) {
-            Debug.print(`Executing ${key} failed.`, `${key.toUpperCase()} ERROR`, true, e);
+            Debug.print(`Executing ${cmd} failed.`, `${cmd.toUpperCase()} ERROR`, true, e);
             return false;
         }
     };

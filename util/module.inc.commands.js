@@ -75,7 +75,7 @@ module.exports = (Debug, Auth, Strings, Client) => {
             if (typeof key === 'string' && typeof id === 'string') {
                 if (commandsSrc[key] === undefined) {
                     // No such command.
-                    Debug.print(`Trying to get an access to an unknown command (${key}).`, 'COMMANDS ERROR');
+                    Debug.print(`Trying to get an access to an unknown command (${key}).`, 'COMMANDS WARN');
                     return false;
                 }
                 if (id === Auth.owner) {

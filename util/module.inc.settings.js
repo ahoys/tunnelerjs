@@ -6,7 +6,7 @@ module.exports = (Debug) => {
     const module = {};
     // Make sure strings.json exists.
     if (!fs.existsSync('./config/settings.json')) {
-        Debug.print('config/settings.json is missing. The process will now exit.', 'SETTINGS ERROR');
+        Debug.print('config/settings.json is missing. The process will now exit.', 'SETTINGS CRITICAL');
         process.exit(1);
     }
     // Load the resource file.
@@ -25,11 +25,11 @@ module.exports = (Debug) => {
                 // Construct the full path and find the setting.
                 return strArr.reduce((o, n) => o[n], SettingsJSON);
             } else {
-                Debug.print('Invalid string type.', 'SETTINGS ERROR');
+                Debug.print('Invalid string type.', 'SETTINGS WARN');
                 return undefined;
             }
         } catch (e) {
-            Debug.print('Returning settings value failed.', 'SETTINGS ERROR');
+            Debug.print('Returning settings value failed.', 'SETTINGS ERROR', true, e);
             return undefined;
         }
     }

@@ -10,7 +10,7 @@ module.exports = (Debug) => {
     module.isSafe = (str) => {
         try {
             // Only the following characters are allowed.
-            return /^[a-zA-Z0-9.?:!;><"`',\-=@ ]+$/.test(str);
+            return /^[a-zA-Z0-9.?:!;><)("`',\+-=@#¤%&/=^*§½£$€ ]+$/.test(str);
         } catch (e) {
             Debug.print('Verifying string safetyness failed.', 'PARSER ERROR', true, e);
             return false;

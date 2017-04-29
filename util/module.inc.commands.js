@@ -3,12 +3,11 @@
  */
 const fs = require('fs');
 const _ = require('lodash');
-module.exports = (Debug, Auth, Strings, Client) => {
+module.exports = (Debug, Auth, Strings, Client, filepath  = './commands/') => {
     const module = {};
 
     // Init
     const commandsSrc = {};
-    const filepath = './commands/';
     let commandsJSON = {};
     try {
         // Load the commands.

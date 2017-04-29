@@ -23,6 +23,7 @@ module.exports = (Debug, Auth, Strings, Client) => {
                 parts[3] === 'js'
             ) {
                 // Pair a key and a command module.
+                Debug.log(`Registered command: ${parts[2]}, path: ${file}.`, 'COMMANDS');
                 commandsSrc[parts[2]] = require(`.${filepath}${file}`)(Debug, Strings, Client);
             }
         });

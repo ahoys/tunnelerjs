@@ -36,11 +36,9 @@
       ]
     },
     "ping": {
-      "success_0": {
-        "default": "pong in "
-      },
-      "success_1": {
-        "default": " ms."
+      "default": {
+        "success_0": "pong in ",
+        "success_1": " ms."
       }
     },
     "select": {

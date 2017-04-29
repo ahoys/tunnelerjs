@@ -11,7 +11,7 @@ module.exports = (Debug) => {
     }
     // Load the resource file.
     const SettingsJSON = require('../config/settings.json');
-    Debug.print('Settings file settings.json loaded.', 'SETTINGS SUCCESS');
+    Debug.print('Settings file settings.json loaded.', 'SETTINGS');
     /**
      * Returns a setting value.
      */

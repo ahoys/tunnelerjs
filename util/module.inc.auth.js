@@ -22,6 +22,6 @@ module.exports = (Debug) => {
         Debug.print('Invalid owner given.', 'AUTH ERROR');
         process.exit(1);
     }
-    Debug.print('Authentication file auth.json loaded.', 'AUTH SUCCESS');
+    Debug.print('Authentication file auth.json loaded.', 'AUTH');
     return Auth;
 };

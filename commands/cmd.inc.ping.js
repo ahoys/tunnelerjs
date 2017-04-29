@@ -1,8 +1,14 @@
-module.exports = (Debug, Strings, Client) => {
+/**
+ * Replies with a client ping.
+ * 
+ * Command: ping
+ * Author: Ari Höysniemi
+ */
+module.exports = (Debug, Strings, Client, key) => {
     const module = {};
 
     // Command strings
-    const stringsJSON = Strings.get(['commands', 'ping']);
+    const stringsJSON = Strings.get(['commands', key]);
 
     /**
      * Returns a client ping.
@@ -26,7 +32,7 @@ module.exports = (Debug, Strings, Client) => {
             }
             return false;
         } catch (e) {
-            Debug.print('Executing ping failed.', 'PING ERROR', true, e);
+            Debug.print(`Executing ${key} failed.`, `${key.toUpperCase()} ERROR`, true, e);
             return false;
         }
     };

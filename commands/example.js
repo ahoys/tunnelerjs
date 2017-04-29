@@ -2,10 +2,10 @@
  * This file is intented to be an example template for
  * custom commands.
  * 
- * Command: COMMAND_NAME_HERE (eg. ping)
+ * Command: COMMAND_NAME_HERE (eg. ping if the file is called cmd.inc.ping.js)
  * Author: YOUR_NAME_HERE
  */
-module.exports = (Debug, Strings, Client) => {
+module.exports = (Debug, Strings, Client, key) => {
     const module = {};
 
     // Command strings
@@ -13,7 +13,7 @@ module.exports = (Debug, Strings, Client) => {
     // Your strings should be inside commands.COMMAND_NAME_HERE.
     // Always provide at least a "default" language. It is used whenever the given language
     // is not available.
-    const stringsJSON = Strings.get(['commands', 'COMMAND_NAME_HERE']);
+    const stringsJSON = Strings.get(['commands', key]);
 
     /**
      * Executes this command.
@@ -31,11 +31,9 @@ module.exports = (Debug, Strings, Client) => {
             // Return true when the execution has passed successfully.
             return true;
         } catch (e) {
-            // Use Debug.print to inform the user about the problem.
+            // Inform about a problem.
             // This will deploy a new console message and a log entry.
-            // Avoid sharing passwords or other crucial information here.
-            Debug.print('Executing COMMAND_NAME_HERE failed.', 'COMMAND_NAME_HERE ERROR', true, e);
-            // Return false when the execution has failed.
+            Debug.print(`Executing ${key} failed.`, `${key.toUpperCase()} ERROR`, true, e);
             return false;
         }
     };

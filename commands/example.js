@@ -1,6 +1,9 @@
 /**
  * This file is intented to be an example template for
  * custom commands.
+ * 
+ * Command: COMMAND_NAME_HERE (eg. ping)
+ * Author: YOUR_NAME_HERE
  */
 module.exports = (Debug, Strings, Client) => {
     const module = {};

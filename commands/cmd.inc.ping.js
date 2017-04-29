@@ -15,10 +15,10 @@ module.exports = (Debug, Strings, Client) => {
      */
     module.execute = (payload) => {
         try {
-            const { messageObject } = payload;
-            if (messageObject) {
+            const { Message } = payload;
+            if (Message) {
                 const ping = getPing();
-                messageObject.reply(`${str_success_0}${ping}${str_success_1}`);
+                Message.reply(`${str_success_0}${ping}${str_success_1}`);
                 return true;
             }
             return false;

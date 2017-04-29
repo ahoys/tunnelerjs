@@ -90,8 +90,10 @@ Client.on('message', Message => {
             if (Parser.isSafe(content)) {
                 const parsedContent = Parser.trim(content);
                 const key = Commands.readCommandKey(parsedContent);
-                console.log(`${author.username}: ${parsedContent}`);
-                console.log(`key: ${key}`);
+                if (key) {
+                    // Execute a command.
+                    Commands.execute(key, { Message });
+                }
             }
         }
     } catch (e) {

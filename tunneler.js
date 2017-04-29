@@ -82,10 +82,17 @@ Client.on('guildCreate', (guild) => {
 Client.on('message', Message => {
     try {
         const { content, author, guild } = Message;
+        const { user } = Client;
         const public = !!guild;
-        if (Parser.isSafe(content)) {
-            const parsedContent = Parser.trim(content);
-            console.log(`${author.username}: ${parsedContent}`);
+        // Look for commands.
+        if (Message.isMentioned(user)) {
+            // The bot is mentioned.
+            if (Parser.isSafe(content)) {
+                const parsedContent = Parser.trim(content);
+                const key = Commands.readCommandKey(parsedContent);
+                console.log(`${author.username}: ${parsedContent}`);
+                console.log(`key: ${key}`);
+            }
         }
     } catch (e) {
         Debug.print('Reading a message failed. The process will now exit.', 'MAIN ERROR', true, e);
@@ -98,7 +105,7 @@ Client.on('message', Message => {
  */
 Client.on('messageUpdate', (oldMessage, newMessage) => {
     try {
-        const { content, author, guild } = oldMessage;
+        const { oldContent, author, guild } = oldMessage;
         const { content } = newMessage;
         const public = !!guild;
     } catch (e) {

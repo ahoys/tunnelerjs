@@ -103,6 +103,25 @@ module.exports = (Debug, Auth, Strings, Client) => {
     }
 
     /**
+     * Reads a command from a string.
+     */
+    module.readCommandKey = (str) => {
+        try {
+            let cmdKey = '';
+            Object.keys(commandsSrc).forEach((key) => {
+                if (str.includes(key)) {
+                    // A command key found.
+                    cmdKey = key;
+                }
+            });
+            return cmdKey;
+        } catch (e) {
+            Debug.print('Failed to read a command.', 'COMMANDS ERROR', true, e);
+            return '';
+        }
+    }
+
+    /**
      * Executes a command.
      */
     module.execute = (key, payload) => {

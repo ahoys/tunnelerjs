@@ -81,6 +81,7 @@ module.exports = (Debug, Auth, Strings, Client) => {
                 if (id === Auth.owner) {
                     // A full access granted for the owner.
                     // No matter whether the access exists.
+                    Debug.print(`Owner access.`);
                     return true;
                 }
                 const thisAccess = commandsJSON.commands_access[key];

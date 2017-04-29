@@ -83,16 +83,19 @@ Client.on('message', Message => {
     try {
         const { content, author, guild } = Message;
         const { user } = Client;
-        const public = !!guild;
         // Look for commands.
         if (Message.isMentioned(user)) {
             // The bot is mentioned.
             if (Parser.isSafe(content)) {
                 const string = Parser.trim(content);
                 const key = Commands.readCommandKey(string);
-                if (key) {
+                if (key && Commands.hasAccess(key, author.id)) {
                     // Execute a command.
-                    Commands.execute(key, { Message, string });
+                    Commands.execute(key, {
+                        Message,
+                        string,
+                        isPrivate: !guild,
+                    });
                 }
             }
         }

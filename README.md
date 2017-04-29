@@ -2,6 +2,9 @@
 A lightweight moderator bot with anti spam capabilities.
 Can be used as a simple anti spam bot without any extra features.
 
+Do note: source code above is work in progress for the next build. See releases if you'd 
+like to download a working copy.
+
 ## Installation Requirements
 1) [Node.js](https://nodejs.org/en/) version 6 or higher installed.
 

@@ -81,7 +81,7 @@ module.exports = (Debug, Auth, Strings, Client) => {
                 if (id === Auth.owner) {
                     // A full access granted for the owner.
                     // No matter whether the access exists.
-                    Debug.print(`Owner access.`);
+                    Debug.print(`Access to (${key}) granted to an owner.`, 'COMMANDS');
                     return true;
                 }
                 const thisAccess = commandsJSON.commands_access[key];
@@ -94,7 +94,12 @@ module.exports = (Debug, Auth, Strings, Client) => {
                     // Everyone can access.
                     return true;
                 }
-                return thisAccess.indexOf(id) > -1;
+                if (thisAccess.indexOf(id) > -1) {
+                    // Id or group found.
+                    Debug.print(`Access to (${key}) granted to (${id}).`, 'COMMANDS');
+                    return true;
+                }
+                return false;
             }
             return false;
         } catch (e) {

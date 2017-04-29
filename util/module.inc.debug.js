@@ -2,72 +2,91 @@ const fs = require('fs');
 /**
  * Implements debugging functionality.
  */
-module.exports = (debugEnabled) => {
+module.exports = (filepath = './console.log') => {
     const module = {};
-    const filepath = './console.log';
-    let init = true; // Init is used to make a few new linebreaks before staring a new logging session.
-    if (debugEnabled) {
-        console.log('[DEBUG] Development debugging enabled.');
+
+    // Filepath must be valid.
+    if (typeof filepath !== 'string') {
+        console.log('[DEBUG] Invalid filepath. The process will now exit.');
+        process.exit(1);
+        return false;
     }
+
+    // Initial values.
+    const defaultSrc = 'MISC';
+    let init = true;
+
     /**
-     * Non-debug console print.
+     * Console print & log.
      */
-    module.print = (str = '', source = 'MISC') => {
-        if (
-            typeof str === 'string' &&
-            typeof source === 'string' &&
-            str.length > 0 &&
-            source.length > 0
-        ) {
-            const timestamp = new Date();
-            const msgLine = `[${source}] ${str}`;
-            if (!fs.existsSync(filepath)) {
-                // A new file.
-                fs.writeFile(filepath, `${timestamp} ${msgLine}\n`, (err) => {
-                    if (err) {
-                        console.log(`[DEBUG] Creating the log has failed.
-                        Make sure the application has all the required permissions.`);
-                    }
-                })
-            } else {
-                // An existing file.
-                const stats = fs.statSync(filepath);
-                const fileSizeInBytes = stats.size;
-                if (fileSizeInBytes > 50000000) {
-                    // The log file is larger than 50 MB, time to reset.
-                    fs.truncate(filepath, 0, (err) => {
-                        if (err) {
-                            console.log(`[DEBUG] Clearing the log file failed.
-                            Make sure the application has all the required permissions.`);
-                        }
-                    })
-                }
-                fs.appendFile(filepath, `${init ? '\n\n' : ''}${timestamp} ${msgLine}\n`, (err) => {
-                    if (err) {
-                        console.log(`[DEBUG] Writing to log has failed.
-                        Make sure the application has all the required permissions.`);
-                    }
-                });
-                if (init) {
-                    init = false;
-                }
+    module.print = (str = '', src = defaultSrc, log = true, err) => {
+        try {
+            if (
+                typeof str !== 'string' ||
+                typeof src !== 'string' ||
+                typeof log !== 'boolean'
+            ) {
+                console.log('[DEBUG] Invalid print parameters.');
+                return false;
             }
+            const msgLine = `${log ? '>> ' : '> '}${str}`;
             console.log(msgLine);
-        } else {
-            console.log('[DEBUG] Invalid print.');
+            if (log) {
+                module.log(str, src, filepath, err);
+            }
+            return true;
+        } catch (e) {
+            console.log('[DEBUG] Printing has failed.');
+            return false;
         }
     };
+
     /**
      * Logged development debug.
      */
-    module.log = (str = '') => {
-        if (debugEnabled) {
-            if (typeof str === 'string' && str.length > 0) {
-                console.log(`[DEBUG] ${str}`);
-            } else {
-                console.log('[DEBUG] Invalid debug.');
+    module.log = (str = '', src = defaultSrc, path = filepath, err) => {
+        try {
+            if (
+                typeof str !== 'string' ||
+                typeof src !== 'string' ||
+                typeof path !== 'string'
+            ) {
+                // Invalid parameters given.
+                console.log('[DEBUG] Invalid print parameters.');
+                return false;
             }
+            if (str.length < 1) {
+                // No need to log empty.
+                return false;
+            }
+            const timestamp = new Date();
+            const msg = `[${src}] ${str}`;
+            const errLine = err ? `\n${err}` : '';
+            if (fs.existsSync(path)) {
+                // An existing file.
+                const stats = fs.statSync(path);
+                const fileSizeInBytes = stats.size;
+                if (fileSizeInBytes > 50000000) {
+                    fs.truncateSync(path, 0);
+                }
+                const initLine = init ? '\n= NEW PROCESS ===========\n' : '';
+                fs.appendFileSync(path, `${initLine}${timestamp} ${msg}${errLine}\n`);
+            } else {
+                // Create a new file.
+                const initLine = init ? '= NEW PROCESS ===========\n' : '';
+                fs.writeFileSync(path, `${initLine}${timestamp} ${msg}${errLine}\n`, 'utf8');
+            }
+            if (init) {
+                // 1st run.
+                init = false;
+            }
+            return true;
+        } catch (e) {
+            console.log(`[DEBUG] Writing to log has failed.
+            Make sure the application has all the required permissions.`);
+            return false;
         }
     };
+
     return module;
 };

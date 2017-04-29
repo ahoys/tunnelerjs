@@ -87,7 +87,7 @@ module.exports = (Debug, Auth, Strings, Client) => {
                 const thisAccess = commandsJSON.commands_access[key];
                 if (thisAccess === undefined) {
                     // The access is missing.
-                    Debug.log(`Access (${key}) does not exist.`);
+                    Debug.log(`Access (${key}) does not exist.`, 'COMMANDS ERROR');
                     return false;
                 }
                 if (thisAccess.indexOf('all') > -1) {
@@ -112,7 +112,7 @@ module.exports = (Debug, Auth, Strings, Client) => {
                 key === undefined ||
                 commandsSrc[key] === undefined
             ) {
-                Debug.log('Missing command.');
+                Debug.log(`Missing command ${key}.`, 'COMMANDS ERROR');
                 return false;
             }
             Debug.print(`Executing ${key}`, 'COMMANDS');

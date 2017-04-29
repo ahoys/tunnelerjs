@@ -5,8 +5,7 @@ const Immutable = require('immutable');
 
 // Debug
 // You should set developmentDebug to false when in production.
-const developmentDebug = true;
-const Debug = require('./util/module.inc.debug')(developmentDebug);
+const Debug = require('./util/module.inc.debug')();
 
 // Settings
 // All the required application specific settings are found here.

@@ -66,7 +66,7 @@ module.exports = (filepath = './console.log') => {
                 // An existing file.
                 const stats = fs.statSync(path);
                 const fileSizeInBytes = stats.size;
-                if (fileSizeInBytes > 50000000) {
+                if (fileSizeInBytes > 1000000) {
                     fs.truncateSync(path, 0);
                 }
                 const initLine = init ? '\n= NEW PROCESS ===========\n' : '';

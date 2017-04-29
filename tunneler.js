@@ -28,6 +28,10 @@ const Auth = require('./util/module.inc.auth')(Debug);
 // All the official and custom commands are loaded here.
 const Commands = require('./util/module.inc.commands')(Debug, Auth);
 
+// Parser
+// The application can read the chat via parser.
+const Parser = require('./util/module.inc.parser')(Debug);
+
 // Utilities
 const Ban = require('./util/module.inc.ban')();
 const AntiSpam = require('./util/module.inc.antispam')();

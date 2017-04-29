@@ -91,11 +91,7 @@ Client.on('message', Message => {
                 const key = Commands.readCommandKey(string);
                 if (key && Commands.hasAccess(key, author.id)) {
                     // Execute a command.
-                    Commands.execute(key, {
-                        Message,
-                        string,
-                        isPrivate: !guild,
-                    });
+                    Commands.execute(key, { Message, string });
                 }
             }
         }

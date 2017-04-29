@@ -88,11 +88,11 @@ Client.on('message', Message => {
         if (Message.isMentioned(user)) {
             // The bot is mentioned.
             if (Parser.isSafe(content)) {
-                const parsedContent = Parser.trim(content);
-                const key = Commands.readCommandKey(parsedContent);
+                const string = Parser.trim(content);
+                const key = Commands.readCommandKey(string);
                 if (key) {
                     // Execute a command.
-                    Commands.execute(key, { Message });
+                    Commands.execute(key, { Message, string });
                 }
             }
         }

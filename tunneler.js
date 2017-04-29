@@ -81,11 +81,7 @@ Client.on('guildCreate', (guild) => {
  */
 Client.on('message', Message => {
     try {
-        const {
-            content,
-            author,
-            guild,
-        } = Message;
+        const { content, author, guild } = Message;
         const public = !!guild;
         if (Parser.isSafe(content)) {
             const parsedContent = Parser.trim(content);
@@ -93,6 +89,20 @@ Client.on('message', Message => {
         }
     } catch (e) {
         Debug.print('Reading a message failed. The process will now exit.', 'MAIN ERROR', true, e);
+        process.exit(1);
+    }
+});
+
+/**
+ * When a message is altered handler.
+ */
+Client.on('messageUpdate', (oldMessage, newMessage) => {
+    try {
+        const { content, author, guild } = oldMessage;
+        const { content } = newMessage;
+        const public = !!guild;
+    } catch (e) {
+        Debug.print('Reading a modified message failed. The process will now exit.', 'MAIN ERROR', true, e);
         process.exit(1);
     }
 });

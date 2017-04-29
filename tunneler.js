@@ -90,7 +90,7 @@ Client.on('message', Message => {
                 const string = Parser.trim(content);
                 const key = Commands.readCommandKey(string);
                 if (key && Commands.hasAccess(key, author.id)) {
-                    // Execute a command.
+                    // Execute the command.
                     Commands.execute(key, { Message, string });
                 }
             }

@@ -2,6 +2,7 @@
  * Implements commands functionality.
  */
 const fs = require('fs');
+const _ = require('lodash');
 module.exports = (Debug, Auth, Strings, Client) => {
     const module = {};
 
@@ -133,15 +134,14 @@ module.exports = (Debug, Auth, Strings, Client) => {
      */
     module.execute = (key, payload) => {
         try {
-            if (
-                key === undefined ||
-                commandsSrc[key] === undefined
-            ) {
-                Debug.log(`Missing command ${key}.`, 'COMMANDS WARN');
-                return false;
+            if (_.isFunction(commandsSrc[key].execute)) {
+                // The command is found. Execute.
+                Debug.print(`Executing ${key}`, 'COMMANDS');
+                return commandsSrc[key].execute(payload);
             }
-            Debug.print(`Executing ${key}`, 'COMMANDS');
-            return commandsSrc[key].execute(payload);
+            // The command does not exist.
+            Debug.log(`Missing command ${key}, or the command is invalid.`, 'COMMANDS WARN');
+            return false;
         } catch (e) {
             Debug.print('Executing a command failed.', 'COMMANDS ERROR', true, e);
             return false;

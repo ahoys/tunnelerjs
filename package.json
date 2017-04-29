@@ -3,7 +3,6 @@
   "main": "tunneler.js",
   "dependencies": {
     "discord.js": "~11.0.0",
-    "immutable": "~3.8.1",
     "lodash": "~4.17.4"
   },
   "devDependencies": {

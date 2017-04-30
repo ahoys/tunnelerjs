@@ -30,9 +30,8 @@ const Parser = require('./util/module.inc.parser')(Debug);
 // Commands
 // All the official and custom commands are loaded and executed here.
 const Commands = require('./util/module.inc.commands')(Debug, Auth, Strings, Client);
-Commands.execute('weather', {});
 
-// Client.login(Auth.token);
+Client.login(Auth.token);
 
 /**
  * The initial connection handler.

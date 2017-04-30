@@ -3,13 +3,13 @@
  */
 const fs = require('fs');
 const _ = require('lodash');
+const commandsJSON = require('../config/commands.json');
 module.exports = (Debug, Auth, Strings, Client) => {
     const module = {};
 
     // Init
     const commandsSrc = {};
     const filepath = './commands/';
-    let commandsJSON = {};
     try {
         // Load the commands.
         const files = fs.readdirSync(filepath);
@@ -23,11 +23,13 @@ module.exports = (Debug, Auth, Strings, Client) => {
                 parts[3] === 'js'
             ) {
                 // Pair a key and a command module.
-                const thisCmd = require(`.${filepath}${file}`)(Debug, Strings, Client, Auth, parts[2]);
-                if (!thisCmd.disabled) {
-                    // At times the command may be marked as disabled. Work in progress maybe?
+                if (commandsJSON.enabled.includes(parts[2])) {
+                    // Register the command.
                     Debug.log(`Registered command: ${parts[2]}, path: ${file}.`, 'COMMANDS');
                     commandsSrc[parts[2]] = require(`.${filepath}${file}`)(Debug, Strings, Client, Auth, parts[2]);
+                } else {
+                    // Not enabled command found.
+                    Debug.log(`Command ${parts[2]} (${file}) is not enabled. See config/commands.json.`, 'COMMANDS');
                 }
             }
         });
@@ -40,7 +42,6 @@ module.exports = (Debug, Auth, Strings, Client) => {
         if (Object.keys(commandsSrc).length < 1) {
             Debug.print(`There are no commands available in ${filepath}`, 'COMMANDS WARN');
         }
-        commandsJSON = require('../config/commands.json');
     } catch (e) {
         Debug.print('Reading command files failed. The process will now exit.', 'COMMANDS CRITICAL');
         process.exit(1);

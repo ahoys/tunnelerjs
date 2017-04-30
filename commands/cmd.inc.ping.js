@@ -4,7 +4,7 @@
  * Command: ping
  * Author: Ari Höysniemi
  */
-module.exports = (Debug, Strings, Client, cmd) => {
+module.exports = (Debug, Strings, Client, Auth, cmd) => {
     const module = {};
 
     // Command strings

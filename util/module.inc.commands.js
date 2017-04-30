@@ -24,7 +24,7 @@ module.exports = (Debug, Auth, Strings, Client) => {
             ) {
                 // Pair a key and a command module.
                 Debug.log(`Registered command: ${parts[2]}, path: ${file}.`, 'COMMANDS');
-                commandsSrc[parts[2]] = require(`.${filepath}${file}`)(Debug, Strings, Client, parts[2]);
+                commandsSrc[parts[2]] = require(`.${filepath}${file}`)(Debug, Strings, Client, Auth, parts[2]);
             }
         });
         // Make sure the call keys exist.

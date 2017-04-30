@@ -19,6 +19,9 @@
     }
   },
   "commands": {
+    "weather": {
+      "default": {}
+    },
     "version": {
       "success_0": "tunnelerjs v.0.95."
     },

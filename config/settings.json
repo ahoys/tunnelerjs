@@ -2,28 +2,12 @@
   "default_localization": "en",
   "guilds": {
     "123123123123123123": {
-      "enable_anti_spam_filtering": true,
-      "enable_quiet_mode": false,
-      "enable_client_commands": true,
-      "anti_spam_allow_unsafe_url_suffixes": false,
-      "anti_spam_log_length": 16,
-      "anti_spam_max_identical_urls_in_message": 2,
-      "anti_spam_max_identical_urls_in_total": 3,
-      "anti_spam_max_identical_messages_total": 8,
-      "anti_spam_safe_url_suffixes": ["com", "net", "org", "gov", "edu"],
-      "anti_spam_warning_count_before_ban": 1
+      "commands_enabled": false,
+      "localization": "en"
     },
     "277194040401854464": {
-      "enable_anti_spam_filtering": true,
-      "enable_quiet_mode": false,
-      "enable_client_commands": true,
-      "anti_spam_allow_unsafe_url_suffixes": false,
-      "anti_spam_log_length": 16,
-      "anti_spam_max_identical_urls_in_message": 3,
-      "anti_spam_max_identical_urls_in_total": 3,
-      "anti_spam_max_identical_messages_total": 3,
-      "anti_spam_safe_url_suffixes": ["com", "net", "org", "gov", "edu"],
-      "anti_spam_warning_count_before_ban": 2
+      "commands_enabled": true,
+      "localization": "fi"
     }
   }
 }

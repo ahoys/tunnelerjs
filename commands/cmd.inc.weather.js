@@ -45,5 +45,7 @@ module.exports = (Debug, Strings, Client, Auth, cmd) => {
         }
     };
 
+    module.disabled = true;
+
     return module;
 }

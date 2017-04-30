@@ -90,7 +90,7 @@ module.exports = (Debug, Auth, Strings, Client) => {
                     Debug.print(`Access to (${key}) granted to an owner.`, 'COMMANDS');
                     return true;
                 }
-                const thisAccess = commandsJSON.commands_access[key];
+                const thisAccess = commandsJSON.access[key];
                 if (thisAccess === undefined) {
                     // The access is missing.
                     Debug.log(`Access (${key}) does not exist.`, 'COMMANDS WARN');

@@ -11,54 +11,30 @@
   "author": {
     "default": "Ari Höysniemi"
   },
-  "util": {
-    "antispam": {
-      "success_0": "Ha, a peasant got axed. ",
-      "success_1": " was banned for spamming.",
-      "warning_0": "stop spamming or I'll whack your head off and get you banned."
-    }
-  },
   "commands": {
     "weather": {
-      "default": {}
-    },
-    "version": {
-      "success_0": "tunnelerjs v.0.95."
-    },
-    "about": {
-      "success_0": "I was crafted by the mighty hands of Raunhofer aka Strogg.r, Feb 4. 2017. My purpose in this world is unclear, perhaps I'm just a simple tunneler?"
-    },
-    "mention": {
-      "success_0": [
-        "Yes, sire?",
-        "Do you await some ominous sign or portent from the Undergods of Fire and Soil?",
-        "It is the Witching Hour. Curses are half-price.",
-        "Hic! People demand cakesh and fine winesh.",
-        "Micro-piglets stalk this server. Beware!",
-        "Let's party like it's 2017!"
-      ]
+      "default": {
+        "callsigns": ["weather"],
+        "success_temp_0": "Lämpötila ",
+        "success_temp_1": " degrees."
+      },
+      "fi": {
+        "callsigns": ["sää", "ilma"],
+        "success_temp_0": "Lämpötila ",
+        "success_temp_1": " astetta."
+      }
     },
     "ping": {
       "default": {
+        "callsigns": ["ping", "latency", "delay"],
         "success_0": "pong in ",
         "success_1": " ms."
+      },
+      "fi": {
+        "callsigns": ["ping", "pingi", "viive"],
+        "success_0": "pong ajassa ",
+        "success_1": " ms."
       }
-    },
-    "select": {
-      "success_0": "The following ",
-      "success_1": " have been selected:",
-      "fail_0": "Nonsense! First type select and then the amount of members to select. e.g. `select 6`.",
-      "fail_1": "Really? You want me to select from zero users? Well, here they are: ",
-      "fail_2": "Emm... It's a bit empty here.",
-      "fail_3": "This is a private chat, remember? I'm not selecting anyone.",
-      "name_strings": ["minions", "peasants", "dwarfs", "elves", "hairy beasts", "imps"]
-    },
-    "say": {
-      "success_0": "Okay, I'll say it.",
-      "fail_0": "Your message is invalid. Your message's length can be 16 words at max and have no special characters.",
-      "fail_1": "What's the point? You just said it.",
-      "fail_2": "The second parameter should be the targeted channel or server. eg. `say 123123123123 hey there!`",
-      "fail_3": "Could not find a such channel."
     }
   }
 }

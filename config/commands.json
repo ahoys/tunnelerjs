@@ -2,8 +2,5 @@
   "access": {
     "ping": ["all"]
   },
-  "enabled": ["ping"],
-  "mapping": {
-    "ping": ["ping", "delay"]
-  }
+  "enabled": ["ping"]
 }

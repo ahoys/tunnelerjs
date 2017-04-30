@@ -5,7 +5,7 @@
  * Command: COMMAND_NAME_HERE (eg. ping if the file is called cmd.inc.ping.js)
  * Author: YOUR_NAME_HERE
  */
-module.exports = (Debug, Strings, Client, cmd) => {
+module.exports = (Debug, Strings, Client, Auth, cmd) => {
     const module = {};
 
     // Command strings

@@ -22,15 +22,11 @@ module.exports = (Debug, Strings, Client, Auth, cmd) => {
      * Executes this command.
      * @returns {boolean}
      */
-    module.execute = (payload) => {
+    module.execute = (Message, string) => {
         try {
-            const { Message } = payload;
-            if (Message) {
-                const ping = getPing();
-                Message.reply(`${stringsJSON['success_0']}${ping}${stringsJSON['success_1']}`);
-                return true;
-            }
-            return false;
+            const ping = getPing();
+            Message.reply(`${stringsJSON['success_0']}${ping}${stringsJSON['success_1']}`);
+            return true;
         } catch (e) {
             Debug.print(`Executing ${cmd} failed.`, `${cmd.toUpperCase()} ERROR`, true, e);
             return false;

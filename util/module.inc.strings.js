@@ -2,7 +2,7 @@
  * Implements localization functionality.
  */
 const fs = require('fs');
-module.exports = (Debug, lang = 'en') => {
+module.exports = (Debug) => {
     const module = {};
 
     // Make sure strings.json exists.
@@ -15,16 +15,10 @@ module.exports = (Debug, lang = 'en') => {
     const StringsJSON = require('../config/strings.json');
     Debug.print('Strings file strings.json loaded.', 'STRINGS');
 
-    // Make sure a valid language is given.
-    if (typeof lang !== 'string' || lang.length < 1) {
-        Debug.print('Invalid localization parameter given. The process will now exit.', 'STRINGS CRITICAL');
-        process.exit(1);
-    }
-
     /**
      * Returns a localized string.
      */
-    module.get = (strArr, loc = lang) => {
+    module.get = (strArr, loc) => {
         try {
             // Construct the full path and find the string.
             const path = strArr.reduce((o, n) => o[n], StringsJSON);

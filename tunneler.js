@@ -15,8 +15,7 @@ const Settings = require('./util/module.inc.settings')(Debug);
 // This loads the localization and other pre-set strings.
 // The second parameter should match the strings given in config/strings.json.
 // Default values should always be given!
-const Strings = require('./util/module.inc.strings')(
-    Debug, Settings.get('default_localization'));
+const Strings = require('./util/module.inc.strings')(Debug);
 
 // Auth
 // Loads the essential authentication information.
@@ -29,9 +28,12 @@ const Parser = require('./util/module.inc.parser')(Debug);
 
 // Commands
 // All the official and custom commands are loaded and executed here.
-const Commands = require('./util/module.inc.commands')(Debug, Auth, Strings, Client);
+const Commands = require('./util/module.inc.commands')(Debug, Auth, Settings, Strings, Client);
 
 Client.login(Auth.token);
+
+// Guild-specific commands will be stored here.
+const guildCommands = {};
 
 /**
  * The initial connection handler.
@@ -40,6 +42,9 @@ Client.on('ready', () => {
     try {
         const { user, guilds } = Client;
         Debug.print(`Registered owner ${Auth.owner}.`, 'MAIN');
+        guilds.forEach((Guild) => {
+            guildCommands[Guild.id] = Commands.getGuildPackage(Guild.id);
+        });
         Debug.print(`Serving ${guilds.array().length} server(s).`, 'MAIN', false);
         Debug.log(`Serving: ${guilds.map(x => x.name)}`, 'MAIN')
         Debug.print(`Successfully logged in as ${user.username}.\n
@@ -88,10 +93,10 @@ Client.on('message', Message => {
             // The bot is mentioned.
             if (Parser.isSafe(content)) {
                 const string = Parser.trim(content);
-                const key = Commands.readCommandKey(string);
-                if (key && Commands.hasAccess(key, author.id)) {
+                const key = Parser.firstMatch(Object.keys(guildCommands[guild.id]), string);
+                if (key !== undefined && guildCommands[guild.id][key] && Commands.hasAccess(key, guild.id, author.id)) {
                     // Execute the command.
-                    Commands.execute(key, { Message, string });
+                    guildCommands[guild.id][key](Message, string);
                 }
             }
         }

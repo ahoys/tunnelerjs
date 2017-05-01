@@ -21,10 +21,10 @@ module.exports = (Debug) => {
     module.get = (strArr) => {
         try {
             // Read a setting.
-            return strArr.reduce((o, n) => o[n], SettingsJSON);
+            return strArr.reduce((o, n) => o[n], SettingsJSON) || {};
         } catch (e) {
             Debug.print('Returning settings value failed.', 'SETTINGS ERROR', true, e);
-            return undefined;
+            return {};
         }
     }
 

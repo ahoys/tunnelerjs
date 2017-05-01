@@ -1,13 +1,26 @@
 {
-  "default_localization": "en",
   "guilds": {
     "123123123123123123": {
-      "commands_enabled": false,
-      "localization": "en"
+      "localization": "en",
+      "commands_available": {
+        "ping": {
+          "access": ["100123123123123000"]
+        },
+        "weather": {
+          "access": ["all"]
+        }
+      }
     },
     "277194040401854464": {
-      "commands_enabled": true,
-      "localization": "fi"
+      "localization": "fi",
+      "commands_available": {
+        "ping": {
+          "access": ["owner"]
+        },
+        "weather": {
+          "access": ["all"]
+        }
+      }
     }
   }
 }

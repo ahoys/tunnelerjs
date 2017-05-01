@@ -30,5 +30,25 @@ module.exports = (Debug) => {
         }
     }
 
+    /**
+     * Returns the first match found.
+     * Options are given in an array,
+     * string is the material to go through.
+     */
+    module.firstMatch = (arr, str) => {
+        try {
+            const len = arr.length;
+            for (let i = 0; i < len; ++i) {
+                if (str.includes(arr[i])) {
+                    return arr[i];
+                }
+            }
+            return '';
+        } catch (e) {
+            Debug.print('Looking for a first match failed.', 'PARSER ERROR', true, e);
+            return '';
+        }
+    }
+
     return module;
 };

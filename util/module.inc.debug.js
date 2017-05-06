@@ -29,7 +29,7 @@ module.exports = (filepath = './console.log') => {
                 console.log('[DEBUG] Invalid print parameters.');
                 return false;
             }
-            const msgLine = `${log ? '>> ' : '> '}${str}`;
+            const msgLine = `>> ${str}`;
             console.log(msgLine);
             if (log) {
                 module.log(str, src, filepath, err);

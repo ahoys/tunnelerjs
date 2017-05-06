@@ -1,39 +1,27 @@
-// Core requirements.
+// Core requirements
 const Discord = require('discord.js');
 const Client = new Discord.Client();
 
-// Debug
-// Handles printing and logging of various events.
+// Utilities
 const Debug = require('./util/module.inc.debug')();
-
-// Settings
-// All the required application specific settings are found here.
-// Settings are read-only.
-const Settings = require('./util/module.inc.settings')(Debug);
-
-// Strings
-// This loads the localization and other pre-set strings.
-// The second parameter should match the strings given in config/strings.json.
-// Default values should always be given!
-const Strings = require('./util/module.inc.strings')(Debug);
-
-// Auth
-// Loads the essential authentication information.
-const Auth = require('./util/module.inc.auth')(Debug);
-
-// Parser
-// The received messages can be sanitized with a parser before
-// further processing.
 const Parser = require('./util/module.inc.parser')(Debug);
 
-// Commands
-// All the official and custom commands are loaded and executed here.
-const Commands = require('./util/module.inc.commands')(Debug, Auth, Settings, Strings, Client);
+// Authentication data
+// Includes token, id and owner.
+const Auth = require('./auth')(Debug);
+const AuthMap = Auth.initialize();
 
-Client.login(Auth.token);
+// Commands data
+// All the available commands mapped into a special object frames.
+const Commands = require('./commands')(Debug);
+const CommandsMap = Commands.initialize();
 
-// Guild-specific commands will be stored here.
-const guildCommands = {};
+// Guilds data
+// Each guild can have its own commands, settings and translations.
+const Guilds = require('./guilds')(Debug, CommandsMap);
+const GuildsMap = Guilds.initialize();
+
+Client.login(AuthMap.token);
 
 /**
  * The initial connection handler.
@@ -41,13 +29,13 @@ const guildCommands = {};
 Client.on('ready', () => {
     try {
         const { user, guilds } = Client;
-        Debug.print(`Registered owner ${Auth.owner}.`, 'MAIN');
         guilds.forEach((Guild) => {
-            guildCommands[Guild.id] = Commands.getGuildPackage(Guild.id);
+            if (!GuildsMap[Guild.id]) {
+                Debug.print(`Could not find configuration for a guild (${Guild.id}).`, 'MAIN');
+            }
         });
-        Debug.print(`Serving ${guilds.array().length} server(s).`, 'MAIN', false);
-        Debug.log(`Serving: ${guilds.map(x => x.name)}`, 'MAIN')
-        Debug.print(`Successfully logged in as ${user.username}.\n
+        Debug.print(`Serving ${guilds.array().length} server(s).`, 'MAIN');
+        Debug.print(`Logged in as ${user.username}.\n
         Initialization ready, monitoring activity...\n`, 'MAIN');
     } catch (e) {
         Debug.print('Client ready failed. The process will now exit.', 'MAIN ERROR', true, e);
@@ -88,46 +76,19 @@ Client.on('message', Message => {
     try {
         const { content, author, guild } = Message;
         const { user } = Client;
-        // Look for commands.
+        // Listen for direct commands.
         if (Message.isMentioned(user)) {
-            // The bot is mentioned.
             if (Parser.isSafe(content)) {
                 const string = Parser.trim(content);
-                const key = Parser.firstMatch(Object.keys(guildCommands[guild.id]), string);
-                if (key !== undefined && guildCommands[guild.id][key] && Commands.hasAccess(key, guild.id, author.id)) {
-                    // Execute the command.
-                    guildCommands[guild.id][key](Message, string);
+                const thisGuild = GuildsMap[guild.id];
+                const cmdKey = Parser.firstMatch(Object.keys(thisGuild.commands), string);
+                if (cmdKey !== undefined && thisGuild.commands[cmdKey]) {
+                    thisGuild.commands[cmdKey].execute(Message, Client);
                 }
             }
         }
     } catch (e) {
         Debug.print('Reading a message failed. The process will now exit.', 'MAIN ERROR', true, e);
-        process.exit(1);
-    }
-});
-
-/**
- * When a message is altered handler.
- */
-Client.on('messageUpdate', (oldMessage, newMessage) => {
-    try {
-        const { oldContent, author, guild } = oldMessage;
-        const { content } = newMessage;
-        const public = !!guild;
-    } catch (e) {
-        Debug.print('Reading a modified message failed. The process will now exit.', 'MAIN ERROR', true, e);
-        process.exit(1);
-    }
-});
-
-/**
- * When pins are updated.
- */
-Client.on('channelPinsUpdate', (channel, time) => {
-    try {
-        const { id, type } = channel;
-    } catch (e) {
-        Debug.print('Channel pins update reader failed. The process will now exit.', 'MAIN ERROR', true, e);
         process.exit(1);
     }
 });

@@ -1,0 +1,17 @@
+{
+    "settings": {
+        "allowPrivateForOwner": true
+    },
+    "localizations": {
+        "default": {
+            "keywords": ["ping", "latency", "delay"],
+            "success_0": "pong in ",
+            "success_1": " ms."
+        },
+        "fi": {
+            "keywords": ["ping", "pingi", "viive"],
+            "success_0": "pong ajassa ",
+            "success_1": " ms."
+        }
+    }
+}

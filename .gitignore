@@ -1,4 +1,4 @@
-config/auth.json
+auth/auth.json
 node_modules/*
 .idea/*
 dist/*

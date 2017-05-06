@@ -1,0 +1,22 @@
+{
+    "settings": {
+        "enableThisExampleSetting": true
+    },
+    "localizations": {
+        "default": {
+            "keywords": ["example"],
+            "success_0": "Default language example.",
+            "success_1": "Another default language example."
+        },
+        "en": {
+            "keywords": ["example", "eg"],
+            "success_0": "English language example.",
+            "success_1": "Another english language example."
+        },
+        "fi": {
+            "keywords": ["esimerkki", "esim"],
+            "success_0": "Suomenkielinen esimerkki.",
+            "success_1": "Toinen suomenkielinen esimerkki."
+        }
+    }
+}

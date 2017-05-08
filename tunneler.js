@@ -57,19 +57,6 @@ Client.on('disconnected', () => {
 });
 
 /**
- * On joining a new guild.
- */
-Client.on('guildCreate', (guild) => {
-    try {
-        const { name } = guild;
-        Debug.print(`Joined a new guild: ${name}.`);
-    } catch (e) {
-        Debug.print('Joining a guild failed. The process will now exit.', 'MAIN ERROR', true, e);
-        process.exit(1);
-    }
-});
-
-/**
  * The main message handler.
  */
 Client.on('message', Message => {

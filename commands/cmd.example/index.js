@@ -30,8 +30,8 @@ module.exports = (Debug, Settings, Strings, name) => {
      * only use the module.execute if it suits the command better.
      * @returns {number}
      */
-    const getString = () => {
-        return 'example';
+    const getString = (msg) => {
+        return `${msg} example.`;
     };
 
     /**
@@ -41,17 +41,15 @@ module.exports = (Debug, Settings, Strings, name) => {
      * access this command from here. Commands without module.execute won't
      * be registered.
      * @param {object} Message : Discord.js Message object.
-     * @param {object} Client : Discord.js Bot Client.
-     * @returns {boolean}
+     * @returns {string} : The string that will be used as a reply.
      */
-    module.execute = (Message, Client) => {
+    module.execute = (Message) => {
         try {
-            const string = getString();
-            Message.reply(`${Strings['success_0']}${string}${Strings['success_1']}`);
-            return true;
+            const string = getString('just an');
+            return `${Strings['success_0']}${string}${Strings['success_1']}`;
         } catch (e) {
             Debug.print(`Executing a command (${name}) failed.`, `${name} ERROR`, true, e);
-            return false;
+            return '';
         }
     }
 

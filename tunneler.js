@@ -70,7 +70,22 @@ Client.on('message', Message => {
                 const thisGuild = GuildsMap[guild.id];
                 const cmdKey = Parser.firstMatch(Object.keys(thisGuild.commands), string);
                 if (cmdKey !== undefined && thisGuild.commands[cmdKey]) {
-                    thisGuild.commands[cmdKey].execute(Message, Client);
+                    // Run commands in an asynchronous fashion.
+                    new Promise((resolve, reject) => {
+                        const response = thisGuild.commands[cmdKey].execute(Message, Client);
+                        // The result must be string and have content.
+                        if (typeof response === 'string' && response.length) {
+                            resolve({
+                                Message,
+                                response
+                            });
+                        }
+                    }).then((payload) => {
+                        const { Message, response } = payload;
+                        Message.reply(response);
+                    }).catch((e) => {
+                        Debug.print('A command rejected.', 'MAIN ERROR', true, e);
+                    });
                 }
             }
         }

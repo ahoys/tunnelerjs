@@ -18,16 +18,15 @@ module.exports = (Debug, Settings, Strings, name) => {
     /**
      * Executes the command.
      * @param {object} Message : Discord.js Message object.
-     * @returns {boolean}
+     * @returns {string} : The string that will be used as a reply.
      */
-    module.execute = (Message, Client) => {
+    module.execute = (Message) => {
         try {
-            const ping = getPing(Client);
-            Message.reply(`${Strings['success_0']}${ping}${Strings['success_1']}`);
-            return true;
+            const ping = getPing(Message.client);
+            return `${Strings['success_0']}${ping}${Strings['success_1']}`;
         } catch (e) {
             Debug.print(`Executing a command (${name}) failed.`, `${name} ERROR`, true, e);
-            return false;
+            return '';
         }
     }
 

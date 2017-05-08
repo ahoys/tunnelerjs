@@ -72,17 +72,24 @@ Client.on('message', Message => {
                 if (cmdKey !== undefined && thisGuild.commands[cmdKey]) {
                     // Run commands in an asynchronous fashion.
                     new Promise((resolve, reject) => {
+                        // Measure performance.
+                        const key = cmdKey;
+                        const perfMeasure = process.hrtime();
+                        // Execute.
                         const response = thisGuild.commands[cmdKey].execute(Message, Client);
                         // The result must be string and have content.
                         if (typeof response === 'string' && response.length) {
                             resolve({
                                 Message,
-                                response
+                                response,
+                                perfMeasure,
+                                key,
                             });
                         }
                     }).then((payload) => {
-                        const { Message, response } = payload;
+                        const { Message, response, perfMeasure, key } = payload;
                         Message.reply(response);
+                        Debug.log(`A command (${key}) took ${process.hrtime(perfMeasure)[0]}s and ${process.hrtime(perfMeasure)[1]}ms to execute.`, 'MAIN');
                     }).catch((e) => {
                         Debug.print('A command rejected.', 'MAIN ERROR', true, e);
                     });

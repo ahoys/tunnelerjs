@@ -1,0 +1,14 @@
+{
+    "env": {
+        "node": true,
+        "es6": true
+    },
+    "parserOptions": {
+        "sourceType": "module"
+    },
+    "extends": "google",
+    "rules": {
+        "linebreak-style": 0,
+        "indent": ["error", 4]
+    }
+}

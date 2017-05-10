@@ -1,24 +1,32 @@
+
 /**
- * Implements parser functionality.
+ * Tools for parsing.
+ * @param {object} Debug
+ * @return {object}
  */
 module.exports = (Debug) => {
     const module = {};
 
     /**
      * Returns whether a string has only whitelisted characters.
+     * @param {string} str
+     * @return {boolean}
      */
     module.isSafe = (str) => {
         try {
             // Only the following characters are allowed.
             return /^[a-zA-Z0-9.?:!;><)("`',\+-=@#¤%&/=^*§½£$€ ]+$/.test(str);
         } catch (e) {
-            Debug.print('Verifying string safetyness failed.', 'PARSER ERROR', true, e);
+            Debug.print('Verifying string safetyness failed.',
+            'PARSER ERROR', true, e);
             return false;
         }
-    }
+    };
 
     /**
      * Returns a fully trimmed string.
+     * @param {string} str
+     * @return {boolean}
      */
     module.trim = (str) => {
         try {
@@ -28,12 +36,15 @@ module.exports = (Debug) => {
             Debug.print('Trimming a string failed.', 'PARSER ERROR', true, e);
             return '';
         }
-    }
+    };
 
     /**
      * Returns the first match found.
      * Options are given in an array,
      * string is the material to go through.
+     * @param {Array} arr
+     * @param {string} str
+     * @return {string}
      */
     module.firstMatch = (arr, str) => {
         try {
@@ -45,10 +56,11 @@ module.exports = (Debug) => {
             }
             return '';
         } catch (e) {
-            Debug.print('Looking for a first match failed.', 'PARSER ERROR', true, e);
+            Debug.print('Looking for a first match failed.',
+            'PARSER ERROR', true, e);
             return '';
         }
-    }
+    };
 
     return module;
 };

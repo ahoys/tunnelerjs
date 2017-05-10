@@ -1,6 +1,9 @@
 const fs = require('fs');
+
 /**
- * Implements debugging functionality.
+ * Debugging tools.
+ * @param {string} filepath
+ * @return {boolean}
  */
 module.exports = (filepath = './console.log') => {
     const module = {};
@@ -18,6 +21,11 @@ module.exports = (filepath = './console.log') => {
 
     /**
      * Console print & log.
+     * @param {string} str
+     * @param {string} src
+     * @param {boolean} log
+     * @param {object} err
+     * @return {boolean}
      */
     module.print = (str = '', src = defaultSrc, log = true, err) => {
         try {
@@ -43,6 +51,11 @@ module.exports = (filepath = './console.log') => {
 
     /**
      * Logged development debug.
+     * @param {string} str
+     * @param {string} src
+     * @param {string} path
+     * @param {object} err
+     * @return {boolean}
      */
     module.log = (str = '', src = defaultSrc, path = filepath, err) => {
         try {
@@ -70,11 +83,14 @@ module.exports = (filepath = './console.log') => {
                     fs.truncateSync(path, 0);
                 }
                 const initLine = init ? '\n= NEW PROCESS ===========\n' : '';
-                fs.appendFileSync(path, `${initLine}${timestamp}\n${msg}${errLine}\n\n`);
+                fs.appendFileSync(
+                    path, `${initLine}${timestamp}\n${msg}${errLine}\n\n`);
             } else {
                 // Create a new file.
                 const initLine = init ? '= NEW PROCESS ===========\n' : '';
-                fs.writeFileSync(path, `${initLine}${timestamp}\n${msg}${errLine}\n\n`, 'utf8');
+                fs.writeFileSync(
+                    path, `${initLine}${timestamp}\n${msg}${errLine}\n\n`,
+                    'utf8');
             }
             if (init) {
                 // 1st run.

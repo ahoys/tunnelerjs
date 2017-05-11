@@ -31,8 +31,10 @@ module.exports = (Debug, Settings, Strings, name) => {
             const ping = getPing(Message.client);
             return `${Strings['success_0']}${ping}${Strings['success_1']}`;
         } catch (e) {
-            Debug.print(`Executing a command (${name}) failed.`,
-            `${name} ERROR`, true, e);
+            Debug.print(
+                `Executing a command (${name}) failed.`,
+                `${name} ERROR`, true, e
+            );
         }
         return '';
     };

@@ -1,7 +1,8 @@
 /**
  * Automatic command loader.
- * The loader will map command execution file path and strings into key object pairs.
- * 
+ * The loader will map command execution file path and strings
+ * into key object pairs.
+ *
  * Author: Ari Höysniemi
  * Date: May 5. 2017
  */
@@ -15,7 +16,7 @@ module.exports = (Debug) => {
      * Loads all the available commands into a
      * command frames that can be later used to execute
      * commands.
-     * @returns {object} : a map of commands.
+     * @return {object}
      */
     module.initialize = () => {
         try {
@@ -28,42 +29,50 @@ module.exports = (Debug) => {
                     const settingsPath = `./commands/${folder}/command.json`;
                     if (fs.existsSync(jsPath) && fs.existsSync(settingsPath)) {
                         // Validate execution.
-                        const commandJSON = require(`.${settingsPath}`);
-                        const execute = require(`.${jsPath}`)().execute;
-                        if (_.isFunction(execute)) {
+                        if (_.isFunction(require(`.${jsPath}`)().execute)) {
                             // Validate settings & strings.
                             const commandJSON = require(`.${settingsPath}`);
                             if (
                                 typeof commandJSON === 'object' &&
-                                typeof commandJSON["settings"] === "object" &&
-                                typeof commandJSON["localizations"] === 'object'
+                                typeof commandJSON['settings'] === 'object' &&
+                                typeof commandJSON['localizations'] === 'object'
                             ) {
-                                // Construct a command frame. Note that we'll only provide a textual path to
-                                // the file as the language will be decided later on.
+                                // Construct a command frame. Note that we'll
+                                // only provide a textual path to
+                                // the file as the language will be
+                                // decided later on.
                                 commands[nameSplit[1]] = {
                                     jsPath,
-                                    settings: commandJSON["settings"],
-                                    strings: commandJSON["localizations"],
+                                    settings: commandJSON['settings'],
+                                    strings: commandJSON['localizations'],
                                 };
                             } else {
-                                Debug.log(`Command (${folder}) is missing a valid (${settingsPath}) file. Skipping...`, 'COMMANDS WARN');
+                                Debug.log(`Command (${folder}) is missing a `
+                                + ` valid (${settingsPath}) file. Skipping...`,
+                                'COMMANDS WARN');
                             }
                         } else {
-                            Debug.log(`Command (${folder}) did not have a valid execution handle in (${jsPath}). Skipping...`, 'COMMANDS WARN');
+                            Debug.log(`Command (${folder}) did not have a valid`
+                            + ` execution handle in (${jsPath}). Skipping...`,
+                            'COMMANDS WARN');
                         }
                     } else {
-                        Debug.log(`Command (${folder}) is missing crucial files. Skipping...`, 'COMMANDS WARN');
+                        Debug.log(`Command (${folder}) is missing crucial `
+                        + `files. Skipping...`, 'COMMANDS WARN');
                     }
                 }
             });
-            Debug.print(`Commands [${Object.keys(commands)}] registered.`, 'COMMANDS', false);
+            Debug.print(`Commands [${Object.keys(commands)}] registered.`,
+            'COMMANDS', false);
             Debug.print('Commands successfully configured.', 'COMMANDS', false);
             return commands;
         } catch (e) {
-            Debug.print('Indexing commands failed. The process will now exit.', 'COMMANDS CRITICAL', true, e);
+            Debug.print('Indexing commands failed. The process will now exit.',
+            'COMMANDS CRITICAL', true, e);
             process.exit(1);
+            return {};
         }
-    }
+    };
 
     return module;
-}
+};

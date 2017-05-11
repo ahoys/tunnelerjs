@@ -2,7 +2,7 @@
  * Automatic guild loader.
  * Reads the guilds located in guilds folder and maps available
  * localized commands for them.
- * 
+ *
  * Author: Ari Höysniemi
  * Date: May 6. 2017
  */
@@ -12,82 +12,141 @@ module.exports = (Debug, CommandsMap) => {
     const guilds = {};
 
     /**
-     * Loads settings and commands for the guilds.
-     * Can be run multiple times if a refresh is needed, only the
-     * settings and commands will be overridden.
-     * @returns {object} : a map of guilds.
+     * Reads the available guild files.
+     * Discards invalid files.
+     * @return {object}
      */
-    module.initialize = () => {
+    const getGuildData = () => {
         try {
-            const files = fs.readdirSync('./guilds');
+            const guildData = [];
             const reg = new RegExp(/^\d{18}$/);
-            files.forEach((guild) => {
-                const guildPath = `./guilds/${guild}`;
-                // Only folders with 18 char digit names are allowed.
-                if (reg.test(guild) && fs.lstatSync(guildPath).isDirectory()) {
-                    const settingsPath = `./guilds/${guild}/guild.json`;
-                    if (fs.existsSync(settingsPath)) {
-                        // Settings exist, verify.
-                        const guildJSON = require(`.${settingsPath}`);
-                        if (typeof guildJSON === 'object') {
-                            // Map commands for the guild.
-                            const commands = {};
-                            const commandsJSON = guildJSON["commands"];
-                            const localizationJSON = guildJSON["localization"] || "default";
-                            if (typeof commandsJSON === 'object' && typeof localizationJSON === 'string') {
-                                Object.keys(commandsJSON).forEach((cmdKey) => {
-                                    if (CommandsMap[cmdKey]) {
-                                        // The command object for the guild includes the following:
-                                        // 1. Execution handle with localized strings.
-                                        // 2. Access array to the command.
-                                        // 3: Keywords array to the command.
-                                        const settingsJSON = CommandsMap[cmdKey].settings;
-                                        const stringsJSON = CommandsMap[cmdKey].strings[localizationJSON] || CommandsMap[cmdKey].strings["default"];
-                                        stringsJSON['keywords'].forEach((keyword) => {
-                                            const regKeyword = new RegExp(/^[a-z]{1,18}$/);
-                                            if (regKeyword.test(keyword)) {
-                                                commands[keyword] = {
-                                                    execute: require(`.${CommandsMap[cmdKey].jsPath}`)(Debug, settingsJSON, stringsJSON, cmdKey).execute,
-                                                    access: commandsJSON[cmdKey].access || [],
-                                                }
-                                            } else {
-                                                Debug.log(`A specified keyword (${keyword}) is not valid. It should be a-z, 1-18 chars and all lower case.`, 'GUILDS WARN');
-                                            }
-                                        });
-                                    } else {
-                                        Debug.log(`Specified command (${cmdKey}) was not found.`, 'GUILDS WARN');
-                                    }
-                                });
-                            } else {
-                                Debug.log(`Guild (${guild}) has no commands or localization set in settings.json.`, 'GUILDS WARN');
-                            }
-                            // The final guild object incldues a shortcut to the loaded json
-                            // and the available localized commands object.
-                            if (guilds[String(guild)]) {
-                                guilds[guild].json = guildJSON;
-                                guilds[guild].commands = commands;
-                            } else {
-                                guilds[String(guild)] = {
-                                    json: guildJSON,
-                                    commands,
-                                }
-                            }
-                        } else {
-                            Debug.print(`Invalid guild file for a guild (${guild}).`, 'GUILDS ERROR');
-                        }
-                    } else {
-                        Debug.print(`File guild.json for a guild (${guild}) is missing.`, 'GUILDS ERROR');
+            // Each /guilds sub dir should represent a guild.
+            fs.readdirSync('./guilds').forEach((dir) => {
+                // Each guild should have a special settings file.
+                const dirPath = `./guilds/${dir}`;
+                const jsonPath = `./guilds/${dir}/guild.json`;
+                // Make sure all the required files exist.
+                if (
+                    reg.test(dir) &&
+                    fs.lstatSync(dirPath) &&
+                    fs.existsSync(jsonPath)
+                ) {
+                    const json = require(`.${jsonPath}`);
+                    // Construct a data object if everything is OK.
+                    if (typeof json === 'object') {
+                        guildData.push({
+                            id: String(dir),
+                            json,
+                        });
                     }
                 }
             });
-            Debug.print(`Guilds [${Object.keys(guilds)}] registered.`, 'GUILDS', false);
-            Debug.print('Guilds successfully configured.', 'GUILDS', false);
+            return guildData;
+        } catch (e) {
+            Debug.print(
+                `Reading guild files failed.`,
+                `GUILDS ERROR`
+            );
+            return [];
+        }
+    };
+
+    /**
+     * Returns guild's available commands.
+     * @param {string} guildId
+     * @param {object} commandsJSON
+     * @param {string} langJSON
+     * @return {object}
+     */
+    const getGuildCommands = (guildId, commandsJSON, langJSON) => {
+        try {
+            // Validate parameters.
+            if (
+                typeof guildId !== 'string' ||
+                typeof commandsJSON !== 'object' ||
+                typeof langJSON !== 'string'
+            ) return {};
+            const commands = {};
+            // Collect all command objects.
+            Object.keys(commandsJSON).forEach((cmdKey) => {
+                // The command must exist.
+                if (CommandsMap[cmdKey]) {
+                    const {settings, strings, jsPath} = CommandsMap[cmdKey];
+                    // Map all the keywords that can be used to call
+                    // the command.
+                    const localization = strings.langJSON || strings.default;
+                    localization.keywords.forEach((keyword) => {
+                        const regKeyword = new RegExp(/^[a-z]{1,18}$/);
+                        if (regKeyword.test(keyword)) {
+                            // Construct the command object.
+                            // Each keyword will have their own instance of
+                            // the object.
+                            commands[keyword] = {
+                                execute: require(`.${jsPath}`)(
+                                    Debug, settings, localization, cmdKey
+                                ).execute,
+                                access: commandsJSON[cmdKey].access || [],
+                            };
+                        }
+                    });
+                } else {
+                    Debug.log(
+                        `Command ${cmdKey} was not found.`,
+                        `GUILDS WARN`
+                    );
+                }
+            });
+            return commands;
+        } catch (e) {
+            Debug.print(
+                `Reading guild commands failed. The process will now exit.`,
+                `GUILDS CRITICAL`, true, e
+            );
+            process.exit(1);
+            return {};
+        }
+    };
+
+    /**
+     * Initializes guilds.
+     * @return {object}
+     */
+    module.initialize = () => {
+        try {
+            // Generate guilds from files.
+            const guildFiles = getGuildData();
+            guildFiles.forEach((guild) => {
+                const {id, json} = guild;
+                // Read all the commands associated to the guild.
+                const commands = getGuildCommands(
+                    id, json.commands, json.localization || json.default
+                );
+                if (guilds[id]) {
+                    // An existing guild.
+                    // Update the existing values.
+                    guilds[id].json = json;
+                    guilds[id].commands = commands;
+                } else {
+                    // A new guild.
+                    // Create a new guild object.
+                    guilds[id] = {
+                        json,
+                        commands,
+                    };
+                }
+            });
+            // Return all the available guilds and their
+            // commands.
             return guilds;
         } catch (e) {
-            Debug.print('Initializing guilds failed. The process will now exit.', 'GUILDS CRITICAL', true, e);
+            Debug.print(
+                `Initializing guilds failed. The process will now exit.`,
+                `GUILDS CRITICAL`, true, e
+            );
             process.exit(1);
+            return {};
         }
-    }
+    };
 
     return module;
-}
+};

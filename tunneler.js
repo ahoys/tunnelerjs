@@ -72,53 +72,47 @@ Client.on('message', (Message) => {
     try {
         const {content, guild} = Message;
         const {user} = Client;
-        // Listen for direct commands.
-        if (Message.isMentioned(user)) {
-            if (Parser.isSafe(content)) {
-                const string = Parser.trim(content);
-                const thisGuild = GuildsMap[guild.id];
-                const cmdKey = Parser.firstMatch(
-                    Object.keys(thisGuild.commands),
-                    string
-                    );
-                if (cmdKey !== undefined && thisGuild.commands[cmdKey]) {
-                    // Run commands in an asynchronous fashion.
-                    new Promise((resolve, reject) => {
-                        // Measure performance.
-                        const key = cmdKey;
-                        const perfMeasure = process.hrtime();
-                        // Execute.
-                        const response = thisGuild.commands[cmdKey]
-                        .execute(Message, Client);
-                        // The result must be string and have content.
-                        if (typeof response === 'string' && response.length) {
-                            resolve({
-                                Message,
-                                response,
-                                perfMeasure,
-                                key,
-                            });
-                        }
-                    }).then((payload) => {
-                        const {Message, response, perfMeasure, key} = payload;
-                        Message.reply(response);
-                        Debug.log(
-                            `A command (${key}) took `
-                            + `${process.hrtime(perfMeasure)[0]}s and `
-                            + `${process.hrtime(perfMeasure)[1]}ms to execute.`,
-                            'MAIN'
-                            );
-                    }).catch((e) => {
-                        Debug.print('A command rejected.',
-                        'MAIN ERROR', true, e);
-                    });
-                }
+        // Listen for direct commands only.
+        if (!Message.isMentioned(user) || !Parser.isSafe(content)) return;
+        const thisGuild = GuildsMap[guild.id];
+        const cmdKey = Parser.firstMatch(
+            Object.keys(thisGuild.commands),
+            Parser.trim(content)
+        );
+        // The command must exist.
+        if (thisGuild.commands[cmdKey] === undefined) return;
+        // Start asynchronous command execution.
+        new Promise((resolve, reject) => {
+            const perfMeasure = process.hrtime();
+            const response = thisGuild.commands[cmdKey]
+            .execute(Message, Client);
+            Debug.log(
+                `A command (${cmdKey}) took `
+                + `${process.hrtime(perfMeasure)[0]}s and `
+                + `${process.hrtime(perfMeasure)[1]}ms to execute.`,
+                'MAIN'
+            );
+            if (response === undefined) {
+                reject(`The executing command returned undefined.`);
             }
-        }
+            resolve({Message, response});
+        }).then((payload) => {
+            if (
+                typeof payload.response === 'string' &&
+                payload.response.length
+            ) {
+                // The command returned a textual string.
+                // Make the bot talk.
+                Message.reply(payload.response);
+            }
+        }).catch((e) => {
+            Debug.print(`A command was rejected. See the log.`,
+            `MAIN ERROR`, true, e);
+        });
     } catch (e) {
         Debug.print(
-            'Reading a message failed. The process will now exit.',
-            'MAIN ERROR', true, e);
+            `Reading a message failed. The process will now exit.`,
+            `MAIN ERROR`, true, e);
         process.exit(1);
     }
 });

@@ -22,12 +22,23 @@ module.exports = (Debug, AuthMap, Parser, GuildsMap) => {
     // A new message event.
     Client.on('message', (Message) => {
         try {
-            onMessage.execute(Message);
+            new Promise((resolve, reject) => {
+                // Middlewares will run first.
+                // The command will run only if the middleware
+                // allows it.
+                if (onMessage.prepare(Message)) {
+                    resolve(Message);
+                }
+                reject();
+            }).then((Message) => {
+                // Run the command.
+                onMessage.execute(Message);
+            });
         } catch (e) {
             Debug.print(
-                `Reading a message failed. The process will now exit.`,
-                `MAIN ERROR`, true, e);
-            process.exit(1);
+                `Processing a message failed.`,
+                `MAIN ERROR`, true, e
+            );
         }
     });
 

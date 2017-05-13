@@ -1,5 +1,6 @@
 {
     "localization": "fi",
+    "middleware": ["antiSpam"],
     "commands": {
         "ping": {
             "access": ["all"]

@@ -4,9 +4,22 @@ module.exports = (Client, Debug, Parser, GuildsMap) => {
     modules.execute = (Message) => {
         const {content, guild} = Message;
         const {user} = Client;
+        // Auto-launching commands.
+        const thisGuild = GuildsMap[guild.id];
+        thisGuild.middleware.forEach((mwKey) => {
+            new Promise((resolve, reject) => {
+                const response = thisGuild.middleware[mwKey].execute(Message);
+                if (response) {
+                    resolve();
+                }
+                reject(`The executing command returned false.`);
+            }).catch((e) => {
+                Debug.print(`A middleware was rejected. See the log.`,
+                `MAIN ERROR`, true, e);
+            });
+        });
         // Listen for direct commands only.
         if (!Message.isMentioned(user) || !Parser.isSafe(content)) return;
-        const thisGuild = GuildsMap[guild.id];
         const cmdKey = Parser.firstMatch(
             Object.keys(thisGuild.commands),
             Parser.trim(content)

@@ -1,8 +1,14 @@
 module.exports = (Client, Debug, Parser, GuildsMap) => {
     const module = {};
 
+    /**
+     * Middleware for the handle.
+     * If returns false, the handle will not execute.
+     * @param {object} Message
+     * @return {boolean}
+     */
     module.prepare = (Message) => {
-        const {content, guild} = Message;
+        const {guild} = Message;
         const thisGuild = GuildsMap[guild.id];
         let returnState = true;
         if (
@@ -19,8 +25,13 @@ module.exports = (Client, Debug, Parser, GuildsMap) => {
             });
         }
         return returnState;
-    }
+    };
 
+    /**
+     * Executes the handle.
+     * @param {object} Message
+     * @return {boolean}
+     */
     module.execute = (Message) => {
         const {content, guild} = Message;
         const {user} = Client;

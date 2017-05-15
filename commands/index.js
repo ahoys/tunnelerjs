@@ -10,7 +10,54 @@ const fs = require('fs');
 const _ = require('lodash');
 module.exports = (Debug) => {
     const module = {};
-    const commands = {};
+    const cmdMap = {};
+    const midMap = {};
+
+    /**
+     * Loads a command from the given directory.
+     * @param {string} dir
+     * @return {object}
+     */
+    const loadCommand = (dir) => {
+        // Load file paths.
+        const jsPath = `./commands/${dir}/index.js`;
+        const jsonPath = `./commands/${dir}/command.json`;
+        // Validate files.
+        if (!fs.existsSync(jsPath) || !fs.existsSync(jsonPath)) return {};
+        if (!_.isFunction(require(`.${jsPath}`)().execute)) return {};
+        // Validate the command.json settings file.
+        const commandJSON = require(`.${jsonPath}`);
+        if (
+            typeof commandJSON !== 'object' ||
+            typeof commandJSON.settings !== 'object' ||
+            typeof commandJSON.localizations !== 'object'
+        ) return {};
+        // Return a command frame.
+        return {
+            jsPath,
+            settings: commandJSON.settings,
+            strings: commandJSON.localizations,
+        };
+    };
+
+    /**
+     * Loads a middleware from the given directory.
+     * @param {string} dir
+     * @return {object}
+     */
+    const loadMiddleware = (dir) => {
+        // Load file paths.
+        const jsPath = `./commands/${dir}/index.js`;
+        const jsonPath = `./commands/${dir}/middleware.json`;
+        // Validate files.
+        if (!fs.existsSync(jsPath) || !fs.existsSync(jsonPath)) return {};
+        if (!_.isFunction(require(`.${jsPath}`)().execute)) return {};
+        // Validate the command.json settings file.
+        const middlewareJSON = require(`.${jsonPath}`);
+        if (typeof middlewareJSON !== 'object') return {};
+        // Return a middleware frame.
+        return {jsPath, settings: middlewareJSON};
+    };
 
     /**
      * Loads all the available commands into a
@@ -21,51 +68,33 @@ module.exports = (Debug) => {
     module.initialize = () => {
         try {
             const folders = fs.readdirSync('./commands');
-            folders.forEach((folder) => {
-                const nameSplit = folder.split('.');
-                // The folder must be named as: "cmd.key", eg. "cmd.ping".
+            folders.forEach((dir) => {
+                const nameSplit = dir.split('.');
                 if (nameSplit[0] === 'cmd' && nameSplit.length === 2) {
-                    const jsPath = `./commands/${folder}/index.js`;
-                    const settingsPath = `./commands/${folder}/command.json`;
-                    if (fs.existsSync(jsPath) && fs.existsSync(settingsPath)) {
-                        // Validate execution.
-                        if (_.isFunction(require(`.${jsPath}`)().execute)) {
-                            // Validate settings & strings.
-                            const commandJSON = require(`.${settingsPath}`);
-                            if (
-                                typeof commandJSON === 'object' &&
-                                typeof commandJSON['settings'] === 'object' &&
-                                typeof commandJSON['localizations'] === 'object'
-                            ) {
-                                // Construct a command frame. Note that we'll
-                                // only provide a textual path to
-                                // the file as the language will be
-                                // decided later on.
-                                commands[nameSplit[1]] = {
-                                    jsPath,
-                                    settings: commandJSON['settings'],
-                                    strings: commandJSON['localizations'],
-                                };
-                            } else {
-                                Debug.log(`Command (${folder}) is missing a `
-                                + ` valid (${settingsPath}) file. Skipping...`,
-                                'COMMANDS WARN');
-                            }
-                        } else {
-                            Debug.log(`Command (${folder}) did not have a valid`
-                            + ` execution handle in (${jsPath}). Skipping...`,
-                            'COMMANDS WARN');
-                        }
-                    } else {
-                        Debug.log(`Command (${folder}) is missing crucial `
-                        + `files. Skipping...`, 'COMMANDS WARN');
+                    // Command folder.
+                    const thisCmd = loadCommand(dir);
+                    if (thisCmd.jsPath) {
+                        cmdMap[nameSplit[1]] = thisCmd;
+                        Debug.log(`Command (${nameSplit[1]}) loaded.`,
+                        `COMMANDS`);
+                    }
+                } else if (nameSplit[0] === 'mid' && nameSplit.length === 2) {
+                    // Middleware folder.
+                    const thisMid = loadMiddleware(dir);
+                    if (thisMid.jsPath) {
+                        midMap[nameSplit[1]] = thisMid;
+                        Debug.log(`Middleware (${nameSplit[1]}) loaded.`,
+                        `COMMANDS`);
                     }
                 }
             });
-            Debug.print(`Commands [${Object.keys(commands)}] registered.`,
-            'COMMANDS', false);
-            Debug.print('Commands successfully configured.', 'COMMANDS', false);
-            return commands;
+            Debug.print(
+                `${Object.keys(cmdMap).length} commands loaded.`,
+                'COMMANDS', false);
+            Debug.print(
+                `${Object.keys(midMap).length} middlewares loaded.`,
+                'COMMANDS', false);
+            return {cmdMap, midMap};
         } catch (e) {
             Debug.print('Indexing commands failed. The process will now exit.',
             'COMMANDS CRITICAL', true, e);

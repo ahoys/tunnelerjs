@@ -3,28 +3,28 @@ module.exports = (Client, Debug, Parser, GuildsMap) => {
 
     /**
      * Middleware for the handle.
-     * If returns false, the handle will not execute.
+     * If returns a string, the handle will not execute.
      * @param {object} Message
-     * @return {boolean}
+     * @return {string}
      */
     module.prepare = (Message) => {
         const {guild} = Message;
         const thisGuild = GuildsMap[guild.id];
-        let returnState = true;
         if (
             thisGuild &&
             thisGuild.middleware &&
             thisGuild.middleware.constructor === Array
         ) {
             thisGuild.middleware.forEach((mwKey) => {
-                if (!thisGuild.middleware[mwKey].execute(Message)) {
-                    // The middleware orders the command will not
-                    // be executed.
-                    returnState = false;
+                const haltReason = thisGuild.middleware[mwKey].execute(Message);
+                if (typeof haltReason === 'string' && haltReason.length) {
+                    // The middleware orders that the command will not
+                    // be executed. Return the reason.
+                    return haltReason;
                 }
             });
         }
-        return returnState;
+        return '';
     };
 
     /**

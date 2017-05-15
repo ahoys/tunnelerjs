@@ -32,7 +32,7 @@ module.exports = () => {
         } catch (e) {
             return false;
         }
-    }
+    };
 
     const isRepeatingMessages = (messages) => {
         try {
@@ -42,7 +42,7 @@ module.exports = () => {
         } catch (e) {
             return false;
         }
-    }
+    };
 
     const isRepeatingContent = (message) => {
         try {
@@ -54,13 +54,13 @@ module.exports = () => {
             } else if (len > 32 && len <= 64) {
                 return p > 0.8;
             } else if (len > 64 && len <= 128) {
-                return p > 0.7;    
+                return p > 0.7;
             }
             return false;
         } catch (e) {
             return false;
         }
-    }
+    };
 
     const isUpperCase = () => {
         try {
@@ -68,26 +68,27 @@ module.exports = () => {
         } catch (e) {
             return false;
         }
-    }
+    };
 
-    module.getUserAnalysis = (authorId, guildId) => {
+    module.execute = (Message) => {
         try {
+            const {guild, author} = Message;
             if (
-                !messageBuffer[guildId] ||
-                !messageBuffer[guildId][authorId]
+                !messageBuffer[guild.id] ||
+                !messageBuffer[guild.id][author.id]
             ) return {};
-            const messages = messageBuffer[guildId][authorId];
+            const messages = messageBuffer[guild.id][author.id];
             const lastMessage = messages[messages.length - 1];
             const data = {
                 isRepeatingMessages: isRepeatingMessages(messages),
                 isRepeatingContent: isRepeatingContent(lastMessage),
                 isUpperCase: isUpperCase(lastMessage),
-                
             };
+            return data;
         } catch (e) {
             return {};
         }
-    }
+    };
 
     return module;
-}
+};

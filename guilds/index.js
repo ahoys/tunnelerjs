@@ -10,6 +10,7 @@ const fs = require('fs');
 module.exports = (Debug, CommandsMap) => {
     const module = {};
     const guilds = {};
+    const {cmdMap, midMap} = CommandsMap;
 
     /**
      * Reads the available guild files.
@@ -66,12 +67,12 @@ module.exports = (Debug, CommandsMap) => {
                 typeof commandsJSON !== 'object' ||
                 typeof langJSON !== 'string'
             ) return {};
-            const commands = {};
+            const guildCommands = {};
             // Collect all command objects.
             Object.keys(commandsJSON).forEach((cmdKey) => {
                 // The command must exist.
-                if (CommandsMap[cmdKey]) {
-                    const {settings, strings, jsPath} = CommandsMap[cmdKey];
+                if (cmdMap[cmdKey]) {
+                    const {settings, strings, jsPath} = cmdMap[cmdKey];
                     // Map all the keywords that can be used to call
                     // the command.
                     const localization = strings.langJSON || strings.default;
@@ -81,7 +82,7 @@ module.exports = (Debug, CommandsMap) => {
                             // Construct the command object.
                             // Each keyword will have their own instance of
                             // the object.
-                            commands[keyword] = {
+                            guildCommands[keyword] = {
                                 execute: require(`.${jsPath}`)(
                                     Debug, settings, localization, cmdKey
                                 ).execute,
@@ -96,7 +97,7 @@ module.exports = (Debug, CommandsMap) => {
                     );
                 }
             });
-            return commands;
+            return guildCommands;
         } catch (e) {
             Debug.print(
                 `Reading guild commands failed. The process will now exit.`,

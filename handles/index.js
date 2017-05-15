@@ -26,13 +26,19 @@ module.exports = (Debug, AuthMap, Parser, GuildsMap) => {
                 // Middlewares will run first.
                 // The command will run only if the middleware
                 // allows it.
-                if (onMessage.prepare(Message)) {
-                    resolve(Message);
+                const haltReason = onMessage.prepare(Message);
+                if (haltReason.length) {
+                    reject(haltReason);
                 }
-                reject();
+                resolve(Message);
             }).then((Message) => {
                 // Run the command.
                 onMessage.execute(Message);
+            }).catch((e) => {
+                Debug.print(
+                    `Encountered an error while handling a message.`,
+                    `MESSAGE HANDLE`, true, e
+                );
             });
         } catch (e) {
             Debug.print(

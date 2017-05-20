@@ -62,5 +62,26 @@ module.exports = (Debug) => {
         }
     };
 
+    /**
+     * Returns all the items of a list that have a
+     * valid type.
+     * @param {Array} list
+     * @param {string} type
+     * @return {Array}
+     */
+    module.getListOfType = (list = [], type = 'string') => {
+        try {
+            if (
+                typeof list !== 'object' ||
+                list.constructor !== Array
+            ) return [];
+            return list.filter((x) => typeof x === type);
+        } catch (e) {
+            Debug.print('Looking for valid list entries failed.',
+            'PARSER ERROR', true, e);
+            return [];
+        }
+    };
+
     return module;
 };

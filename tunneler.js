@@ -12,7 +12,7 @@ const CommandsMap = require('./commands')(Debug).initialize();
 
 // Guilds data
 // Each guild can have its own commands, settings and translations.
-const GuildsMap = require('./guilds')(Debug, CommandsMap).initialize();
+const GuildsMap = require('./guilds')(Debug, CommandsMap, Parser).initialize();
 
 // Discord.js API and handles.
 require('./handles')(Debug, AuthMap, Parser, GuildsMap);

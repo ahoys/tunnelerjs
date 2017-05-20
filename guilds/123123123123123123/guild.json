@@ -1,6 +1,6 @@
 {
     "localization": "en",
-    "middleware": {
+    "middlewares": {
         "antispam": {
             "enabled": true,
             "excluded_channels": []

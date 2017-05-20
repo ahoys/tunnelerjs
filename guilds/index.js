@@ -7,10 +7,10 @@
  * Date: May 6. 2017
  */
 const fs = require('fs');
-module.exports = (Debug, CommandsMap) => {
+module.exports = (Debug, CommandsMap, Parser) => {
     const module = {};
     const guilds = {};
-    const {cmdMap} = CommandsMap;
+    const {cmdMap, mwMap} = CommandsMap;
 
     /**
      * Reads the available guild files.
@@ -71,7 +71,7 @@ module.exports = (Debug, CommandsMap) => {
             // Collect all command objects.
             Object.keys(commandsJSON).forEach((cmdKey) => {
                 // The command must exist.
-                if (cmdMap[cmdKey]) {
+                if (cmdMap[cmdKey] && commandsJSON[cmdKey].enabled) {
                     const {settings, strings, jsPath} = cmdMap[cmdKey];
                     // Map all the keywords that can be used to call
                     // the command.
@@ -87,6 +87,10 @@ module.exports = (Debug, CommandsMap) => {
                                     Debug, settings, localization, cmdKey
                                 ).execute,
                                 access: commandsJSON[cmdKey].access || [],
+                                enabledChannels: Parser.getListOfType(
+                                commandsJSON[cmdKey]['enabled_channels']),
+                                excludedChannels: Parser.getListOfType(
+                                commandsJSON[cmdKey]['excluded_channels']),
                             };
                         }
                     });
@@ -109,6 +113,38 @@ module.exports = (Debug, CommandsMap) => {
     };
 
     /**
+     * Returns guild's available middlewares.
+     * @param {object} middlewaresJSON
+     * @return {object}
+     */
+    const getGuildMiddlewares = (middlewaresJSON) => {
+        try {
+            if (typeof middlewaresJSON !== 'object') return {};
+            const guildMiddlewares = {};
+            Object.keys(middlewaresJSON).forEach((mwKey) => {
+                if (mwMap[mwKey] && middlewaresJSON[mwKey].enabled) {
+                    const {jsPath, settings} = mwMap[mwKey];
+                    guildMiddlewares[mwKey] = {
+                        execute: require(`.${jsPath}`)(settings).execute,
+                        enabledChannels: Parser.getListOfType(
+                        middlewaresJSON[mwKey]['enabled_channels']),
+                        excludedChannels: Parser.getListOfType(
+                        middlewaresJSON[mwKey]['excluded_channels']),
+                    };
+                }
+            });
+            return guildMiddlewares;
+        } catch (e) {
+            Debug.print(
+                `Reading guild middlewares failed. The process will now exit.`,
+                `GUILDS CRITICAL`, true, e
+            );
+            process.exit(1);
+            return {};
+        }
+    };
+
+    /**
      * Initializes guilds.
      * @return {object}
      */
@@ -122,6 +158,7 @@ module.exports = (Debug, CommandsMap) => {
                     json,
                     commands: getGuildCommands(
                         id, json.commands, json.localization || json.default),
+                    middlewares: getGuildMiddlewares(json.middlewares),
                 };
             });
             // Return all the available guilds with commands.

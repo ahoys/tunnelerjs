@@ -11,7 +11,7 @@ const _ = require('lodash');
 module.exports = (Debug) => {
     const module = {};
     const cmdMap = {};
-    const midMap = {};
+    const mwMap = {};
 
     /**
      * Loads a command from the given directory.
@@ -82,7 +82,7 @@ module.exports = (Debug) => {
                     // Middleware folder.
                     const thisMid = loadMiddleware(dir);
                     if (thisMid.jsPath) {
-                        midMap[nameSplit[1]] = thisMid;
+                        mwMap[nameSplit[1]] = thisMid;
                         Debug.log(`Middleware (${nameSplit[1]}) loaded.`,
                         `COMMANDS`);
                     }
@@ -92,9 +92,9 @@ module.exports = (Debug) => {
                 `${Object.keys(cmdMap).length} commands loaded.`,
                 'COMMANDS', false);
             Debug.print(
-                `${Object.keys(midMap).length} middlewares loaded.`,
+                `${Object.keys(mwMap).length} middlewares loaded.`,
                 'COMMANDS', false);
-            return {cmdMap, midMap};
+            return {cmdMap, mwMap};
         } catch (e) {
             Debug.print('Indexing commands failed. The process will now exit.',
             'COMMANDS CRITICAL', true, e);

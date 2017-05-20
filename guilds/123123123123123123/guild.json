@@ -1,9 +1,26 @@
 {
     "localization": "en",
-    "middleware": ["antiSpam"],
+    "middleware": {
+        "antispam": {
+            "enabled": true,
+            "excluded_channels": []
+        }
+    },
     "commands": {
         "ping": {
-            "access": ["all"]
+            "enabled": false,
+            "access": ["123123123123123123"],
+            "excluded_channels": []
+        },
+        "select": {
+            "enabled": true,
+            "access": ["all"],
+            "excluded_channels": []
+        },
+        "roll": {
+            "enabled": true,
+            "access": ["owner"],
+            "enabled_channels": ["examplechannel"]
         }
     }
 }

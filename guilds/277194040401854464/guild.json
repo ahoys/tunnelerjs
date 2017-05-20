@@ -1,9 +1,15 @@
 {
     "localization": "fi",
-    "middleware": ["antiSpam"],
+    "middleware": {
+        "antispam": {
+            "enabled": true
+        }
+    },
     "commands": {
         "ping": {
-            "access": ["all"]
+            "enabled": true,
+            "access": ["all"],
+            "excluded_channels": ["excluded"]
         }
     }
 }

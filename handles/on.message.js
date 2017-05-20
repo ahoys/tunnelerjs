@@ -17,13 +17,19 @@ module.exports = (Client, Debug, Parser, GuildsMap) => {
         ) {
             thisGuild.middleware.forEach((mwKey) => {
                 const haltReason = thisGuild.middleware[mwKey].execute(Message);
-                if (typeof haltReason === 'string' && haltReason.length) {
-                    // The middleware orders that the command will not
-                    // be executed. Return the reason.
-                    return haltReason;
+                if (typeof haltReason === 'string' && !haltReason.length) {
+                    // No reasons given,
+                    // the process can continue.
+                    return '';
                 }
+                // The process will halt.
+                return typeof haltReason === 'string'
+                    ? haltReason
+                    : `Middleware (${mwKey}) blocked the execution. `
+                        + `Invalid reason returned.`;
             });
         }
+        // No middlewares specified.
         return '';
     };
 

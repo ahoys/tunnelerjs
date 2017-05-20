@@ -2,6 +2,11 @@
   "name": "tunnelerjs",
   "main": "tunneler.js",
   "version": "1.0.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ahoys/tunnelerjs.git"
+  },
   "dependencies": {
     "discord.js": "~11.0.0",
     "string-analysis-js": "^0.1.2"

@@ -83,6 +83,17 @@ module.exports = (Debug) => {
         }
     };
 
+    /**
+     * Returns whether a target is included in an array.
+     * Supports also layering exlusions.
+     * An empty include array can be turned into "everything" with
+     * emptyIncludes. This is handy if you only use excludes.
+     * @param {*} target
+     * @param {Array} includes
+     * @param {Array} excludes
+     * @param {boolean} emptyIncludes
+     * @return {boolean}
+     */
     module.isIncluded = (target, includes, excludes, emptyIncludes) => {
         try {
             const includesIsArray = typeof includes === 'object' &&

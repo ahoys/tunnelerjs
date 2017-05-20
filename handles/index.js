@@ -1,12 +1,12 @@
 module.exports = (Debug, AuthMap, Parser, GuildsMap) => {
     const Discord = require('discord.js');
     const Client = new Discord.Client();
+    Client.login(AuthMap.token);
 
+    /**
+     * Client connected and ready to execute.
+     */
     const onReady = require('./on.ready')(Client, Debug, GuildsMap);
-    const onMessage = require('./on.message')(Client, Debug, Parser, GuildsMap);
-    const onDisconnected = require('./on.disconnected')(Client);
-
-    // When the client has connected and is ready to execute.
     Client.on('ready', (Message) => {
         try {
             onReady.execute();
@@ -19,7 +19,13 @@ module.exports = (Debug, AuthMap, Parser, GuildsMap) => {
         }
     });
 
-    // A new message event.
+    /**
+     * Client received messages.
+     *
+     * This handle has a middleware support. Middlewares are
+     * executed before the commands.
+     */
+    const onMessage = require('./on.message')(Client, Debug, Parser, GuildsMap);
     Client.on('message', (Message) => {
         try {
             new Promise((resolve, reject) => {
@@ -48,7 +54,10 @@ module.exports = (Debug, AuthMap, Parser, GuildsMap) => {
         }
     });
 
-    // Client disconnected event.
+    /**
+     * Client disconnected.
+     */
+    const onDisconnected = require('./on.disconnected')(Client);
     Client.on('disconnected', (Message) => {
         try {
             onDisconnected.execute();
@@ -60,7 +69,4 @@ module.exports = (Debug, AuthMap, Parser, GuildsMap) => {
             process.exit(1);
         }
     });
-
-    // Start the client.
-    Client.login(AuthMap.token);
 };

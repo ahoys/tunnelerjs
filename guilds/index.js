@@ -86,7 +86,8 @@ module.exports = (Debug, CommandsMap, Parser) => {
                                 execute: require(`.${jsPath}`)(
                                     Debug, settings, localization, cmdKey
                                 ).execute,
-                                access: commandsJSON[cmdKey].access || [],
+                                access: Parser.getListOfType(
+                                    commandsJSON[cmdKey].access),
                                 enabledChannels: Parser.getListOfType(
                                 commandsJSON[cmdKey]['enabled_channels']),
                                 excludedChannels: Parser.getListOfType(

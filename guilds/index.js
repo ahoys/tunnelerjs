@@ -71,8 +71,8 @@ module.exports = (Debug, CommandsMap) => {
             // Collect all command objects.
             Object.keys(commandsJSON).forEach((cmdKey) => {
                 // The command must exist.
-                if (cmdMap.cmdKey) {
-                    const {settings, strings, jsPath} = cmdMap.cmdKey;
+                if (cmdMap[cmdKey]) {
+                    const {settings, strings, jsPath} = cmdMap[cmdKey];
                     // Map all the keywords that can be used to call
                     // the command.
                     const localization = strings.langJSON || strings.default;
@@ -82,11 +82,11 @@ module.exports = (Debug, CommandsMap) => {
                             // Construct the command object.
                             // Each keyword will have their own instance of
                             // the object.
-                            guildCommands.keyword = {
+                            guildCommands[keyword] = {
                                 execute: require(`.${jsPath}`)(
                                     Debug, settings, localization, cmdKey
                                 ).execute,
-                                access: commandsJSON.cmdKey.access || [],
+                                access: commandsJSON[cmdKey].access || [],
                             };
                         }
                     });
@@ -118,7 +118,7 @@ module.exports = (Debug, CommandsMap) => {
             const guildFiles = getGuildData();
             guildFiles.forEach((guild) => {
                 const {id, json} = guild;
-                guilds.id = {
+                guilds[id] = {
                     json,
                     commands: getGuildCommands(
                         id, json.commands, json.localization || json.default),

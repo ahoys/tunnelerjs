@@ -83,5 +83,37 @@ module.exports = (Debug) => {
         }
     };
 
+    module.isIncluded = (target, includes, excludes, emptyIncludes) => {
+        try {
+            const includesIsArray = typeof includes === 'object' &&
+            includes.constructor === Array;
+            const excludesIsArray = typeof excludes === 'object' &&
+            excludes.constructor === Array;
+            // No target, cannot be included: false.
+            if (target === undefined) return false;
+            // Can be found from exclusions: false.
+            if (
+                excludesIsArray &&
+                excludes.indexOf(target) >= 0
+            ) return false;
+            // Can be found from inclusions: true.
+            if (
+                includesIsArray &&
+                includes.indexOf(target) >= 0
+            ) return true;
+            // emptyIncludes and no includes: true.
+            if (
+                emptyIncludes &&
+                includesIsArray &&
+                !includes.length
+            ) return true;
+            return false;
+        } catch (e) {
+            Debug.print('Determining includement failed.',
+            'PARSER ERROR', true, e);
+            return false;
+        }
+    };
+
     return module;
 };

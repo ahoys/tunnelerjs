@@ -8,25 +8,34 @@ module.exports = (Client, Debug, Parser, GuildsMap) => {
      * @return {string}
      */
     module.prepare = (Message) => {
-        const {guild} = Message;
+        const {guild, channel} = Message;
         const thisGuild = GuildsMap[guild.id];
         if (
             thisGuild &&
-            thisGuild.middleware &&
-            thisGuild.middleware.constructor === Array
+            thisGuild.middlewares
         ) {
-            thisGuild.middleware.forEach((mwKey) => {
-                const haltReason = thisGuild.middleware[mwKey].execute(Message);
-                if (typeof haltReason === 'string' && !haltReason.length) {
-                    // No reasons given,
-                    // the process can continue.
-                    return '';
+            Object.keys(thisGuild.middlewares).forEach((mwKey) => {
+                const {
+                    execute,
+                    enabledChannels,
+                    excludedChannels,
+                } = thisGuild.middlewares[mwKey];
+                if (
+                    Parser.isIncluded(
+                        channel.name, enabledChannels, excludedChannels, true)
+                ) {
+                    const haltReason = execute(Message);
+                    if (typeof haltReason === 'string' && !haltReason.length) {
+                        // No reasons given,
+                        // the process can continue.
+                        return '';
+                    }
+                    // The process will halt.
+                    return typeof haltReason === 'string'
+                        ? haltReason
+                        : `Middleware (${mwKey}) blocked the execution. `
+                            + `Invalid reason returned.`;
                 }
-                // The process will halt.
-                return typeof haltReason === 'string'
-                    ? haltReason
-                    : `Middleware (${mwKey}) blocked the execution. `
-                        + `Invalid reason returned.`;
             });
         }
         // No middlewares specified.
@@ -39,7 +48,7 @@ module.exports = (Client, Debug, Parser, GuildsMap) => {
      * @return {boolean}
      */
     module.execute = (Message) => {
-        const {content, guild} = Message;
+        const {content, guild, channel} = Message;
         const {user} = Client;
         // Listen for direct commands only.
         const thisGuild = GuildsMap[guild.id];
@@ -54,20 +63,30 @@ module.exports = (Client, Debug, Parser, GuildsMap) => {
         );
         // The command must exist.
         if (thisGuild.commands[cmdKey] === undefined) return false;
-        // Measure execution time for the command.
-        const perfMeasure = process.hrtime();
-        const response = thisGuild.commands[cmdKey].execute(Message, Client);
-        Debug.log(
-            `A command (${cmdKey}) took `
-            + `${process.hrtime(perfMeasure)[0]}s and `
-            + `${process.hrtime(perfMeasure)[1]}ms to execute.`,
-            'MAIN'
-        );
-        if (typeof response === 'string' && response.length) {
-            // The command responded with something to say...
-            Message.reply(response);
+        const {
+            execute,
+            enabledChannels,
+            excludedChannels,
+        } = thisGuild.commands[cmdKey];
+        if (Parser.isIncluded(
+            channel.name, enabledChannels, excludedChannels, true)
+        ) {
+            // Measure execution time for the command.
+            const perfMeasure = process.hrtime();
+            const response = execute(Message, Client);
+            Debug.log(
+                `A command (${cmdKey}) took `
+                + `${process.hrtime(perfMeasure)[0]}s and `
+                + `${process.hrtime(perfMeasure)[1]}ms to execute.`,
+                'MAIN'
+            );
+            if (typeof response === 'string' && response.length) {
+                // The command responded with something to say...
+                Message.reply(response);
+            }
+            return true;
         }
-        return true;
+        return false;
     };
 
     return module;

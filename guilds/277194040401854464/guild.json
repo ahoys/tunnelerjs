@@ -2,7 +2,8 @@
     "localization": "fi",
     "middlewares": {
         "antispam": {
-            "enabled": true
+            "enabled": true,
+            "enabled_channels": ["general"]
         }
     },
     "commands": {

@@ -7,7 +7,6 @@
  * Date: May 5. 2017
  */
 const fs = require('fs');
-const _ = require('lodash');
 module.exports = (Debug) => {
     const module = {};
     const cmdMap = {};
@@ -24,7 +23,7 @@ module.exports = (Debug) => {
         const jsonPath = `./commands/${dir}/command.json`;
         // Validate files.
         if (!fs.existsSync(jsPath) || !fs.existsSync(jsonPath)) return {};
-        if (!_.isFunction(require(`.${jsPath}`)().execute)) return {};
+        if (typeof require(`.${jsPath}`)().execute !== 'function') return {};
         // Validate the command.json settings file.
         const commandJSON = require(`.${jsonPath}`);
         if (
@@ -51,7 +50,7 @@ module.exports = (Debug) => {
         const jsonPath = `./commands/${dir}/middleware.json`;
         // Validate files.
         if (!fs.existsSync(jsPath) || !fs.existsSync(jsonPath)) return {};
-        if (!_.isFunction(require(`.${jsPath}`)().execute)) return {};
+        if (typeof require(`.${jsPath}`)().execute !== 'function') return {};
         // Validate the command.json settings file.
         const middlewareJSON = require(`.${jsonPath}`);
         if (typeof middlewareJSON !== 'object') return {};

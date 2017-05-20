@@ -1,6 +1,6 @@
 {
     "settings": {
-        "enableThisExampleSetting": true
+        "myCustomSetting": 3
     },
     "localizations": {
         "default": {

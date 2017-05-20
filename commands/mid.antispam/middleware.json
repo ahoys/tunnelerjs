@@ -1,4 +1,3 @@
 {
-    "canHaltExecution": true,
-    "requiresMention": false
+    "settings": {}
 }

@@ -1,7 +1,5 @@
 {
-    "settings": {
-        "allowPrivateForOwner": true
-    },
+    "settings": {},
     "localizations": {
         "default": {
             "keywords": ["ping", "latency", "delay"],

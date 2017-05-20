@@ -8,10 +8,10 @@
     "url": "https://github.com/ahoys/tunnelerjs.git"
   },
   "dependencies": {
-    "discord.js": "~11.0.0",
-    "string-analysis-js": "^0.1.2"
+    "discord.js": "11.0.x",
+    "string-analysis-js": "0.1.x"
   },
   "devDependencies": {
-    "eslint-config-google": "^0.7.1"
+    "eslint-config-google": "0.x.x"
   }
 }

@@ -75,7 +75,8 @@ module.exports = (Debug, CommandsMap, Parser) => {
                     const {settings, strings, jsPath} = cmdMap[cmdKey];
                     // Map all the keywords that can be used to call
                     // the command.
-                    const localization = strings.langJSON || strings.default;
+                    const localization = strings[langJSON] || strings['default'];
+                    console.log(localization);
                     localization.keywords.forEach((keyword) => {
                         const regKeyword = new RegExp(/^[a-z]{1,18}$/);
                         if (regKeyword.test(keyword)) {

@@ -77,7 +77,7 @@ module.exports = (Debug) => {
                         Debug.log(`Command (${nameSplit[1]}) loaded.`,
                         `COMMANDS`);
                     }
-                } else if (nameSplit[0] === 'mid' && nameSplit.length === 2) {
+                } else if (nameSplit[0] === 'mw' && nameSplit.length === 2) {
                     // Middleware folder.
                     const thisMid = loadMiddleware(dir);
                     if (thisMid.jsPath) {

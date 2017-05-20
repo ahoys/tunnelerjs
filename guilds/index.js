@@ -10,7 +10,7 @@ const fs = require('fs');
 module.exports = (Debug, CommandsMap) => {
     const module = {};
     const guilds = {};
-    const {cmdMap, midMap} = CommandsMap;
+    const {cmdMap} = CommandsMap;
 
     /**
      * Reads the available guild files.
@@ -118,26 +118,13 @@ module.exports = (Debug, CommandsMap) => {
             const guildFiles = getGuildData();
             guildFiles.forEach((guild) => {
                 const {id, json} = guild;
-                // Read all the commands associated to the guild.
-                const commands = getGuildCommands(
-                    id, json.commands, json.localization || json.default
-                );
-                if (guilds[id]) {
-                    // An existing guild.
-                    // Update the existing values.
-                    guilds[id].json = json;
-                    guilds[id].commands = commands;
-                } else {
-                    // A new guild.
-                    // Create a new guild object.
-                    guilds[id] = {
-                        json,
-                        commands,
-                    };
-                }
+                guilds[id] = {
+                    json,
+                    commands: getGuildCommands(
+                        id, json.commands, json.localization || json.default),
+                };
             });
-            // Return all the available guilds and their
-            // commands.
+            // Return all the available guilds with commands.
             return guilds;
         } catch (e) {
             Debug.print(

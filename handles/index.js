@@ -15,10 +15,10 @@ module.exports = (AuthMap, GuildsMap) => {
     /**
      * Client connected and ready to execute.
      */
-    const onReady = require('./on.ready')(Client, GuildsMap);
+    const onReady = require('./on.ready/handle.js')(Client, GuildsMap);
     Client.on('ready', (Message) => {
         try {
-            onReady.execute();
+            onReady.handle();
         } catch (e) {
             print(
                 'Client ready failed. The process will now exit.',
@@ -34,7 +34,7 @@ module.exports = (AuthMap, GuildsMap) => {
      * This handle has a middleware support. Middlewares are
      * executed before the commands.
      */
-    const onMessage = require('./on.message')(Client, GuildsMap);
+    const onMessage = require('./on.message/handle.js')(Client, GuildsMap);
     Client.on('message', (Message) => {
         try {
             new Promise((resolve, reject) => {
@@ -48,7 +48,7 @@ module.exports = (AuthMap, GuildsMap) => {
                 resolve(Message);
             }).then((Message) => {
                 // Run the command.
-                onMessage.execute(Message);
+                onMessage.handle(Message);
             }).catch((e) => {
                 print(
                     `Encountered an error while handling a message.`,
@@ -66,13 +66,29 @@ module.exports = (AuthMap, GuildsMap) => {
     /**
      * Client disconnected.
      */
-    const onDisconnected = require('./on.disconnected')(Client);
-    Client.on('disconnected', (Message) => {
+    const onDisconnect = require('./on.disconnect/handle.js')();
+    Client.on('disconnect', (CloseEvent) => {
         try {
-            onDisconnected.execute();
+            onDisconnect.handle(CloseEvent);
         } catch (e) {
             print(
-                'Disconnecting failed. The process will now exit.',
+                'Disconnect failed. The process will now exit.',
+                'MAIN ERROR', true, e
+            );
+            process.exit(1);
+        }
+    });
+
+    /**
+     * Client reconnecting.
+     */
+    const onReconnecting = require('./on.Reconnecting/handle.js')();
+    Client.on('reconnecting', () => {
+        try {
+            onReconnecting.handle();
+        } catch (e) {
+            print(
+                'Reconnecting failed. The process will now exit.',
                 'MAIN ERROR', true, e
             );
             process.exit(1);

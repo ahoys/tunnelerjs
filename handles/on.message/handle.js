@@ -1,11 +1,18 @@
-const {log} = require('../util/module.inc.debug')();
-const Parser = require('../util/module.inc.parser')();
+const {log} = require('../../util/module.inc.debug')();
+const Parser = require('../../util/module.inc.parser')();
+
+/**
+ * Message handle.
+ * @param {object} Client
+ * @param {object} GuildsMap
+ * @return {object}
+ */
 module.exports = (Client, GuildsMap) => {
     const module = {};
 
     /**
-     * Middleware for the handle.
-     * If returns a string, the handle will not execute.
+     * Executes middleware for the handle.
+     * Is able to block the execution is necessary.
      * @param {object} Message
      * @return {string}
      */
@@ -49,7 +56,7 @@ module.exports = (Client, GuildsMap) => {
      * @param {object} Message
      * @return {boolean}
      */
-    module.execute = (Message) => {
+    module.handle = (Message) => {
         const {content, guild, channel} = Message;
         const {user} = Client;
         // Listen for direct commands only.

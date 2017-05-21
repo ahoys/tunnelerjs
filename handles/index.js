@@ -1,4 +1,5 @@
-module.exports = (Debug, AuthMap, Parser, GuildsMap) => {
+const {print} = require('../util/module.inc.debug')();
+module.exports = (AuthMap, Parser, GuildsMap) => {
     const Discord = require('discord.js');
     const Client = new Discord.Client();
     Client.login(AuthMap.token);
@@ -6,12 +7,12 @@ module.exports = (Debug, AuthMap, Parser, GuildsMap) => {
     /**
      * Client connected and ready to execute.
      */
-    const onReady = require('./on.ready')(Client, Debug, GuildsMap);
+    const onReady = require('./on.ready')(Client, GuildsMap);
     Client.on('ready', (Message) => {
         try {
             onReady.execute();
         } catch (e) {
-            Debug.print(
+            print(
                 'Client ready failed. The process will now exit.',
                 'MAIN ERROR', true, e
             );
@@ -25,7 +26,7 @@ module.exports = (Debug, AuthMap, Parser, GuildsMap) => {
      * This handle has a middleware support. Middlewares are
      * executed before the commands.
      */
-    const onMessage = require('./on.message')(Client, Debug, Parser, GuildsMap);
+    const onMessage = require('./on.message')(Client, Parser, GuildsMap);
     Client.on('message', (Message) => {
         try {
             new Promise((resolve, reject) => {
@@ -41,13 +42,13 @@ module.exports = (Debug, AuthMap, Parser, GuildsMap) => {
                 // Run the command.
                 onMessage.execute(Message);
             }).catch((e) => {
-                Debug.print(
+                print(
                     `Encountered an error while handling a message.`,
                     `MESSAGE HANDLE`, true, e
                 );
             });
         } catch (e) {
-            Debug.print(
+            print(
                 `Processing a message failed.`,
                 `MAIN ERROR`, true, e
             );
@@ -62,7 +63,7 @@ module.exports = (Debug, AuthMap, Parser, GuildsMap) => {
         try {
             onDisconnected.execute();
         } catch (e) {
-            Debug.print(
+            print(
                 'Disconnecting failed. The process will now exit.',
                 'MAIN ERROR', true, e
             );

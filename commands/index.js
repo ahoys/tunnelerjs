@@ -1,3 +1,6 @@
+const {print, log} = require('../util/module.inc.debug')();
+const fs = require('fs');
+
 /**
  * Automatic command loader.
  * The loader will map command execution file path and strings
@@ -6,8 +9,7 @@
  * Author: Ari Höysniemi
  * Date: May 5. 2017
  */
-const fs = require('fs');
-module.exports = (Debug) => {
+module.exports = () => {
     const module = {};
     const cmdMap = {};
     const mwMap = {};
@@ -74,7 +76,7 @@ module.exports = (Debug) => {
                     const thisCmd = loadCommand(dir);
                     if (thisCmd.jsPath) {
                         cmdMap[nameSplit[1]] = thisCmd;
-                        Debug.log(`Command (${nameSplit[1]}) loaded.`,
+                        log(`Command (${nameSplit[1]}) loaded.`,
                         `COMMANDS`);
                     }
                 } else if (nameSplit[0] === 'mw' && nameSplit.length === 2) {
@@ -82,20 +84,20 @@ module.exports = (Debug) => {
                     const thisMid = loadMiddleware(dir);
                     if (thisMid.jsPath) {
                         mwMap[nameSplit[1]] = thisMid;
-                        Debug.log(`Middleware (${nameSplit[1]}) loaded.`,
+                        log(`Middleware (${nameSplit[1]}) loaded.`,
                         `COMMANDS`);
                     }
                 }
             });
-            Debug.print(
+            print(
                 `${Object.keys(cmdMap).length} commands loaded.`,
                 'COMMANDS', false);
-            Debug.print(
+            print(
                 `${Object.keys(mwMap).length} middlewares loaded.`,
                 'COMMANDS', false);
             return {cmdMap, mwMap};
         } catch (e) {
-            Debug.print('Indexing commands failed. The process will now exit.',
+            print('Indexing commands failed. The process will now exit.',
             'COMMANDS CRITICAL', true, e);
             process.exit(1);
             return {};

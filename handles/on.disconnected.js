@@ -1,8 +1,9 @@
+const {print} = require('../util/module.inc.debug')();
 module.exports = (Client) => {
     const modules = {};
 
     modules.execute = () => {
-        Debug.print('Disconnected.', 'MAIN');
+        print('Disconnected.', 'MAIN');
         process.exit(0);
     };
 

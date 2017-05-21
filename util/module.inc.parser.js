@@ -1,10 +1,10 @@
+const {print} = require('./module.inc.debug')();
 
 /**
  * Tools for parsing.
- * @param {object} Debug
  * @return {object}
  */
-module.exports = (Debug) => {
+module.exports = () => {
     const module = {};
 
     /**
@@ -17,7 +17,7 @@ module.exports = (Debug) => {
             // Only the following characters are allowed.
             return /^[a-zA-Z0-9.?:!;><)("`',\+-=@#¤%&/=^*§½£$€ ]+$/.test(str);
         } catch (e) {
-            Debug.print('Verifying string safetyness failed.',
+            print('Verifying string safetyness failed.',
             'PARSER ERROR', true, e);
             return false;
         }
@@ -33,7 +33,7 @@ module.exports = (Debug) => {
             // Lower case and no excess spaces.
             return str.replace(/\s+/g, ' ').toLowerCase().trim();
         } catch (e) {
-            Debug.print('Trimming a string failed.', 'PARSER ERROR', true, e);
+            print('Trimming a string failed.', 'PARSER ERROR', true, e);
             return '';
         }
     };
@@ -56,7 +56,7 @@ module.exports = (Debug) => {
             }
             return '';
         } catch (e) {
-            Debug.print('Looking for a first match failed.',
+            print('Looking for a first match failed.',
             'PARSER ERROR', true, e);
             return '';
         }
@@ -77,7 +77,7 @@ module.exports = (Debug) => {
             ) return [];
             return list.filter((x) => typeof x === type);
         } catch (e) {
-            Debug.print('Looking for valid list entries failed.',
+            print('Looking for valid list entries failed.',
             'PARSER ERROR', true, e);
             return [];
         }
@@ -120,7 +120,7 @@ module.exports = (Debug) => {
             ) return true;
             return false;
         } catch (e) {
-            Debug.print('Determining includement failed.',
+            print('Determining includement failed.',
             'PARSER ERROR', true, e);
             return false;
         }

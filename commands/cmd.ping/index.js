@@ -1,15 +1,16 @@
+const {print} = require('../../util/module.inc.debug')();
+
 /**
  * Replies with a client ping.
  *
  * Author: Ari Höysniemi
  * Date: May 6. 2017
- * @param {object} Debug
  * @param {object} Settings
  * @param {object} Strings
  * @param {string} name
  * @return {object}
  */
-module.exports = (Debug, Settings, Strings, name) => {
+module.exports = (Settings, Strings, name) => {
     const module = {};
 
     /**
@@ -31,7 +32,7 @@ module.exports = (Debug, Settings, Strings, name) => {
             const ping = getPing(Message.client);
             return `${Strings['success_0']}${ping}${Strings['success_1']}`;
         } catch (e) {
-            Debug.print(
+            print(
                 `Executing a command (${name}) failed.`,
                 `${name} ERROR`, true, e
             );

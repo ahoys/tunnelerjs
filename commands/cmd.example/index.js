@@ -1,15 +1,11 @@
+const {print, log} = require('../../util/module.inc.debug')();
+
 /**
  * This file is intented to be an example template for
  * custom commands.
  *
  * Copy & paste the command folder and modify it to fit
  * your needs.
- *
- * "Debug" : Use Debug to print logged console messages.
- * Example 0: Debug.print("message that will also be logged.", "TAG")
- * Example 1: Debug.log("message that will only be logged.", "TAG")
- * Example 2: Debug.print("message that won't be logged.", "TAG", false)
- * Example 3: Debug.print("message with logged trace.", "TAG", true, error)
  *
  * "Settings" : Settings given to the command (command.json).
  * You can set custom configurations in command.json.
@@ -23,13 +19,12 @@
  * Author: Your Name
  * Date: Jan 1. 1970
  *
- * @param {object} Debug
  * @param {object} Settings
  * @param {object} Strings
  * @param {string} name
  * @return {object}
  */
-module.exports = (Debug, Settings, Strings, name) => {
+module.exports = (Settings, Strings, name) => {
     const module = {};
 
     /**
@@ -41,6 +36,8 @@ module.exports = (Debug, Settings, Strings, name) => {
      * @return {number}
      */
     const getString = (msg) => {
+        log(`I'm going to log this. `
+        + `Log won't be displayed in console. Only log.`, `${name}`);
         return `${msg} example.`;
     };
 
@@ -58,7 +55,7 @@ module.exports = (Debug, Settings, Strings, name) => {
             const string = getString('just an');
             return `${Strings['success_0']}${string}${Strings['success_1']}`;
         } catch (e) {
-            Debug.print(
+            print(
                 `Executing a command (${name}) failed.`,
                 `${name} ERROR`, true, e
             );

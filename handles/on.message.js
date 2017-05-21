@@ -1,4 +1,5 @@
-module.exports = (Client, Debug, Parser, GuildsMap) => {
+const {log} = require('../util/module.inc.debug')();
+module.exports = (Client, Parser, GuildsMap) => {
     const module = {};
 
     /**
@@ -74,7 +75,7 @@ module.exports = (Client, Debug, Parser, GuildsMap) => {
             // Measure execution time for the command.
             const perfMeasure = process.hrtime();
             const response = execute(Message, Client);
-            Debug.log(
+            log(
                 `A triggered command (${cmdKey}) took `
                 + `${process.hrtime(perfMeasure)[0]}s (`
                 + `${process.hrtime(perfMeasure)[1]}ms) to execute on `

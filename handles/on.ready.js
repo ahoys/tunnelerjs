@@ -1,18 +1,19 @@
-module.exports = (Client, Debug, GuildsMap) => {
+const {print} = require('../util/module.inc.debug')();
+module.exports = (Client, GuildsMap) => {
     const modules = {};
 
     modules.execute = () => {
         const {user, guilds} = Client;
         guilds.forEach((Guild) => {
             if (!GuildsMap[Guild.id]) {
-                Debug.print(
+                print(
                     `Could not find configuration for a guild (${Guild.id}).`,
                     'MAIN'
                     );
             }
         });
-        Debug.print(`Serving ${guilds.array().length} server(s).`, 'MAIN');
-        Debug.print(`Logged in as ${user.username}.\n
+        print(`Serving ${guilds.array().length} server(s).`, 'MAIN');
+        print(`Logged in as ${user.username}.\n
         Initialization ready, monitoring activity...\n`, 'MAIN');
     };
 

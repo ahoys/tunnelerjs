@@ -1,3 +1,6 @@
+const {print, log} = require('../util/module.inc.debug')();
+const fs = require('fs');
+
 /**
  * Automatic guild loader.
  * Reads the guilds located in guilds folder and maps available
@@ -6,8 +9,7 @@
  * Author: Ari Höysniemi
  * Date: May 6. 2017
  */
-const fs = require('fs');
-module.exports = (Debug, CommandsMap, Parser) => {
+module.exports = (CommandsMap, Parser) => {
     const module = {};
     const guilds = {};
     const {cmdMap, mwMap} = CommandsMap;
@@ -44,7 +46,7 @@ module.exports = (Debug, CommandsMap, Parser) => {
             });
             return guildData;
         } catch (e) {
-            Debug.print(
+            print(
                 `Reading guild files failed.`,
                 `GUILDS ERROR`
             );
@@ -84,7 +86,7 @@ module.exports = (Debug, CommandsMap, Parser) => {
                             // the object.
                             guildCommands[keyword] = {
                                 execute: require(`.${jsPath}`)(
-                                    Debug, settings, localization, cmdKey
+                                    settings, localization, cmdKey
                                 ).execute,
                                 access: Parser.getListOfType(
                                     commandsJSON[cmdKey].access),
@@ -96,7 +98,7 @@ module.exports = (Debug, CommandsMap, Parser) => {
                         }
                     });
                 } else {
-                    Debug.log(
+                    log(
                         `Command ${cmdKey} was not found.`,
                         `GUILDS WARN`
                     );
@@ -104,7 +106,7 @@ module.exports = (Debug, CommandsMap, Parser) => {
             });
             return guildCommands;
         } catch (e) {
-            Debug.print(
+            print(
                 `Reading guild commands failed. The process will now exit.`,
                 `GUILDS CRITICAL`, true, e
             );
@@ -136,7 +138,7 @@ module.exports = (Debug, CommandsMap, Parser) => {
             });
             return guildMiddlewares;
         } catch (e) {
-            Debug.print(
+            print(
                 `Reading guild middlewares failed. The process will now exit.`,
                 `GUILDS CRITICAL`, true, e
             );
@@ -165,7 +167,7 @@ module.exports = (Debug, CommandsMap, Parser) => {
             // Return all the available guilds with commands.
             return guilds;
         } catch (e) {
-            Debug.print(
+            print(
                 `Initializing guilds failed. The process will now exit.`,
                 `GUILDS CRITICAL`, true, e
             );

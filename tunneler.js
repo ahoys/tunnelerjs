@@ -1,18 +1,17 @@
 // Utilities
-const Debug = require('./util/module.inc.debug')();
-const Parser = require('./util/module.inc.parser')(Debug);
+const Parser = require('./util/module.inc.parser')();
 
 // Authentication data
 // Includes token, id and owner.
-const AuthMap = require('./auth')(Debug).initialize();
+const AuthMap = require('./auth')().initialize();
 
 // Commands data
 // All the available commands mapped into a special object frames.
-const CommandsMap = require('./commands')(Debug).initialize();
+const CommandsMap = require('./commands')().initialize();
 
 // Guilds data
 // Each guild can have its own commands, settings and translations.
-const GuildsMap = require('./guilds')(Debug, CommandsMap, Parser).initialize();
+const GuildsMap = require('./guilds')(CommandsMap, Parser).initialize();
 
 // Discord.js API and handles.
-require('./handles')(Debug, AuthMap, Parser, GuildsMap);
+require('./handles')(AuthMap, Parser, GuildsMap);

@@ -59,7 +59,7 @@ module.exports = () => {
      * @param {object} err
      * @return {boolean}
      */
-    module.print = (str, src, log, err) => {
+    module.print = (str, src, log = true, err) => {
         try {
             // Printable string must exist.
             if (

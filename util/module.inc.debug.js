@@ -1,105 +1,102 @@
 const fs = require('fs');
 
-/**
- * Debugging tools.
- * @param {string} filepath
- * @return {boolean}
- */
-module.exports = (filepath = './console.log') => {
+module.exports = () => {
     const module = {};
-
-    // Filepath must be valid.
-    if (typeof filepath !== 'string') {
-        console.log('[DEBUG] Invalid filepath. The process will now exit.');
-        process.exit(1);
-        return false;
-    }
-
-    // Initial values.
-    const defaultSrc = 'MISC';
-    let init = true;
+    const path = './console.log';
+    const tag = 'MISC';
+    let init = false;
 
     /**
-     * Console print & log.
+     * Makes sure the log file exists.
+     * If not, creates a new log file.
+     * @return {boolean}
+     */
+    const isInitialized = () => {
+        try {
+            if (fs.existsSync(path)) {
+                // The file already exists.
+                return true;
+            }
+            // Create a new log file.
+            fs.writeFileSync(path, 'Tunnelerjs log file created\n.');
+            return true;
+        } catch (e) {
+            console.log('>> [DEBUG] Creating a log file failed: ', e);
+            return false;
+        }
+    };
+
+    /**
+     * Makes sure the log file does not grow too large.
+     * If does, clears the file.
+     * @return {boolean}
+     */
+    const checkLogFileLength = () => {
+        try {
+            if (fs.statSync(path).size > 1000000) {
+                // Uh oh, the file has gotten too large.
+                // Truncate.
+                fs.truncateSync(path, 0);
+            }
+            return true;
+        } catch (e) {
+            console.log('>> [DEBUG] Checking log file length failed: ', e);
+            return false;
+        }
+    };
+
+    /**
+     * Prints a formatted console command.
      * @param {string} str
      * @param {string} src
      * @param {boolean} log
      * @param {object} err
      * @return {boolean}
      */
-    module.print = (str = '', src = defaultSrc, log = true, err) => {
+    module.print = (str, src, log, err) => {
         try {
+            // Printable string must exist.
             if (
+                !isInitialized() ||
                 typeof str !== 'string' ||
-                typeof src !== 'string' ||
-                typeof log !== 'boolean'
-            ) {
-                console.log('[DEBUG] Invalid print parameters.');
-                return false;
-            }
-            const msgLine = `>> ${str}`;
-            console.log(msgLine);
-            if (log) {
-                module.log(str, src, filepath, err);
-            }
+                !str.length
+            ) return false;
+            // Display a console log.
+            console.log(`>> [${src || tag}] ${str.substr(0, 128)}`);
+            if (log) module.log(str, src, err);
             return true;
         } catch (e) {
-            console.log('[DEBUG] Printing has failed.');
+            console.log('>> [DEBUG] Printing failed: ', e);
             return false;
         }
     };
 
     /**
-     * Logged development debug.
-     * @param {string} str
-     * @param {string} src
-     * @param {string} path
+     * Logs a formatted message.
+     * @param {str} str
+     * @param {src} src
      * @param {object} err
      * @return {boolean}
      */
-    module.log = (str = '', src = defaultSrc, path = filepath, err) => {
+    module.log = (str, src, err) => {
         try {
+            // Printable string or error must exist.
             if (
-                typeof str !== 'string' ||
-                typeof src !== 'string' ||
-                typeof path !== 'string'
-            ) {
-                // Invalid parameters given.
-                console.log('[DEBUG] Invalid print parameters.');
-                return false;
-            }
-            if (str.length < 1) {
-                // No need to log empty.
-                return false;
-            }
-            const timestamp = new Date();
-            const msg = `[${src}] ${str}`;
-            const errLine = err ? `\n${err}` : '';
-            if (fs.existsSync(path)) {
-                // An existing file.
-                const stats = fs.statSync(path);
-                const fileSizeInBytes = stats.size;
-                if (fileSizeInBytes > 1000000) {
-                    fs.truncateSync(path, 0);
-                }
-                const initLine = init ? '\n= NEW PROCESS ===========\n' : '';
-                fs.appendFileSync(
-                    path, `${initLine}${timestamp}\n${msg}${errLine}\n\n`);
-            } else {
-                // Create a new file.
-                const initLine = init ? '= NEW PROCESS ===========\n' : '';
-                fs.writeFileSync(
-                    path, `${initLine}${timestamp}\n${msg}${errLine}\n\n`,
-                    'utf8');
-            }
-            if (init) {
-                // 1st run.
-                init = false;
-            }
-            return true;
+                !isInitialized() ||
+                (typeof str !== 'string' || !str.length) && !err
+            ) return false;
+            // Make sure the log file does not get too large.
+            checkLogFileLength();
+            const initLine = init ? '' : '\n[ NEW PROCESS ]\n\n';
+            const msgLine = `${new Date()}\n[${src || tag}] `
+            + `${str.substr(0, 1024)}`;
+            const errLine = err !== undefined ? `\n${err}` : '';
+            // Write log.
+            fs.appendFileSync(
+                path, `${initLine}${msgLine}${errLine}\n\n`, 'utf8');
+            init = true;
         } catch (e) {
-            console.log(`[DEBUG] Writing to log has failed.
-            Make sure the application has all the required permissions.`);
+            console.log('>> [DEBUG] Logging failed: ', e);
             return false;
         }
     };

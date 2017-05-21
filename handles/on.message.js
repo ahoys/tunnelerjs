@@ -75,9 +75,10 @@ module.exports = (Client, Debug, Parser, GuildsMap) => {
             const perfMeasure = process.hrtime();
             const response = execute(Message, Client);
             Debug.log(
-                `A command (${cmdKey}) took `
-                + `${process.hrtime(perfMeasure)[0]}s and `
-                + `${process.hrtime(perfMeasure)[1]}ms to execute.`,
+                `A triggered command (${cmdKey}) took `
+                + `${process.hrtime(perfMeasure)[0]}s (`
+                + `${process.hrtime(perfMeasure)[1]}ms) to execute on `
+                + `a channel (${channel.name}).`,
                 'MAIN'
             );
             if (typeof response === 'string' && response.length) {

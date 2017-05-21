@@ -8,6 +8,7 @@ const fs = require('fs');
  *
  * Author: Ari Höysniemi
  * Date: May 5. 2017
+ * @return {object}
  */
 module.exports = () => {
     const module = {};

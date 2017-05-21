@@ -1,4 +1,5 @@
 const {print} = require('../util/module.inc.debug')();
+const fs = require('fs');
 
 /**
  * Creates and returns and authentication object.
@@ -6,8 +7,8 @@ const {print} = require('../util/module.inc.debug')();
  *
  * Author: Ari Höysniemi
  * Date: May 6. 2017
+ * @return {object}
  */
-const fs = require('fs');
 module.exports = () => {
     const module = {};
     const auth = {};

@@ -1,4 +1,13 @@
 const {print} = require('../util/module.inc.debug')();
+
+/**
+ * Event handler
+ *
+ * Handles all the incoming events.
+ * @param {object} AuthMap
+ * @param {object} Parser
+ * @param {object} GuildsMap
+ */
 module.exports = (AuthMap, Parser, GuildsMap) => {
     const Discord = require('discord.js');
     const Client = new Discord.Client();

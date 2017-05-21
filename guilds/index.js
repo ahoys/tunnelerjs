@@ -8,6 +8,9 @@ const fs = require('fs');
  *
  * Author: Ari Höysniemi
  * Date: May 6. 2017
+ * @param {object} CommandsMap
+ * @param {object} Parser
+ * @return {object}
  */
 module.exports = (CommandsMap, Parser) => {
     const module = {};

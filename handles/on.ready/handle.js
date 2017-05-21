@@ -10,9 +10,14 @@ const fs = require('fs');
 module.exports = (Client, GuildsMap) => {
     const module = {};
 
+    /**
+     * Creates new guild files.
+     * @param {string} guildId
+     * @return {boolean}
+     */
     const createGuildFiles = (guildId) => {
         try {
-            const path = `./guilds/${guildId}`;
+            const path = `./guilds/${String(guildId.substr(0, 128))}`;
             if (!fs.existsSync(path)) {
                 fs.mkdirSync(path);
                 const template = '' +
@@ -64,8 +69,10 @@ module.exports = (Client, GuildsMap) => {
             }
         });
         if (shutDown) {
-            print('New guild files added. Make sure they are configured '
-            + 'properly before restarting.', 'MAIN');
+            // The application is oredered to be shut down.
+            // This happens if there are new guilds generated.
+            print(`New guild files added (./guilds/${guild.id}). Make sure `
+            + `they are configured properly before restarting .`, 'MAIN');
             print('The process will now exit', 'MAIN', true,
             'User must validate the new files.');
             process.exit(0);

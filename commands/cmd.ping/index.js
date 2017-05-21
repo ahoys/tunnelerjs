@@ -33,10 +33,7 @@ module.exports = (Settings, Strings, name) => {
             const ping = getPing(Client);
             return `${Strings['success_0']}${ping}${Strings['success_1']}`;
         } catch (e) {
-            print(
-                `Executing a command (${name}) failed.`,
-                `${name} ERROR`, true, e
-            );
+            print(`Command execution failed.`, name, true, e);
         }
         return '';
     };

@@ -31,7 +31,7 @@ module.exports = (Settings, Strings, name) => {
                 process.exit(0);
             }, 2048);
         } catch (e) {
-            print(`Executing a command (${name}) failed. `
+            print(`Command execution failed. `
             + `Force shut down...`, name, true, e);
             process.exit(0);
         }

@@ -37,7 +37,7 @@ module.exports = (Settings, Strings, name) => {
      */
     const getString = (msg) => {
         log(`I'm going to log this. `
-        + `Log won't be displayed in console. Only log.`, `${name}`);
+        + `Log won't be displayed in the console. Only log.`, name);
         return `${msg} example.`;
     };
 
@@ -55,10 +55,7 @@ module.exports = (Settings, Strings, name) => {
             const string = getString('just an');
             return `${Strings['success_0']}${string}${Strings['success_1']}`;
         } catch (e) {
-            print(
-                `Executing a command (${name}) failed.`,
-                `${name} ERROR`, true, e
-            );
+            print(`Command execution failed.`, name, true, e);
         }
         return '';
     };

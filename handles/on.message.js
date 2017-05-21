@@ -1,5 +1,6 @@
 const {log} = require('../util/module.inc.debug')();
-module.exports = (Client, Parser, GuildsMap) => {
+const Parser = require('../util/module.inc.parser')();
+module.exports = (Client, GuildsMap) => {
     const module = {};
 
     /**

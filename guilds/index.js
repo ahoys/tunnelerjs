@@ -1,4 +1,5 @@
 const {print, log} = require('../util/module.inc.debug')();
+const Parser = require('../util/module.inc.parser')();
 const fs = require('fs');
 
 /**
@@ -9,10 +10,9 @@ const fs = require('fs');
  * Author: Ari Höysniemi
  * Date: May 6. 2017
  * @param {object} CommandsMap
- * @param {object} Parser
  * @return {object}
  */
-module.exports = (CommandsMap, Parser) => {
+module.exports = (CommandsMap) => {
     const module = {};
     const guilds = {};
     const {cmdMap, mwMap} = CommandsMap;

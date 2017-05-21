@@ -5,10 +5,9 @@ const {print} = require('../util/module.inc.debug')();
  *
  * Handles all the incoming events.
  * @param {object} AuthMap
- * @param {object} Parser
  * @param {object} GuildsMap
  */
-module.exports = (AuthMap, Parser, GuildsMap) => {
+module.exports = (AuthMap, GuildsMap) => {
     const Discord = require('discord.js');
     const Client = new Discord.Client();
     Client.login(AuthMap.token);
@@ -35,7 +34,7 @@ module.exports = (AuthMap, Parser, GuildsMap) => {
      * This handle has a middleware support. Middlewares are
      * executed before the commands.
      */
-    const onMessage = require('./on.message')(Client, Parser, GuildsMap);
+    const onMessage = require('./on.message')(Client, GuildsMap);
     Client.on('message', (Message) => {
         try {
             new Promise((resolve, reject) => {

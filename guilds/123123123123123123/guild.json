@@ -12,6 +12,10 @@
             "access": ["123123123123123123"],
             "excluded_channels": []
         },
+        "exit": {
+            "enabled": true,
+            "access": ["owner"]
+        },
         "select": {
             "enabled": true,
             "access": ["all"],

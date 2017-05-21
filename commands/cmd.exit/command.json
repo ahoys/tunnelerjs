@@ -1,0 +1,13 @@
+{
+    "settings": {},
+    "localizations": {
+        "default": {
+            "keywords": ["exit", "disconnect"],
+            "success_0": "Okay, see you later!"
+        },
+        "fi": {
+            "keywords": ["exit", "poistu"],
+            "success_0": "Löydän itseni ulos."
+        }
+    }
+}

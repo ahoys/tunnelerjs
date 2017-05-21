@@ -11,6 +11,10 @@
             "enabled": true,
             "access": ["all"],
             "excluded_channels": ["excluded"]
+        },
+        "exit": {
+            "enabled": true,
+            "access": ["owner"]
         }
     }
 }

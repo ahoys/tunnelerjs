@@ -25,11 +25,12 @@ module.exports = (Settings, Strings, name) => {
     /**
      * Executes the command.
      * @param {object} Message
+     * @param {object} Client
      * @return {string}
      */
-    module.execute = (Message) => {
+    module.execute = (Message, Client) => {
         try {
-            const ping = getPing(Message.client);
+            const ping = getPing(Client);
             return `${Strings['success_0']}${ping}${Strings['success_1']}`;
         } catch (e) {
             print(

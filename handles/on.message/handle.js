@@ -1,13 +1,14 @@
-const {log} = require('../../util/module.inc.debug')();
+const {log, print} = require('../../util/module.inc.debug')();
 const Parser = require('../../util/module.inc.parser')();
 
 /**
  * Message handle.
  * @param {object} Client
  * @param {object} GuildsMap
+ * @param {string} ownerId
  * @return {object}
  */
-module.exports = (Client, GuildsMap) => {
+module.exports = (Client, GuildsMap, ownerId) => {
     const module = {};
 
     /**
@@ -54,13 +55,36 @@ module.exports = (Client, GuildsMap) => {
         return '';
     };
 
+    const hasAccess = (accesses, authorId) => {
+        try {
+            // No access.
+            if (
+                typeof accesses !== 'object' ||
+                accesses.constructor !== Array ||
+                !accesses.length
+            ) return false;
+            // All access.
+            if (accesses.indexOf('all') !== -1) return true;
+            // Owner access.
+            if (
+                accesses.indexOf('owner') !== -1 &&
+                authorId === ownerId
+            ) return true;
+            // Author id access.
+            if (accesses.indexOf(authorId) !== -1) return true;
+        } catch (e) {
+            print('Verifying access failed.', 'MAIN', true, e);
+        }
+        return false;
+    };
+
     /**
      * Executes the handle.
      * @param {object} Message
      * @return {boolean}
      */
     module.handle = (Message) => {
-        const {content, guild, channel} = Message;
+        const {content, guild, channel, author} = Message;
         const {user} = Client;
         // Listen for direct commands only.
         const thisGuild = GuildsMap[guild.id];
@@ -69,19 +93,23 @@ module.exports = (Client, GuildsMap) => {
             !Message.isMentioned(user) ||
             !Parser.isSafe(content)
         ) return false;
+        const {commands} = thisGuild;
         const cmdKey = Parser.firstMatch(
-            Object.keys(thisGuild.commands),
+            Object.keys(commands),
             Parser.trim(content)
         );
         // The command must exist.
-        if (thisGuild.commands[cmdKey] === undefined) return false;
+        if (commands[cmdKey] === undefined) return false;
+        // Look for user access.
         const {
             execute,
+            access,
             enabledChannels,
             excludedChannels,
-        } = thisGuild.commands[cmdKey];
+        } = commands[cmdKey];
         if (Parser.isIncluded(
-            channel.name, enabledChannels, excludedChannels, true)
+            channel.name, enabledChannels, excludedChannels, true) &&
+            hasAccess(access, author.id)
         ) {
             // Measure execution time for the command.
             const perfMeasure = process.hrtime();

@@ -34,7 +34,7 @@ module.exports = (AuthMap, GuildsMap) => {
      * This handle has a middleware support. Middlewares are
      * executed before the commands.
      */
-    const onMessage = require('./on.message/handle.js')(Client, GuildsMap);
+    const onMessage = require('./on.message/handle.js')(Client, GuildsMap, AuthMap.owner);
     Client.on('message', (Message) => {
         try {
             new Promise((resolve, reject) => {

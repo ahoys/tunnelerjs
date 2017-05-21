@@ -131,7 +131,8 @@ module.exports = (CommandsMap) => {
                 if (mwMap[mwKey] && middlewaresJSON[mwKey].enabled) {
                     const {jsPath, settings} = mwMap[mwKey];
                     guildMiddlewares[mwKey] = {
-                        execute: require(`.${jsPath}`)(settings).execute,
+                        execute: require(`.${jsPath}`)(
+                            settings, mwKey).execute,
                         enabledChannels: Parser.getListOfType(
                         middlewaresJSON[mwKey]['enabled_channels']),
                         excludedChannels: Parser.getListOfType(

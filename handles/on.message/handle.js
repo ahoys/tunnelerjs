@@ -29,25 +29,28 @@ module.exports = (Client, GuildsMap) => {
                     enabledChannels,
                     excludedChannels,
                 } = thisGuild.middlewares[mwKey];
+                // Make sure this channel is included to be middlewared
+                // and then execute. If the execution returns true,
+                // the command process may go on.
                 if (
                     Parser.isIncluded(
-                        channel.name, enabledChannels, excludedChannels, true)
+                        channel.name,
+                        enabledChannels,
+                        excludedChannels,
+                        true
+                    )
                 ) {
                     const haltReason = execute(Message);
-                    if (typeof haltReason === 'string' && !haltReason.length) {
-                        // No reasons given,
-                        // the process can continue.
-                        return '';
-                    }
-                    // The process will halt.
-                    return typeof haltReason === 'string'
+                    if (typeof haltReason !== 'string' || haltReason.length) {
+                        // An invalid return or an error message encountered.
+                        return typeof haltReason === 'string'
                         ? haltReason
-                        : `Middleware (${mwKey}) blocked the execution. `
-                            + `Invalid reason returned.`;
-                }
+                        : `Middleware ${mwKey} halted the processing.`;
+                    }
+                };
             });
         }
-        // No middlewares specified.
+        // No middlewares specified or the execution was ok.
         return '';
     };
 

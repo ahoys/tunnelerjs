@@ -1,4 +1,4 @@
-const {print} = require('../util/module.inc.debug')();
+const {print, log} = require('../util/module.inc.debug')();
 
 /**
  * Event handler
@@ -43,6 +43,7 @@ module.exports = (AuthMap, GuildsMap) => {
                 // allows it.
                 const haltReason = onMessage.prepare(Message);
                 if (haltReason.length) {
+                    // An error message received.
                     reject(haltReason);
                 }
                 resolve(Message);
@@ -50,9 +51,9 @@ module.exports = (AuthMap, GuildsMap) => {
                 // Run the command.
                 onMessage.handle(Message);
             }).catch((e) => {
-                print(
-                    `Encountered an error while handling a message.`,
-                    `MESSAGE HANDLE`, true, e
+                log(
+                    `Middlware terminated the processing.`,
+                    `MAIN WARN`, true, e
                 );
             });
         } catch (e) {

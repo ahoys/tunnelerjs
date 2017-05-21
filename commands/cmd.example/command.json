@@ -5,18 +5,18 @@
     "localizations": {
         "default": {
             "keywords": ["example"],
-            "success_0": "Default language example.",
-            "success_1": "Another default language example."
+            "success_0": "default language example.",
+            "success_1": "another default language example."
         },
         "en": {
             "keywords": ["example", "eg"],
-            "success_0": "English language example.",
-            "success_1": "Another english language example."
+            "success_0": "english language example.",
+            "success_1": "another english language example."
         },
         "fi": {
             "keywords": ["esimerkki", "esim"],
-            "success_0": "Suomenkielinen esimerkki.",
-            "success_1": "Toinen suomenkielinen esimerkki."
+            "success_0": "suomenkielinen esimerkki.",
+            "success_1": "toinen suomenkielinen esimerkki."
         }
     }
 }

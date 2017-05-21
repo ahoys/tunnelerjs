@@ -1,0 +1,20 @@
+{
+    "localization": "fi",
+    "middlewares": {
+        "antispam": {
+            "enabled": true,
+            "enabled_channels": ["general"]
+        }
+    },
+    "commands": {
+        "ping": {
+            "enabled": true,
+            "access": ["all"],
+            "excluded_channels": ["excluded"]
+        },
+        "exit": {
+            "enabled": true,
+            "access": ["owner"]
+        }
+    }
+}

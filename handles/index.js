@@ -16,7 +16,7 @@ module.exports = (AuthMap, GuildsMap) => {
      * Client connected and ready to execute.
      */
     const onReady = require('./on.ready/handle.js')(Client, GuildsMap);
-    Client.on('ready', (Message) => {
+    Client.on('ready', () => {
         try {
             onReady.handle();
         } catch (e) {

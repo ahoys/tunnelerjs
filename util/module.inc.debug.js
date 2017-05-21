@@ -1,5 +1,11 @@
 const fs = require('fs');
 
+/**
+ * Console printing and log file logging tools.
+ * Should be used as the main "API" to display messages
+ * to the user.
+ * @return {object}
+ */
 module.exports = () => {
     const module = {};
     const path = './console.log';

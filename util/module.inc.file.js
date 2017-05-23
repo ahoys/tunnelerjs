@@ -9,7 +9,7 @@ module.exports = () => {
     const module = {};
 
     /**
-     * Returns whether a string has only whitelisted characters.
+     * Copies a file to a destination.
      * @param {string} source
      * @param {string} destination
      * @param {function} callback

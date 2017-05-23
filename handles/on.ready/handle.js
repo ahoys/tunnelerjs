@@ -1,4 +1,5 @@
 const {print} = require('../../util/module.inc.debug')();
+const File = require('../../util/module.inc.file')();
 const fs = require('fs');
 
 /**
@@ -13,38 +14,42 @@ module.exports = (Client, GuildsMap) => {
     /**
      * Creates new guild files.
      * @param {string} guildId
-     * @return {boolean}
      */
-    const createGuildFiles = (guildId) => {
+    const checkGuildFiles = (guildId) => {
         try {
             const path = `./guilds/${String(guildId.substr(0, 128))}`;
             if (!fs.existsSync(path)) {
                 fs.mkdirSync(path);
-                const template = '' +
-                '{\n' +
-                '    "localization": "en",\n' +
-                '    "middlewares": {\n' +
-                '      "antispam": {\n' +
-                '        "enabled": true\n' +
-                '      }\n' +
-                '    },\n' +
-                '    "commands": {\n' +
-                '      "exit": {\n' +
-                '        "enabled": true,\n' +
-                '        "access": ["owner"]\n' +
-                '      }\n' +
-                '    }\n' +
-                '}\n';
-                fs.writeFileSync(`${path}/guild.json`, template);
-                return true;
+                if (fs.existsSync('./guilds/template.json')) {
+                    // Create a new guild.json file based on a template.
+                    File.copyFile('./guilds/template.json',
+                    `${path}/guild.json`, ((e) => {
+                        if (e) {
+                            print(`Failed to create (${path}/guild.json).`
+                            + `Create a proper guild file manually. `
+                            + `The process will now exit.`, true, e);
+                            process.exit(1);
+                        };
+                        print(`New guild file(s) added (${path}/guild.json).`,
+                        'MAIN');
+                        print('Make sure the file(s) are configured properly '
+                        + 'before restarting.', 'MAIN');
+                        print('The process will now exit.', 'MAIN', true,
+                        'User must validate the new files.');
+                        process.exit(0);
+                    }));
+                } else {
+                    // Missing the template file.
+                    print('Missing a valid ./guilds/template.json file. '
+                    + 'The process will now exit.', 'MAIN ERROR');
+                    process.exit(1);
+                }
             }
-            return false;
         } catch (e) {
             print(`Creating guild files failed for (${guildId}). `
             + `The process will now exit.`,
             'MAIN ERROR', true, e);
             process.exit(1);
-            return false;
         }
     };
 
@@ -53,30 +58,13 @@ module.exports = (Client, GuildsMap) => {
      */
     module.handle = () => {
         const {user, guilds} = Client;
-        let shutDown = false;
         guilds.forEach((guild) => {
             if (!GuildsMap[guild.id]) {
                 print(`Could not find configuration for a guild `
                 + `(${guild.id}). Generating files...`, 'MAIN');
-                if (createGuildFiles(guild.id)) {
-                    // Success.
-                    shutDown = true;
-                } else {
-                    // Fail.
-                    print('Could not create files. Create the files manually.',
-                    'MAIN WARN');
-                }
+                checkGuildFiles(guild.id);
             }
         });
-        if (shutDown) {
-            // The application is oredered to be shut down.
-            // This happens if there are new guilds generated.
-            print(`New guild files added (./guilds/${guild.id}). Make sure `
-            + `they are configured properly before restarting .`, 'MAIN');
-            print('The process will now exit', 'MAIN', true,
-            'User must validate the new files.');
-            process.exit(0);
-        }
         print(`Serving ${guilds.array().length} server(s).`, 'MAIN');
         print(`Logged in as ${user.username}.`, 'MAIN');
         print(`Initialization ready, monitoring activity...`, 'MAIN');

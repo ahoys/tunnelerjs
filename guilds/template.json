@@ -1,16 +1,14 @@
 {
-    "localization": "fi",
+    "localization": "en",
     "middlewares": {
         "antispam": {
-            "enabled": true,
-            "enabled_channels": ["general"]
+            "enabled": true
         }
     },
     "commands": {
         "ping": {
             "enabled": true,
-            "access": ["all"],
-            "excluded_channels": ["excluded"]
+            "access": ["owner"]
         },
         "exit": {
             "enabled": true,

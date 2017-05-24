@@ -98,7 +98,8 @@ module.exports = () => {
                 !msg.length
             ) return false;
             // Print the main message.
-            console.log(`${module.getTimeString()}`
+            const timeStr = module.getTimeString();
+            console.log(`${timeStr}`
                 + `${module.getTagString(tag, err)} ${msg.substr(0, 128)}`);
             if (err) {
                 // Print the error if exists.
@@ -107,10 +108,10 @@ module.exports = () => {
                 // found from the log file.
                 const isLong = err.length > 32;
                 const errMsg = isLong ? `${err.substr(err)}...` : err;
-                console.log(`${timeStr}[Error reason] ${errMsg}`);
+                console.log(`${timeStr} -> ${errMsg}`);
                 if (isLong) {
                     // A very long error message encountered.
-                    console.log(`${timeStr}[Error reason] Read more from the `
+                    console.log(`${timeStr} -> Read more from the `
                         + `console.log file.`);
                 }
             }

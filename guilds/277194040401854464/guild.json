@@ -1,0 +1,18 @@
+{
+    "localization": "en",
+    "middlewares": {
+        "antispam": {
+            "enabled": true
+        }
+    },
+    "commands": {
+        "ping": {
+            "enabled": true,
+            "access": ["owner"]
+        },
+        "exit": {
+            "enabled": true,
+            "access": ["owner"]
+        }
+    }
+}

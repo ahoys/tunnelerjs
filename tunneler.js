@@ -1,3 +1,6 @@
+const {log} = require('./util/module.inc.debug')();
+log('A new process started.', 'MAIN');
+
 // Authentication data
 // Includes token, id and owner.
 const AuthMap = require('./auth')().initialize();

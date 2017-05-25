@@ -4,16 +4,16 @@ const {print, log} = require('./util/module.inc.debug')();
 const addThread = () => {
     try {
         const worker = cluster.fork();
-        worker.on('exit', () => {
-            log(`Thread ${worker.id} closed.`, 'Main');
+        worker.on('exit', (code, signal) => {
+            // Log the reason why the worker died.
+            log(`Thread ${worker.id} closed (${code || signal}).`, 'Main');
         });
         return worker;
     } catch (e) {
-        log('Could not add a new thread.', 'Main', e);
-        process.exit(1);
+        log('Adding a thread failed.', 'Main', e);
     }
     return {};
-};
+}
 
 // Initialize the main thread.
 if (cluster.isMaster) {
@@ -30,31 +30,38 @@ if (cluster.isMaster) {
             print('The process was closed unexpectedly. '
                 + 'Restarting in 5 seconds...', 'Main', true,
                 `pid: ${worker.process.pid}, code: ${code}.`);
-            worker.kill();
+            // Make sure the worker is dead.
+            if (!worker.isDead) worker.kill();
             setTimeout(() => {
                 // Restart.
                 worker = addThread();
             }, 5120);
-        }
-        if (code === 2) {
+        } else if (code === 2) {
             // User triggered shut down.
             print('The process was asked to exit. '
                 + 'Shutting down...', 'Main', true,
                 `pid: ${worker.process.pid}, code: ${code}.`);
-            worker.kill();
+            // Make sure the worker is dead.
+            if (!worker.isDead) worker.kill();
             setTimeout(() => {
                 process.exit(0);
             }, 512);
+        } else {
+            log(`Application was forced to close (${code || signal}).`, 'Main');
+            // Make sure the worker is dead.
+            if (!worker.isDead) worker.kill();
         }
     });
 
     // Ctrl+C event.
     process.on('SIGINT', () => {
-        console.log('Shutting down...');
-        worker.kill();
+        log('The process was shut down.', 'Main');
+        print('Shutting down...', 'Main', false);
+        // You must exit to switch the exit flag.
+        // Otherwise the app may end up into a restarting loop.
         setTimeout(() => {
             process.exit(0);
-        }, 512);
+        }, 1024);
     });
 }
 

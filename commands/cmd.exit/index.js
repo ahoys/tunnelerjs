@@ -28,7 +28,7 @@ module.exports = (Settings, Strings, name) => {
             Message.reply(`${Strings['success_0']}`);
             setTimeout(() => {
                 Client.destroy();
-                process.exit(0);
+                process.exit(2);
             }, 2048);
         } catch (e) {
             print(`Command execution failed. `

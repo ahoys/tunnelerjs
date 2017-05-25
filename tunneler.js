@@ -3,7 +3,7 @@ const {print, log} = require('./util/module.inc.debug')();
 
 // Initialize the main thread.
 if (cluster.isMaster) {
-    log('A new process started.', 'MAIN');
+    log('==== A new process started ====', 'MAIN');
     print('Hello world!', 'Main', false);
 
     // A short delay before starting the
@@ -13,7 +13,6 @@ if (cluster.isMaster) {
     }, 2048);
 
     cluster.on('exit', (worker, code, signal) => {
-        console.log('exit');
         if (code === 1) {
             // Unexpected shut down.
             print('The process was closed unexpectedly. '
@@ -23,7 +22,8 @@ if (cluster.isMaster) {
                 // Restart.
                 cluster.fork();
             }, 5120);
-        } else {
+        }
+        if (code === 2) {
             // User triggered shut down.
             print('The process was closed. '
                 + 'Closing the main thread in 5 seconds...', 'Main', true,
@@ -37,14 +37,20 @@ if (cluster.isMaster) {
     // Ctrl+C event.
     process.on('SIGINT', () => {
         cluster.disconnect(() => {
-            print('Goodbye world!', 'Main', false);
-            process.exit(0);
+            console.log('Shutting down...')
+            setTimeout(() => {
+                process.exit(0);
+            }, 1024);
         });
     });
 }
 
 // Initialize the working thread.
 if (cluster.isWorker) {
+
+    // Log the worker.
+    log(`Worker ${cluster.worker.id} started.`, 'Main');
+
     // Authentication data
     // Includes token, id and owner.
     const AuthMap = require('./auth')().initialize();
@@ -64,7 +70,14 @@ if (cluster.isWorker) {
 }
 
 // Something unexpected.
+// This shouldn't be happening.
 process.on('uncaughtException', (err) => {
-    log('uncaughtException occurred.', err);
+    try {
+        // Attempt to log the event.
+        log('uncaughtException occurred.', err);
+    } catch(e) {
+        // Logging filed, just print the event.
+        console.log(e);
+    }
     process.exit(1);
 });

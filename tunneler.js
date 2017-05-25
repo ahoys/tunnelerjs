@@ -58,7 +58,9 @@ if (cluster.isWorker) {
     const GuildsMap = require('./guilds')(CommandsMap).initialize();
 
     // Discord.js API and handles.
-    require('./handles')(AuthMap, GuildsMap);
+    if (!process.env.OFFLINE) {
+        require('./handles')(AuthMap, GuildsMap);
+    }
 }
 
 // Something unexpected.

@@ -52,6 +52,7 @@ if (cluster.isWorker) {
     // Actions on closing.
     process.on('SIGINT', () => {
         print(`Thread ${cluster.worker.id} closed.`, 'Main');
+        process.exit(0);
     });
 
     // Authentication data

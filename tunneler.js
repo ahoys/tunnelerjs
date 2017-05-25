@@ -47,7 +47,7 @@ if (cluster.isMaster) {
 if (cluster.isWorker) {
 
     // Log the worker.
-    log(`Worker ${cluster.worker.id} started.`, 'Main');
+    log(`Thread ${cluster.worker.id} started.`, 'Main');
 
     // Actions on closing.
     process.on('SIGINT', () => {

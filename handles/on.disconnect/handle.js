@@ -12,7 +12,7 @@ module.exports = () => {
      * @param {object} CloseEvent
      */
     module.handle = (CloseEvent) => {
-        print(`Client disconnected (${CloseEvent.code}).`, 'MAIN', true,
+        print(`Client disconnected (${CloseEvent.code}).`, 'Handler', true,
         CloseEvent.reason);
     };
 

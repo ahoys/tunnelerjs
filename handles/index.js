@@ -22,7 +22,7 @@ module.exports = (AuthMap, GuildsMap) => {
         } catch (e) {
             print(
                 'Client ready failed. The process will now exit.',
-                'MAIN ERROR', true, e
+                'Handler', true, e
             );
             process.exit(1);
         }
@@ -54,13 +54,13 @@ module.exports = (AuthMap, GuildsMap) => {
             }).catch((e) => {
                 log(
                     `Middlware terminated the processing.`,
-                    `MAIN WARN`, true, e
+                    `Handler`, true, e
                 );
             });
         } catch (e) {
             print(
                 `Processing a message failed.`,
-                `MAIN ERROR`, true, e
+                `Handler`, true, e
             );
         }
     });
@@ -75,7 +75,7 @@ module.exports = (AuthMap, GuildsMap) => {
         } catch (e) {
             print(
                 'Disconnect failed. The process will now exit.',
-                'MAIN ERROR', true, e
+                'Handler', true, e
             );
             process.exit(1);
         }
@@ -91,7 +91,7 @@ module.exports = (AuthMap, GuildsMap) => {
         } catch (e) {
             print(
                 'Reconnecting failed. The process will now exit.',
-                'MAIN ERROR', true, e
+                'Handler', true, e
             );
             process.exit(1);
         }

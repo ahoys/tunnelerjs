@@ -31,24 +31,24 @@ module.exports = (Client, GuildsMap) => {
                             process.exit(1);
                         };
                         print(`New guild file(s) added (${path}/guild.json).`,
-                        'MAIN');
+                        'Handler');
                         print('Make sure the file(s) are configured properly '
-                        + 'before restarting.', 'MAIN');
-                        print('The process will now exit.', 'MAIN', true,
+                        + 'before restarting.', 'Handler');
+                        print('The process will now exit.', 'Handler', true,
                         'User must validate the new files.');
                         process.exit(0);
                     }));
                 } else {
                     // Missing the template file.
                     print('Missing a valid ./guilds/template.json file. '
-                    + 'The process will now exit.', 'MAIN ERROR');
+                    + 'The process will now exit.', 'Handler');
                     process.exit(1);
                 }
             }
         } catch (e) {
             print(`Creating guild files failed for (${guildId}). `
             + `The process will now exit.`,
-            'MAIN ERROR', true, e);
+            'Handler', true, e);
             process.exit(1);
         }
     };
@@ -61,13 +61,13 @@ module.exports = (Client, GuildsMap) => {
         guilds.forEach((guild) => {
             if (!GuildsMap[guild.id]) {
                 print(`Could not find configuration for a guild `
-                + `(${guild.id}). Generating files...`, 'MAIN');
+                + `(${guild.id}). Generating files...`, 'Handler');
                 checkGuildFiles(guild.id);
             }
         });
-        print(`Serving ${guilds.array().length} server(s).`, 'MAIN');
-        print(`Logged in as ${user.username}.`, 'MAIN');
-        print(`Initialization ready, monitoring activity...`, 'MAIN');
+        print(`Serving ${guilds.array().length} server(s).`, 'Handler');
+        print(`Logged in as ${user.username}.`, 'Handler');
+        print(`Initialization ready, monitoring activity...`, 'Handler');
     };
 
     return module;

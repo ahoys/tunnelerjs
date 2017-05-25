@@ -11,7 +11,7 @@ module.exports = () => {
      * Executes the handle.
      */
     module.handle = () => {
-        print('Client reconnecting...', 'MAIN');
+        print('Client reconnecting...', 'Handler');
     };
 
     return module;

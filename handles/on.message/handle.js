@@ -73,7 +73,7 @@ module.exports = (Client, GuildsMap, ownerId) => {
             // Author id access.
             if (accesses.indexOf(authorId) !== -1) return true;
         } catch (e) {
-            print('Verifying access failed.', 'MAIN', true, e);
+            print('Verifying access failed.', 'Handler', true, e);
         }
         return false;
     };
@@ -119,7 +119,7 @@ module.exports = (Client, GuildsMap, ownerId) => {
                 + `${process.hrtime(perfMeasure)[0]}s (`
                 + `${process.hrtime(perfMeasure)[1]}ms) to execute on `
                 + `a channel (${channel.name}).`,
-                'MAIN'
+                'Handler'
             );
             if (typeof response === 'string' && response.length) {
                 // The command responded with something to say...

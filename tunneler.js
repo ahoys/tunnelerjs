@@ -1,6 +1,9 @@
 const cluster = require('cluster');
 const {print, log} = require('./util/module.inc.debug')();
 
+/**
+ * Adds a new worker thread.
+ */
 const addThread = () => {
     try {
         const worker = cluster.fork();
@@ -96,7 +99,7 @@ process.on('uncaughtException', (err) => {
         // Attempt to log the event.
         log('uncaughtException occurred.', 'Main', err);
     } catch(e) {
-        // Logging filed, just print the event.
+        // Logging failed, just print the event.
         console.log(e);
     }
     process.exit(1);

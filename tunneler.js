@@ -7,6 +7,8 @@ log('A new process started.', 'MAIN');
 // Initialize the main thread.
 if (cluster.isMaster) {
     cluster.fork();
+    print('Hello world!', 'Main', false);
+
     cluster.on('exit', (worker, code, signal) => {
         if (code === 1) {
             // Unexpected shut down.
@@ -26,6 +28,15 @@ if (cluster.isMaster) {
                 process.exit(0);
             }, 5120);
         }
+    });
+
+    // Ctrl+C event.
+    process.on('SIGINT', () => {
+        cluster.disconnect(() => {
+            log(`Terminated master thread.`, 'Main');
+            print('Goodbye world!', 'Main', false);
+            process.exit(0);
+        });
     });
 }
 

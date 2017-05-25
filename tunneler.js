@@ -25,23 +25,21 @@ if (cluster.isMaster) {
         }
         if (code === 2) {
             // User triggered shut down.
-            print('The process was closed. '
-                + 'Closing the main thread in 5 seconds...', 'Main', true,
+            print('The process was asked to exit. '
+                + 'Shutting down...', 'Main', true,
                 `pid: ${worker.process.pid}, code: ${code}.`);
             setTimeout(() => {
                 process.exit(0);
-            }, 5120);
+            }, 512);
         }
     });
 
     // Ctrl+C event.
     process.on('SIGINT', () => {
-        cluster.disconnect(() => {
-            console.log('Shutting down...')
-            setTimeout(() => {
-                process.exit(0);
-            }, 1024);
-        });
+        console.log('Shutting down...');
+        setTimeout(() => {
+            process.exit(0);
+        }, 512);
     });
 }
 
@@ -50,6 +48,11 @@ if (cluster.isWorker) {
 
     // Log the worker.
     log(`Worker ${cluster.worker.id} started.`, 'Main');
+
+    // Actions on closing.
+    process.on('SIGINT', () => {
+        print(`Thread ${cluster.worker.id} closed.`, 'Main');
+    });
 
     // Authentication data
     // Includes token, id and owner.

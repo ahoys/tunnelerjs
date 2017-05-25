@@ -72,6 +72,7 @@ module.exports = () => {
      */
     module.getTagString = (tag = 'Misc', hasError = false) => {
         try {
+            if (typeof tag !== 'string') return '';
             const tagStr = `${tag.charAt(0).toUpperCase()}`
                 +`${tag.slice(1).substr(0, 16).toLowerCase()}`
             return hasError ? `[${tagStr} error]` : `[${tagStr}]`;

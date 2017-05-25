@@ -1,6 +1,20 @@
 const cluster = require('cluster');
 const {print, log} = require('./util/module.inc.debug')();
 
+const addThread = () => {
+    try {
+        const worker = cluster.fork();
+        worker.on('exit', () => {
+            log(`Thread ${worker.id} closed.`, 'Main');
+        });
+        return worker;
+    } catch (e) {
+        log('Could not add a new thread.', 'Main', e);
+        process.exit(1);
+    }
+    return {};
+};
+
 // Initialize the main thread.
 if (cluster.isMaster) {
     log('==== A new process started ====', 'MAIN');
@@ -8,9 +22,7 @@ if (cluster.isMaster) {
 
     // A short delay before starting the
     // worker process.
-    setTimeout(() => {
-        cluster.fork();
-    }, 2048);
+    let worker = addThread();
 
     cluster.on('exit', (worker, code, signal) => {
         if (code === 1) {
@@ -18,9 +30,10 @@ if (cluster.isMaster) {
             print('The process was closed unexpectedly. '
                 + 'Restarting in 5 seconds...', 'Main', true,
                 `pid: ${worker.process.pid}, code: ${code}.`);
+            worker.kill();
             setTimeout(() => {
                 // Restart.
-                cluster.fork();
+                worker = addThread();
             }, 5120);
         }
         if (code === 2) {
@@ -28,6 +41,7 @@ if (cluster.isMaster) {
             print('The process was asked to exit. '
                 + 'Shutting down...', 'Main', true,
                 `pid: ${worker.process.pid}, code: ${code}.`);
+            worker.kill();
             setTimeout(() => {
                 process.exit(0);
             }, 512);
@@ -37,6 +51,7 @@ if (cluster.isMaster) {
     // Ctrl+C event.
     process.on('SIGINT', () => {
         console.log('Shutting down...');
+        worker.kill();
         setTimeout(() => {
             process.exit(0);
         }, 512);
@@ -48,12 +63,6 @@ if (cluster.isWorker) {
 
     // Log the worker.
     log(`Thread ${cluster.worker.id} started.`, 'Main');
-
-    // Actions on closing.
-    process.on('SIGINT', () => {
-        print(`Thread ${cluster.worker.id} closed.`, 'Main');
-        process.exit(0);
-    });
 
     // Authentication data
     // Includes token, id and owner.
@@ -78,7 +87,7 @@ if (cluster.isWorker) {
 process.on('uncaughtException', (err) => {
     try {
         // Attempt to log the event.
-        log('uncaughtException occurred.', err);
+        log('uncaughtException occurred.', 'Main', err);
     } catch(e) {
         // Logging filed, just print the event.
         console.log(e);

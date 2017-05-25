@@ -1,15 +1,19 @@
 const cluster = require('cluster');
 const {print, log} = require('./util/module.inc.debug')();
 
-// Initialize console.log file.
-log('A new process started.', 'MAIN');
-
 // Initialize the main thread.
 if (cluster.isMaster) {
-    cluster.fork();
+    log('A new process started.', 'MAIN');
     print('Hello world!', 'Main', false);
 
+    // A short delay before starting the
+    // worker process.
+    setTimeout(() => {
+        cluster.fork();
+    }, 2048);
+
     cluster.on('exit', (worker, code, signal) => {
+        console.log('exit');
         if (code === 1) {
             // Unexpected shut down.
             print('The process was closed unexpectedly. '
@@ -33,7 +37,6 @@ if (cluster.isMaster) {
     // Ctrl+C event.
     process.on('SIGINT', () => {
         cluster.disconnect(() => {
-            log(`Terminated master thread.`, 'Main');
             print('Goodbye world!', 'Main', false);
             process.exit(0);
         });
@@ -57,3 +60,9 @@ if (cluster.isWorker) {
     // Discord.js API and handles.
     require('./handles')(AuthMap, GuildsMap);
 }
+
+// Something unexpected.
+process.on('uncaughtException', (err) => {
+    log('uncaughtException occurred.', err);
+    process.exit(1);
+});

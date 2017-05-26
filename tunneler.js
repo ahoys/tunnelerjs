@@ -1,6 +1,8 @@
 const cluster = require('cluster');
 const {print, log} = require('./util/module.inc.debug')();
 
+// If the application is offline, it won't reach the handlers.
+// No connections to Discord are made.
 const isOffline = process.argv.indexOf('OFFLINE') !== -1;
 
 if (cluster.isMaster) {

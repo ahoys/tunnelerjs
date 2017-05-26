@@ -1,64 +1,56 @@
 const cluster = require('cluster');
 const {print, log} = require('./util/module.inc.debug')();
 
-/**
- * Adds a new worker thread.
- */
-const addThread = () => {
-    try {
-        const worker = cluster.fork();
-        worker.on('exit', (code, signal) => {
-            // Log the reason why the worker died.
-            log(`Thread ${worker.id} closed (${code || signal}).`, 'Main');
-        });
-        return worker;
-    } catch (e) {
-        log('Adding a thread failed.', 'Main', e);
-    }
-    return {};
-}
+const isOffline = process.argv.indexOf('OFFLINE') !== -1;
 
-// Initialize the main thread.
 if (cluster.isMaster) {
-    log('==== A new process started ====', 'MAIN');
-    print('Hello world!', 'Main', false);
-
-    // A short delay before starting the
-    // worker process.
-    let worker = addThread();
-
+    // -- Master Thread --
+    let crashStamps = [];
+    cluster.fork();
     cluster.on('exit', (worker, code, signal) => {
-        if (code === 1) {
-            // Unexpected shut down.
-            print('The process was closed unexpectedly. '
-                + 'Restarting in 5 seconds...', 'Main', true,
-                `pid: ${worker.process.pid}, code: ${code}.`);
-            // Make sure the worker is dead.
-            if (!worker.isDead) worker.kill();
-            setTimeout(() => {
-                // Restart.
-                worker = addThread();
-            }, 5120);
-        } else if (code === 2) {
-            // User triggered shut down.
-            print('The process was asked to exit. '
-                + 'Shutting down...', 'Main', true,
-                `pid: ${worker.process.pid}, code: ${code}.`);
-            // Make sure the worker is dead.
-            if (!worker.isDead) worker.kill();
-            setTimeout(() => {
-                process.exit(0);
-            }, 512);
+        // Usually only the code is used.
+        const flag = code === undefined ? signal : code;
+        if (flag === 1) {
+            // Unexpected exit.
+            // Eg. crash caused by an error.
+            // Attempt to recover by restarting the worker.
+            print('The process encountered an error and crashed.', 'Main',
+                true, `pid: (${worker.process.pid}), code: (${code}), `
+                + `signal: (${signal})`);
+            const len = crashStamps.length;
+            crashStamps.push(new Date().getTime());
+            if (len === 0 || (crashStamps[len] - crashStamps[len - 1] > 6144)) {
+                // Over one second passed since the last crash. Meaning the
+                // app probably isn't in a loop of death.
+                // Reboot.
+                print('Rebooting in 5 seconds...', 'Main');
+                setTimeout(() => {
+                    cluster.fork();
+                }, 1024);
+                // Empty the buffer now and then.
+                if (len > 32) crashStamps = [];
+            } else {
+                // Circle of death.
+                print('Could not reboot because of instant crashing.', 'Main');
+                log(`Crash timestamps: (${crashStamps}) (max 32 shown).`,
+                    'Main');
+            }
+        } else if (flag === 2) {
+            // Controlled exit.
+            // Eg. close command.
+            // Gracefully close the application.
+            print('The process was ordered to exit.', 'Main');
         } else {
-            log(`Application was forced to close (${code || signal}).`, 'Main');
-            // Make sure the worker is dead.
-            if (!worker.isDead) worker.kill();
+            // Unknown exit.
+            // Document the crash.
+            log('The process was closed.', 'Main',
+                `pid: (${worker.process.pid}), code: (${code}), `
+                + `signal: (${signal})`);
         }
     });
 
-    // Ctrl+C event.
+    // Ctrl+c event.
     process.on('SIGINT', () => {
-        log('The process was shut down.', 'Main');
         print('Shutting down...', 'Main', false);
         // You must exit to switch the exit flag.
         // Otherwise the app may end up into a restarting loop.
@@ -66,11 +58,21 @@ if (cluster.isMaster) {
             process.exit(0);
         }, 1024);
     });
-}
 
-// Initialize the working thread.
-if (cluster.isWorker) {
-
+    // Something unexpected.
+    // This shouldn't be happening.
+    process.on('uncaughtException', (err) => {
+        try {
+            // Attempt to log the event.
+            log('UncaughtException occurred.', 'Main', err);
+        } catch(e) {
+            // Logging failed, just print the event.
+            console.log(e);
+        }
+        process.exit(1);
+    });
+} else {
+    // -- Worker Thread --
     // Log the worker.
     log(`Thread ${cluster.worker.id} started.`, 'Main');
 
@@ -87,20 +89,7 @@ if (cluster.isWorker) {
     const GuildsMap = require('./guilds')(CommandsMap).initialize();
 
     // Discord.js API and handles.
-    if (!process.env.OFFLINE) {
+    if (!isOffline) {
         require('./handles')(AuthMap, GuildsMap);
     }
 }
-
-// Something unexpected.
-// This shouldn't be happening.
-process.on('uncaughtException', (err) => {
-    try {
-        // Attempt to log the event.
-        log('uncaughtException occurred.', 'Main', err);
-    } catch(e) {
-        // Logging failed, just print the event.
-        console.log(e);
-    }
-    process.exit(1);
-});

@@ -65,9 +65,9 @@ Use your server's id (e.g. `"123123123123123123"`) to identificate the server fo
 
 You can mute users when they spam with the "role" punishment.
 
-1) Create a new role to your Discord guild, call it eg. "Muted".
+1) Create a new global role to your Discord guild, call it eg. "Muted". This can be achieved through `Server Settings`.
 
-2) Deny "Send Messages" permission for the role.
+2) Go through all of the guild's `channels` and add the Muted role with denied "Send Messages" permission to each of them.
 
 3) Set **"anti_spam_punishment"** setting for the guild to "role". The settings are stored in `config/settings.json` file. You can open it with almost any text editor, like notepad, notepad++ or Microsoft Visual Code.
 

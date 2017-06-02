@@ -76,6 +76,18 @@ module.exports = () => {
                 !isNaN(readSettings['anti_spam_warning_count_before_ban'])
                     ? Math.floor(readSettings['anti_spam_warning_count_before_ban'])
                     : 2 ;
+            
+            readSettings['anti_spam_punishment'] =
+                readSettings['anti_spam_punishment'] !== undefined &&
+                ["ban", "kick", "mute"].indexOf(readSettings['anti_spam_punishment']) !== -1
+                    ? readSettings['anti_spam_punishment']
+                    : "ban" ;
+            
+            readSettings['anti_spam_punishment_group_id'] =
+                readSettings['anti_spam_punishment_group_id'] !== undefined &&
+                typeof(readSettings['anti_spam_punishment_group_id']) === "string"
+                    ? readSettings['anti_spam_punishment_group_id']
+                    : "" ;
 
             return readSettings;
         } else {
@@ -92,7 +104,9 @@ module.exports = () => {
                 "anti_spam_max_identical_urls_in_total": 3,
                 "anti_spam_max_identical_messages_total": 8,
                 "anti_spam_safe_url_suffixes": ["com", "net", "org", "gov", "edu"],
-                "anti_spam_warning_count_before_ban": 1
+                "anti_spam_warning_count_before_ban": 1,
+                "anti_spam_punishment": "ban",
+                "anti_spam_punishment_group_id": ""
             }
         }
     };

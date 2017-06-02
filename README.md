@@ -65,6 +65,8 @@ Use your server's id (e.g. `"123123123123123123"`) to identificate the server fo
 
 You can mute users when they spam with the "role" punishment.
 
+**Important:** The bot must have "Manage Roles" permission for the punishment to work.
+
 1) Create a new global role to your Discord guild, call it eg. "Muted". This can be achieved through `Server Settings`.
 
 2) Go through all of the guild's `channels` and add the Muted role with denied "Send Messages" permission to each of them.
@@ -74,6 +76,8 @@ You can mute users when they spam with the "role" punishment.
 4) Set **"anti_spam_punishment_role_id"** to be the id of the just created "Muted" -role. You can reveal the id of the role by typing `\@Muted` to one of the guild's channels. Discord will return you something like: `<@&316668100361846796>`, where `316668100361846796` is the id.
 
 5) Save and reboot the bot.
+
+If the punishment fails, you should be able to see the reason from the console.
 
 ## Custom commands (optional)
 You can also script your own custom commands. Here's how you can integrate them with the bot:

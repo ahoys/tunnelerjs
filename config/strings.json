@@ -2,9 +2,9 @@
   "name": "Tunneler",
   "util": {
     "antispam": {
-      "success_0": "Ha, a peasant got axed. ",
-      "success_1": " was banned for spamming.",
-      "warning_0": "stop spamming or I'll whack your head off and get you banned."
+      "success_0": "Ha, a peasant got punished. ",
+      "success_1": " was punished for spamming.",
+      "warning_0": "stop spamming or I'll whack your head off."
     }
   },
   "commands": {

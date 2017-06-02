@@ -71,17 +71,17 @@ module.exports = () => {
                     ? readSettings['anti_spam_safe_url_suffixes']
                     : ["com", "net", "org", "gov", "edu"] ;
 
-            readSettings['anti_spam_warning_count_before_ban'] =
-                readSettings['anti_spam_warning_count_before_ban'] !== undefined &&
-                !isNaN(readSettings['anti_spam_warning_count_before_ban'])
-                    ? Math.floor(readSettings['anti_spam_warning_count_before_ban'])
+            readSettings['anti_spam_warning_count_before_punish'] =
+                readSettings['anti_spam_warning_count_before_punish'] !== undefined &&
+                !isNaN(readSettings['anti_spam_warning_count_before_punish'])
+                    ? Math.floor(readSettings['anti_spam_warning_count_before_punish'])
                     : 2 ;
-            
+
             readSettings['anti_spam_punishment'] =
                 readSettings['anti_spam_punishment'] !== undefined &&
-                ["ban", "kick", "mute"].indexOf(readSettings['anti_spam_punishment']) !== -1
+                ["ban", "kick", "role"].indexOf(readSettings['anti_spam_punishment']) !== -1
                     ? readSettings['anti_spam_punishment']
-                    : "ban" ;
+                    : "kick" ;
             
             readSettings['anti_spam_punishment_role_id'] =
                 readSettings['anti_spam_punishment_role_id'] !== undefined &&
@@ -104,8 +104,8 @@ module.exports = () => {
                 "anti_spam_max_identical_urls_in_total": 3,
                 "anti_spam_max_identical_messages_total": 8,
                 "anti_spam_safe_url_suffixes": ["com", "net", "org", "gov", "edu"],
-                "anti_spam_warning_count_before_ban": 1,
-                "anti_spam_punishment": "ban",
+                "anti_spam_warning_count_before_punish": 1,
+                "anti_spam_punishment": "kick",
                 "anti_spam_punishment_role_id": ""
             }
         }

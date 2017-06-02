@@ -8,9 +8,9 @@ const Strings = require('./config/strings.json');
 
 // Utilities
 const Settings = require('./util/module.inc.setting.js')();
-const Ban = require('./util/module.inc.ban')();
 const AntiSpam = require('./util/module.inc.antispam')();
 const Command = require('./util/module.inc.command')();
+const Punish = require('./util/module.inc.punish')();
 
 // Commands
 const commands = {
@@ -105,10 +105,10 @@ client.on('message', Message => {
                 settingsContainer['enable_anti_spam_filtering'] &&
                 AntiSpam.isSpam(sourceId, Message.author.id, Message, settingsContainer)
             ) {
-                // Ban the filthy peasant.
+                // Punish the filthy peasant.
                 const target = Message.member;
-                if (Ban.execute(target)) {
-                    // Ban successful.
+                if (Punish.execute(target, settingsContainer)) {
+                    // Punish successful.
                     if (!settingsContainer['enable_quiet_mode']) {
                         Message.channel.send(`${Strings.util.antispam.success_0}` +
                             `${target.user.username}` +

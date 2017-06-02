@@ -19,10 +19,10 @@ module.exports = () => {
                 console.log(`Kick of ${target.user.username} failed: ${e}`);
             });
         } else if (punishment === 'role') {
-            const role = settingsContainer['anti_spam_punishment_role_id'];
-            if (role !== undefined && !target.roles[role]) {
+            const newRole = settingsContainer['anti_spam_punishment_role_id'];
+            if (newRole !== undefined && !target.roles[newRole]) {
                 // Role found.
-                const role = target.addRole(role);
+                const role = target.addRole(newRole);
                 role.then(() => {
                     console.log(`${target.user.username} was assigned to a role.`);
                 }).catch((e) => {
@@ -30,7 +30,7 @@ module.exports = () => {
                 });
             }
         } else {
-            console.log(`Punishment type (${punishment}) is not supported.`);
+            console.log(`Punishment type (${punishment}) is not supported for ${target.user.username}.`);
         }
         return true;
     };

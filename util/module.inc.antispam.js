@@ -151,10 +151,10 @@ module.exports = () => {
         }
 
         // Handle warnings.
-        if (spam && settingsContainer['anti_spam_warning_count_before_ban'] > 0) {
+        if (spam && settingsContainer['anti_spam_warning_count_before_punish'] > 0) {
             const userWarnings = warningLog.has(uId) ? Number(warningLog.get(uId)) + 1 : 1 ;
             warningLog = warningLog.set(uId, userWarnings);
-            if (warningLog.get(uId) <= settingsContainer['anti_spam_warning_count_before_ban']) {
+            if (warningLog.get(uId) <= settingsContainer['anti_spam_warning_count_before_punish']) {
                 // Let the poor fell pass this time, but warn him.
                 if (module.clearUserHistory(gId, uId)) {
                     spam = false;

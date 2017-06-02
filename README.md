@@ -32,6 +32,8 @@ Can be used as a simple anti spam bot without any extra features.
 
 7) Invite the bot to your servers via a regular web browser. Use the following url: `https://discordapp.com/oauth2/authorize?&client_id=YOUR_APP_CLIENT_ID_HERE&scope=bot&permissions=0 `. Replace `YOUR_APP_CLIENT_ID_HERE` with the application id of the bot.
 
+8) Make sure to give enough permissions for the bot, eg: manage roles, kick members, ban members, read messages and manage messages.
+
 ## Configuration (optional)
 `config/settings.json` contains settings for the bot. The settings are server (guild) specific. If the used server cannot be found from the settings, default settings will be used instead.
 

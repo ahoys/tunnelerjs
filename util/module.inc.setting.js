@@ -83,10 +83,10 @@ module.exports = () => {
                     ? readSettings['anti_spam_punishment']
                     : "ban" ;
             
-            readSettings['anti_spam_punishment_group_id'] =
-                readSettings['anti_spam_punishment_group_id'] !== undefined &&
-                typeof(readSettings['anti_spam_punishment_group_id']) === "string"
-                    ? readSettings['anti_spam_punishment_group_id']
+            readSettings['anti_spam_punishment_role_id'] =
+                readSettings['anti_spam_punishment_role_id'] !== undefined &&
+                typeof(readSettings['anti_spam_punishment_role_id']) === "string"
+                    ? readSettings['anti_spam_punishment_role_id']
                     : "" ;
 
             return readSettings;
@@ -106,7 +106,7 @@ module.exports = () => {
                 "anti_spam_safe_url_suffixes": ["com", "net", "org", "gov", "edu"],
                 "anti_spam_warning_count_before_ban": 1,
                 "anti_spam_punishment": "ban",
-                "anti_spam_punishment_group_id": ""
+                "anti_spam_punishment_role_id": ""
             }
         }
     };

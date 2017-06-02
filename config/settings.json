@@ -12,7 +12,7 @@
       "anti_spam_safe_url_suffixes": ["com", "net", "org", "gov", "edu"],
       "anti_spam_warning_count_before_ban": 1,
       "anti_spam_punishment": "ban",
-      "anti_spam_punishment_group_id": ""
+      "anti_spam_punishment_role_id": ""
     },
     "277194040401854464": {
       "enable_anti_spam_filtering": true,
@@ -26,7 +26,7 @@
       "anti_spam_safe_url_suffixes": ["com", "net", "org", "gov", "edu"],
       "anti_spam_warning_count_before_ban": 2,
       "anti_spam_punishment": "ban",
-      "anti_spam_punishment_group_id": ""
+      "anti_spam_punishment_role_id": ""
     }
   }
 }

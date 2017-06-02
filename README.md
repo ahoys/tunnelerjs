@@ -57,9 +57,9 @@ Use your server's id (e.g. `"123123123123123123"`) to identificate the server fo
 
 **"anti_spam_warning_count_before_ban":** How many warnings are given before banning the user. `Number`
 
-**"anti_spam_punishment":** Type of the punishment when it happens. Can be "ban", "kick" or "group". `String`
+**"anti_spam_punishment":** Type of the punishment when it happens. Can be "ban", "kick" or "role". `String`
 
-**"anti_spam_punishment_group_id":** If "group" punishment is used, the Discord id of that group. `String`
+**"anti_spam_punishment_role_id":** If "role" punishment is used, the Discord id of that role (eg. muted). `String`
 
 ## Custom commands (optional)
 You can also script your own custom commands. Here's how you can integrate them with the bot:

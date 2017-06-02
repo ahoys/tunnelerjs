@@ -61,6 +61,20 @@ Use your server's id (e.g. `"123123123123123123"`) to identificate the server fo
 
 **"anti_spam_punishment_role_id":** If "role" punishment is used, the Discord id of that role (eg. muted). `String`
 
+## Example: muting a user as a punishment
+
+You can mute users when they spam with the "role" punishment.
+
+1) Create a new role to your Discord guild, call it eg. "Muted".
+
+2) Deny "Send Messages" permission for the role.
+
+3) Set "anti_spam_punishment" setting for the guild to "role". The settings are stored in config/settings.json file. You can open it with almost any text editor, like notepad, notepad++ or Microsoft Visual Code.
+
+4) Set "anti_spam_punishment_role_id" to be the id of the just created "Muted" -role. You can reveal the id of the role by typing \@Muted to one of the guild's channels. Discord will return you something like: <@&316668100361846796>, where 316668100361846796 is the id.
+
+5) Save and reboot the bot.
+
 ## Custom commands (optional)
 You can also script your own custom commands. Here's how you can integrate them with the bot:
 

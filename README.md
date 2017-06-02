@@ -73,7 +73,7 @@ You can mute users when they spam with the "role" punishment.
 
 3) Set **"anti_spam_punishment"** setting for the guild to "role". The settings are stored in `config/settings.json` file. You can open it with almost any text editor, like notepad, notepad++ or Microsoft Visual Code.
 
-4) Set **"anti_spam_punishment_role_id"** to be the id of the just created "Muted" -role. You can reveal the id of the role by typing `\@Muted` to one of the guild's channels. Discord will return you something like: `<@&316668100361846796>`, where `316668100361846796` is the id.
+4) Set **"anti_spam_punishment_role_id"** to be the id of the just created "Muted" -role. You can reveal the id of the role by typing `\@Muted` to one of the guild's channels. Discord will return you something like: `<@&316668100361846796>`, where `316668100361846796` is the id. Note: the role must be mentionable from the global settings before the trick works.
 
 5) Save and reboot the bot.
 

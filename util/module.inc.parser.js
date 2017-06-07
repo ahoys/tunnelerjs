@@ -106,13 +106,15 @@ module.exports = () => {
             const excludesIsArray = typeof excludes === 'object' &&
                 excludes.constructor === Array;
             let isIncluded = false;
-            for (let t in targets) {
-                if (excludesIsArray && excludes.indexOf(t) >= 0) {
+            const len = targets.length;
+            for (let i = 0; i < len; ++i) {
+                const value = targets[i];
+                if (excludesIsArray && excludes.indexOf(value) >= 0) {
                     // Can be found from exclusions: false.
                     isIncluded = false;
                     break;
                 }
-                if (includesIsArray && includes.indexOf(t) >= 0) {
+                if (includesIsArray && includes.indexOf(value) >= 0) {
                     // Can be found from inclusions: true.
                     isIncluded = true;
                 }

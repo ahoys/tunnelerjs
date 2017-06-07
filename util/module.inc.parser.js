@@ -96,35 +96,54 @@ module.exports = () => {
      */
     module.isIncluded = (target, includes, excludes, emptyIncludes) => {
         try {
-            const includesIsArray = typeof includes === 'object' &&
-            includes.constructor === Array;
-            const excludesIsArray = typeof excludes === 'object' &&
-            excludes.constructor === Array;
             // No target, cannot be included: false.
             if (target === undefined) return false;
-            // Can be found from exclusions: false.
-            if (
-                excludesIsArray &&
-                excludes.indexOf(target) >= 0
-            ) return false;
-            // Can be found from inclusions: true.
-            if (
-                includesIsArray &&
-                includes.indexOf(target) >= 0
-            ) return true;
-            // emptyIncludes and no includes: true.
-            if (
-                emptyIncludes &&
-                includesIsArray &&
-                !includes.length
-            ) return true;
-            return false;
+            // Transform target into an array.
+            targets = typeof target === 'object' &&
+                target.constructor === Array ? target : [target];
+            const includesIsArray = typeof includes === 'object' &&
+                includes.constructor === Array;
+            const excludesIsArray = typeof excludes === 'object' &&
+                excludes.constructor === Array;
+            let isIncluded = false;
+            for (let t in targets) {
+                if (excludesIsArray && excludes.indexOf(t) >= 0) {
+                    // Can be found from exclusions: false.
+                    isIncluded = false;
+                    break;
+                }
+                if (includesIsArray && includes.indexOf(t) >= 0) {
+                    // Can be found from inclusions: true.
+                    isIncluded = true;
+                }
+                if (emptyIncludes && includesIsArray && !includes.length) {
+                    // emptyIncludes and no includes: true.
+                    isIncluded = true;
+                }
+            }
+            return isIncluded;
         } catch (e) {
             print('Determining includement failed.',
             'PARSER ERROR', true, e);
-            return false;
         }
+        return false;
     };
+
+    module.getCommonValues = (arr0, arr1) => {
+        try {
+            const common = [];
+            arr0.forEach((value) => {
+                if (arr1.indexOf(value) !== -1) {
+                    common.push(value);
+                }
+            });
+            return common;
+        } catch (e) {
+            print('Determining common values failed.',
+            'PARSER ERROR', true, e);
+        }
+        return [];
+    }
 
     return module;
 };

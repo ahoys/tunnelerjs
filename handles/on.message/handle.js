@@ -29,16 +29,31 @@ module.exports = (Client, GuildsMap, ownerId) => {
                     execute,
                     enabledChannels,
                     excludedChannels,
+                    enabledAuthors,
+                    excludedAuthors,
+                    enabledRoles,
+                    excludedRoles,
                     guildSettings,
                 } = thisGuild.middlewares[mwKey];
-                // Make sure this channel is included to be middlewared
-                // and then execute. If the execution returns true,
-                // the command process may go on.
+                // Make sure the channel is included to be middlewared.
+                // Also make sure the author or the role are not excluded.
                 if (
                     Parser.isIncluded(
                         channel.name,
                         enabledChannels,
                         excludedChannels,
+                        true
+                    ) &&
+                    Parser.isIncluded(
+                        Message.author.id,
+                        enabledAuthors,
+                        excludedAuthors,
+                        true
+                    ) &&
+                    Parser.isIncluded(
+                        Message.member.roles,
+                        enabledRoles,
+                        excludedRoles,
                         true
                     )
                 ) {

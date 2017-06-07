@@ -136,9 +136,17 @@ module.exports = (CommandsMap) => {
                         execute: require(`.${jsPath}`)(
                             settings, mwKey).execute,
                         enabledChannels: Parser.getListOfType(
-                        middlewaresJSON[mwKey]['enabled_channels']),
+                            middlewaresJSON[mwKey]['enabled_channels']),
                         excludedChannels: Parser.getListOfType(
-                        middlewaresJSON[mwKey]['excluded_channels']),
+                            middlewaresJSON[mwKey]['excluded_channels']),
+                        enabledAuthors: Parser.getListOfType(
+                            middlewaresJSON[mwKey]['enabled_authors']),
+                        excludedAuthors: Parser.getListOfType(
+                            middlewaresJSON[mwKey]['excluded_authors']),
+                        enabledRoles: Parser.getListOfType(
+                            middlewaresJSON[mwKey]['enabled_roles']),
+                        excludedRoles: Parser.getListOfType(
+                            middlewaresJSON[mwKey]['excluded_roles']),
                         guildSettings: middlewaresJSON[mwKey]['settings'],
                     };
                 }

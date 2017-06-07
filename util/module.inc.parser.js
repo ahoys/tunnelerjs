@@ -129,21 +129,5 @@ module.exports = () => {
         return false;
     };
 
-    module.getCommonValues = (arr0, arr1) => {
-        try {
-            const common = [];
-            arr0.forEach((value) => {
-                if (arr1.indexOf(value) !== -1) {
-                    common.push(value);
-                }
-            });
-            return common;
-        } catch (e) {
-            print('Determining common values failed.',
-            'PARSER ERROR', true, e);
-        }
-        return [];
-    }
-
     return module;
 };

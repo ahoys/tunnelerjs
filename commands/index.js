@@ -58,7 +58,7 @@ module.exports = () => {
         const middlewareJSON = require(`.${jsonPath}`);
         if (typeof middlewareJSON !== 'object') return {};
         // Return a middleware frame.
-        return {jsPath, settings: middlewareJSON};
+        return {jsPath, settings: middlewareJSON.settings};
     };
 
     /**

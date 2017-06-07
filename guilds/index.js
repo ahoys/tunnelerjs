@@ -98,6 +98,7 @@ module.exports = (CommandsMap) => {
                                 commandsJSON[cmdKey]['enabled_channels']),
                                 excludedChannels: Parser.getListOfType(
                                 commandsJSON[cmdKey]['excluded_channels']),
+                                guildSettings: commandsJSON[cmdKey]['settings'],
                             };
                         }
                     });
@@ -138,6 +139,7 @@ module.exports = (CommandsMap) => {
                         middlewaresJSON[mwKey]['enabled_channels']),
                         excludedChannels: Parser.getListOfType(
                         middlewaresJSON[mwKey]['excluded_channels']),
+                        guildSettings: middlewaresJSON[mwKey]['settings'],
                     };
                 }
             });

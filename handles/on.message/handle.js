@@ -29,6 +29,7 @@ module.exports = (Client, GuildsMap, ownerId) => {
                     execute,
                     enabledChannels,
                     excludedChannels,
+                    guildSettings,
                 } = thisGuild.middlewares[mwKey];
                 // Make sure this channel is included to be middlewared
                 // and then execute. If the execution returns true,
@@ -41,7 +42,7 @@ module.exports = (Client, GuildsMap, ownerId) => {
                         true
                     )
                 ) {
-                    const haltReason = execute(Message);
+                    const haltReason = execute(Message, guildSettings);
                     if (typeof haltReason !== 'string' || haltReason.length) {
                         // An invalid return or an error message encountered.
                         return typeof haltReason === 'string'

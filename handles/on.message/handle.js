@@ -18,7 +18,7 @@ module.exports = (Client, GuildsMap, ownerId) => {
      * @return {string}
      */
     module.prepare = (Message) => {
-        const {guild, channel} = Message;
+        const {guild, channel, author, member} = Message;
         const thisGuild = GuildsMap[guild.id];
         if (
             thisGuild &&
@@ -38,24 +38,12 @@ module.exports = (Client, GuildsMap, ownerId) => {
                 // Make sure the channel is included to be middlewared.
                 // Also make sure the author or the role are not excluded.
                 if (
-                    Parser.isIncluded(
-                        channel.name,
-                        enabledChannels,
-                        excludedChannels,
-                        true
-                    ) &&
-                    Parser.isIncluded(
-                        Message.author.id,
-                        enabledAuthors,
-                        excludedAuthors,
-                        true
-                    ) &&
-                    Parser.isIncluded(
-                        Message.member.roles,
-                        enabledRoles,
-                        excludedRoles,
-                        true
-                    )
+                    Parser.isIncluded(channel.name, enabledChannels,
+                        excludedChannels, true) &&
+                    Parser.isIncluded(author.id, enabledAuthors,
+                        excludedAuthors, true) &&
+                    Parser.isIncluded(member.roles, enabledRoles,
+                        excludedRoles, true)
                 ) {
                     const haltReason = execute(Message, guildSettings);
                     if (typeof haltReason !== 'string' || haltReason.length) {
@@ -127,12 +115,13 @@ module.exports = (Client, GuildsMap, ownerId) => {
             enabledRoles,
             excludedRoles,
         } = commands[cmdKey];
-        if (Parser.isIncluded(
-            channel.name, enabledChannels, excludedChannels, true) &&
-            Parser.isIncluded(
-                author.id, enabledAuthors, excludedAuthors, true) &&
-            Parser.isIncluded(
-                member.roles, enabledRoles, excludedRoles, true) &&
+        if (
+            Parser.isIncluded(channel.name, enabledChannels,
+                excludedChannels, true) &&
+            Parser.isIncluded(author.id, enabledAuthors, excludedAuthors,
+                true) &&
+            Parser.isIncluded(member.roles, enabledRoles, excludedRoles,
+                true) &&
             hasAccess(access, author.id)
         ) {
             // Measure execution time for the command.

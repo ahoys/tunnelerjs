@@ -22,9 +22,6 @@
                     "moderate": 2,
                     "low": 3
                 },
-                "ignoredRoles": [],
-                "ignoredAuthors": [],
-                "ignoredChannels": [],
                 "punishmentRole": ""
             }
         }

@@ -46,8 +46,8 @@ module.exports = (Client, GuildsMap, ownerId) => {
                     if (typeof haltReason !== 'string' || haltReason.length) {
                         // An invalid return or an error message encountered.
                         return typeof haltReason === 'string'
-                        ? haltReason
-                        : `Middleware ${mwKey} halted the processing.`;
+                            ? haltReason
+                            : `Middleware ${mwKey} halted the processing.`;
                     }
                 };
             });

@@ -100,7 +100,7 @@ module.exports = (Client, GuildsMap, ownerId) => {
      * @return {boolean}
      */
     module.handle = (Message) => {
-        const {content, guild, channel, author} = Message;
+        const {content, guild, channel, author, member} = Message;
         const {user} = Client;
         // Listen for direct commands only.
         const thisGuild = GuildsMap[guild.id];
@@ -122,9 +122,17 @@ module.exports = (Client, GuildsMap, ownerId) => {
             access,
             enabledChannels,
             excludedChannels,
+            enabledAuthors,
+            excludedAuthors,
+            enabledRoles,
+            excludedRoles,
         } = commands[cmdKey];
         if (Parser.isIncluded(
             channel.name, enabledChannels, excludedChannels, true) &&
+            Parser.isIncluded(
+                author.id, enabledAuthors, excludedAuthors, true) &&
+            Parser.isIncluded(
+                member.roles, enabledRoles, excludedRoles, true) &&
             hasAccess(access, author.id)
         ) {
             // Measure execution time for the command.

@@ -95,9 +95,17 @@ module.exports = (CommandsMap) => {
                                 access: Parser.getListOfType(
                                     commandsJSON[cmdKey].access),
                                 enabledChannels: Parser.getListOfType(
-                                commandsJSON[cmdKey]['enabled_channels']),
+                                    commandsJSON[cmdKey]['enabled_channels']),
                                 excludedChannels: Parser.getListOfType(
-                                commandsJSON[cmdKey]['excluded_channels']),
+                                    commandsJSON[cmdKey]['excluded_channels']),
+                                enabledAuthors: Parser.getListOfType(
+                                    commandsJSON[cmdKey]['enabled_authors']),
+                                excludedAuthors: Parser.getListOfType(
+                                    commandsJSON[cmdKey]['excluded_authors']),
+                                enabledRoles: Parser.getListOfType(
+                                    commandsJSON[cmdKey]['enabled_roles']),
+                                excludedRoles: Parser.getListOfType(
+                                    commandsJSON[cmdKey]['excluded_roles']),
                                 guildSettings: commandsJSON[cmdKey]['settings'],
                             };
                         }

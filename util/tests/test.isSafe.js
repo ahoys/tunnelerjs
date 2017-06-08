@@ -11,7 +11,7 @@ exports.simpleString = (test) => {
 
 exports.allowedChars = (test) => {
     Parser = require('../module.inc.parser')();
-    const result = Parser.isSafe('a-zA-Z0-9.?:!;><)("`\',\+-=@#¤%&/=^*§½£$€ ');
+    const result = Parser.isSafe('a-zA-Z0-9.?:!;)("`\',+-=@#¤%&/=^*§½£$€ ');
     test.equal(result, true, result);
     test.done();
 }

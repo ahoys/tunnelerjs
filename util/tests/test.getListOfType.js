@@ -29,3 +29,17 @@ exports.noValidContent = (test) => {
     test.deepEqual(result, [], result);
     test.done();
 }
+
+exports.invalidType = (test) => {
+    Parser = require('../module.inc.parser')();
+    const result = Parser.getListOfType(['a'], 1);
+    test.deepEqual(result, [], result);
+    test.done();
+}
+
+exports.nonArrayList = (test) => {
+    Parser = require('../module.inc.parser')();
+    const result = Parser.getListOfType(13, 'number');
+    test.deepEqual(result, [13], result);
+    test.done();
+}

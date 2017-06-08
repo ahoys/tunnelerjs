@@ -15,12 +15,13 @@ module.exports = () => {
     module.isSafe = (str) => {
         try {
             // Only the following characters are allowed.
+            if (str === '') return true;
             return /^[a-zA-Z0-9.?:!;><)("`',\+-=@#¤%&/=^*§½£$€ ]+$/.test(str);
         } catch (e) {
             print('Verifying string safetyness failed.',
                 'Parser', true, e);
-            return false;
         }
+        return false;
     };
 
     /**

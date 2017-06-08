@@ -124,7 +124,7 @@ module.exports = () => {
             return isIncluded;
         } catch (e) {
             print('Determining includement failed.',
-            'PARSER ERROR', true, e);
+                'PARSER ERROR', true, e);
         }
         return false;
     };

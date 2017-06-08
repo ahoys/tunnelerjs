@@ -18,7 +18,7 @@ module.exports = () => {
             return /^[a-zA-Z0-9.?:!;><)("`',\+-=@#¤%&/=^*§½£$€ ]+$/.test(str);
         } catch (e) {
             print('Verifying string safetyness failed.',
-            'PARSER ERROR', true, e);
+                'Parser', true, e);
             return false;
         }
     };
@@ -33,7 +33,7 @@ module.exports = () => {
             // Lower case and no excess spaces.
             return str.replace(/\s+/g, ' ').toLowerCase().trim();
         } catch (e) {
-            print('Trimming a string failed.', 'PARSER', true, e);
+            print('Trimming a string failed.', 'Parser', true, e);
         }
         return '';
     };
@@ -56,7 +56,7 @@ module.exports = () => {
             }
         } catch (e) {
             print('Looking for a first match failed.',
-                'PARSER ERROR', true, e);
+                'Parser', true, e);
         }
         return '';
     };
@@ -75,7 +75,7 @@ module.exports = () => {
             return thisList.filter(x => typeof x === String(type));
         } catch (e) {
             print('Looking for valid list entries failed.',
-                'PARSER ERROR', true, e);
+                'Parser', true, e);
         }
         return [];
     };
@@ -123,7 +123,7 @@ module.exports = () => {
             return isIncluded;
         } catch (e) {
             print('Determining includement failed.',
-                'PARSER ERROR', true, e);
+                'Parser', true, e);
         }
         return false;
     };

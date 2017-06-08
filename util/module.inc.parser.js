@@ -69,18 +69,16 @@ module.exports = () => {
      * @param {string} type
      * @return {Array}
      */
-    module.getListOfType = (list = [], type = 'string') => {
+    module.getListOfType = (list, type = 'string') => {
         try {
-            if (
-                typeof list !== 'object' ||
-                list.constructor !== Array
-            ) return [];
-            return list.filter((x) => typeof x === type);
+            const thisList = typeof list === 'object' &&
+                list.constructor === Array ? list : [list];
+            return thisList.filter(x => typeof x === String(type));
         } catch (e) {
             print('Looking for valid list entries failed.',
-            'PARSER ERROR', true, e);
-            return [];
+                'PARSER ERROR', true, e);
         }
+        return [];
     };
 
     /**

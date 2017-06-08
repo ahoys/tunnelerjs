@@ -33,9 +33,9 @@ module.exports = () => {
             // Lower case and no excess spaces.
             return str.replace(/\s+/g, ' ').toLowerCase().trim();
         } catch (e) {
-            print('Trimming a string failed.', 'PARSER ERROR', true, e);
-            return '';
+            print('Trimming a string failed.', 'PARSER', true, e);
         }
+        return '';
     };
 
     /**

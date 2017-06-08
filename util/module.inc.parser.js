@@ -46,7 +46,7 @@ module.exports = () => {
      * @param {string} str
      * @return {string}
      */
-    module.firstMatch = (arr, str) => {
+    module.firstMatch = (arr = [], str = '') => {
         try {
             const len = arr.length;
             for (let i = 0; i < len; ++i) {
@@ -68,7 +68,7 @@ module.exports = () => {
      * @param {string} type
      * @return {Array}
      */
-    module.getListOfType = (list, type = 'string') => {
+    module.getListOfType = (list = [], type = 'string') => {
         try {
             const thisList = typeof list === 'object' &&
                 list.constructor === Array ? list : [list];

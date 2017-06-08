@@ -54,12 +54,11 @@ module.exports = () => {
                     return arr[i];
                 }
             }
-            return '';
         } catch (e) {
             print('Looking for a first match failed.',
-            'PARSER ERROR', true, e);
-            return '';
+                'PARSER ERROR', true, e);
         }
+        return '';
     };
 
     /**

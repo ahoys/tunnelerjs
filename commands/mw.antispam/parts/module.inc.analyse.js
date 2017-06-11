@@ -7,6 +7,7 @@ module.exports = () => {
     // Available tools.
     const tools = stringAnalysis.getAll();
     const toolsTemplate = Object.keys(tools).map(x => 0);
+    toolsTemplate.push(0);
 
     /**
      * Returns value of c.
@@ -27,16 +28,22 @@ module.exports = () => {
 
     /**
      * Returns analysis for a string.
+     * @param {array} authorLog
      */
-    module.getAnalysis = (content) => {
+    module.getAnalysis = (authorLog) => {
         try {
+            const content = authorLog[authorLog.length - 1].content;
             if (!content.length) return toolsTemplate;
-            return tools.map(x => {
+            const result = tools.map(x => {
                 if (x.parameters.content.indexOf('string') !== -1) {
                     return x.func(content);
                 }
                 return 0;
             });
+            result.push(stringAnalysis.getPercentageOfRepetitiveStructure(
+                authorLog.reduce((prev, curr) => `${prev} ${curr.content}`,
+                    '')));
+            return result;
         } catch (e) {
             print(`getAnalysis failed.`, 'parts/analyse',
                 true, e);

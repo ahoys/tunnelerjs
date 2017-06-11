@@ -88,7 +88,7 @@ module.exports = (Settings, name) => {
             // Append the author's message log.
             ao.log = getAppendedLog(ao.log, content, createdTimestamp);
             // Analyse the most recent content.
-            ao.last = analysis.getAnalysis(content);
+            ao.last = analysis.getAnalysis(content, ao.log);
             // Summarize all the content.
             ao.sums = analysis.getAppendedSums(
                 ao.sums,

@@ -1,6 +1,6 @@
 // nodeunit util/tests/test.trim.js
 
-let Parser
+let Parser;
 
 exports.lowerCaseString = (test) => {
     Parser = require('../module.inc.parser')();

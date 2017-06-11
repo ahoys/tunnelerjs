@@ -1,6 +1,6 @@
 // nodeunit util/tests/test.firstMatch.js
 
-let Parser
+let Parser;
 
 exports.oneMatch = (test) => {
     Parser = require('../module.inc.parser')();

@@ -1,6 +1,6 @@
 // nodeunit util/tests/test.isSafe.js
 
-let Parser
+let Parser;
 
 exports.simpleString = (test) => {
     Parser = require('../module.inc.parser')();

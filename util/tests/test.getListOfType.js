@@ -1,6 +1,6 @@
 // nodeunit util/tests/test.getListOfType.js
 
-let Parser
+let Parser;
 
 exports.oneString = (test) => {
     Parser = require('../module.inc.parser')();

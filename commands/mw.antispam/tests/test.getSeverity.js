@@ -5,6 +5,7 @@ let Analyse;
 const authorTemplate = {
     "joinedTimestamp": 3600000,
     "analysisObj": {
+        "log": [],
         "last": [0, 0, 0, 0],
         "sums": [0, 0, 0, 0],
         "avg": [0, 0, 0, 0],

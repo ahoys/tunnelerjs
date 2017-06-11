@@ -40,9 +40,13 @@ module.exports = () => {
                 }
                 return 0;
             });
+            // Combine the log and look for repetitive structure.
             result.push(stringAnalysis.getPercentageOfRepetitiveStructure(
-                authorLog.reduce((prev, curr) => `${prev} ${curr.content}`,
-                    '')));
+                authorLog.reduce((prev, curr) => {
+                    return prev === ''
+                        ? curr.content : `${prev} ${curr.content}`;
+                }, '')
+            ));
             return result;
         } catch (e) {
             print(`getAnalysis failed.`, 'parts/analyse',

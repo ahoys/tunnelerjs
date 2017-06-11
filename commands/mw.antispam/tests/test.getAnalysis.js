@@ -73,3 +73,15 @@ exports.spamIdenticalChars = (test) => {
     test.deepEqual(result[3], 1, result);
     test.done();
 }
+
+exports.repeatingMessages = (test) => {
+    Analyse = require('../parts/module.inc.analyse')();
+    const thisLog = authorLogTemplate;
+    for (let i = 0; i < 8; ++i) {
+        thisLog[i] = {content: 'This is just a test. '
+            + 'Can\'t you understand it?', createdTimestamp: 3600};
+    }
+    const result = Analyse.getAnalysis(thisLog);
+    test.deepEqual(result[4], 1, result);
+    test.done();
+}

@@ -12,6 +12,7 @@ module.exports = (Settings, name) => {
     const authorTemplate = {
         "joinedTimestamp": 0,
         "analysisObj": {
+            "log": [],
             "last": [],
             "sums": [],
             "avg": [],
@@ -22,12 +23,35 @@ module.exports = (Settings, name) => {
     // How many content lines are being analyzed at once.
     // Decreasing this value will make the module to act more
     // aggressively.
-    const maxSumsLength = 8;
+    const maxBuffer = 8;
+
+    /**
+     * Appends the given log with a new content.
+     * @param {*} authorLog
+     * @param {string} content
+     * @param {number} createdTimestamp
+     */
+    const getAppendedLog = (authorLog, content, createdTimestamp) => {
+        try {
+            const thisLog = authorLog;
+            thisLog.push({
+                content,
+                createdTimestamp,
+            });
+            if (thisLog.length > maxBuffer) {
+                thisLog.shift();
+            }
+            return thisLog;
+        } catch (e) {
+            print(`Could not append a log.`, name, true, e);
+        }
+        return {};
+    }
 
     /**
      * Saves an author.
-     * @param {string} id 
-     * @param {*} data 
+     * @param {string} id
+     * @param {*} data
      */
     const setAuthor = (id, data) => {
         try {
@@ -40,7 +64,7 @@ module.exports = (Settings, name) => {
     /**
      * Returns an author. New or existing.
      * @param {string} id
-     * @return {*} 
+     * @return {*}
      */
     const getAuthor = (id) => {
         try {
@@ -61,13 +85,15 @@ module.exports = (Settings, name) => {
                 thisAuthor.joinedTimestamp = member.joinedTimestamp;
             }
             const ao = thisAuthor.analysisObj;
+            // Append the author's message log.
+            ao.log = getAppendedLog(ao.log, content, createdTimestamp);
             // Analyse the most recent content.
             ao.last = analysis.getAnalysis(content);
             // Summarize all the content.
             ao.sums = analysis.getAppendedSums(
                 ao.sums,
                 ao.last,
-                maxSumsLength,
+                maxBuffer,
             );
             // Get average of the content analysement history.
             ao.avg = analysis.getAnalysisAvg(

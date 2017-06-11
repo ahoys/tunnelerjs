@@ -24,6 +24,11 @@ module.exports = (Settings, name) => {
     // aggressively.
     const maxSumsLength = 8;
 
+    /**
+     * Saves an author.
+     * @param {string} id 
+     * @param {*} data 
+     */
     const setAuthor = (id, data) => {
         try {
             authors[id] = data;
@@ -32,6 +37,11 @@ module.exports = (Settings, name) => {
         }
     }
 
+    /**
+     * Returns an author. New or existing.
+     * @param {string} id
+     * @return {*} 
+     */
     const getAuthor = (id) => {
         try {
             return authors[id] || authorTemplate;

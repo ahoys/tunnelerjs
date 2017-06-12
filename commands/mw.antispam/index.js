@@ -16,7 +16,6 @@ module.exports = (Settings, name) => {
             "last": [],
             "sums": [],
             "avg": [],
-            "violationCount": 0,
         },
         "warningCount": 0,
     }

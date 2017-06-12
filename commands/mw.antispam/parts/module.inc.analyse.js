@@ -9,6 +9,9 @@ module.exports = () => {
     const toolsTemplate = Object.keys(tools).map(x => 0);
     toolsTemplate.push(0);
 
+    // Analysis will ignore values below threshold.
+    const threshold = 0.25;
+
     /**
      * Returns value of c.
      * @param {number} a
@@ -36,17 +39,19 @@ module.exports = () => {
             if (!content.length) return toolsTemplate;
             const result = tools.map(x => {
                 if (x.parameters.content.indexOf('string') !== -1) {
-                    return x.func(content);
+                    const thisPercentage = x.func(content);
+                    return thisPercentage >= threshold ? thisPercentage : 0;
                 }
                 return 0;
             });
             // Combine the log and look for repetitive structure.
-            result.push(stringAnalysis.getPercentageOfRepetitiveStructure(
+            const thisPercentage = stringAnalysis.getPercentageOfRepetitiveStructure(
                 authorLog.reduce((prev, curr) => {
                     return prev === ''
                         ? curr.content : `${prev} ${curr.content}`;
                 }, '')
-            ));
+            );
+            result.push(thisPercentage >= threshold ? thisPercentage : 0);
             return result;
         } catch (e) {
             print(`getAnalysis failed.`, 'parts/analyse',

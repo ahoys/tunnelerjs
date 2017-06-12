@@ -9,7 +9,6 @@ const authorTemplate = {
         "last": [0, 0, 0, 0],
         "sums": [0, 0, 0, 0],
         "avg": [0, 0, 0, 0],
-        "violationCount": 0,
     },
     "warningCount": 0,
 }

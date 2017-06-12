@@ -87,21 +87,21 @@ module.exports = (Settings, name) => {
             // Append the author's message log.
             ao.log = getAppendedLog(ao.log, content, createdTimestamp);
             // Analyse the most recent content.
-            ao.last = analysis.getAnalysis(content, ao.log);
+            ao.last = analyse.getAnalysis(content, ao.log);
             // Summarize all the content.
-            ao.sums = analysis.getAppendedSums(
+            ao.sums = analyse.getAppendedSums(
                 ao.sums,
                 ao.last,
                 maxBuffer
             );
             // Get average of the content analysement history.
-            ao.avg = analysis.getAnalysisAvg(
+            ao.avg = analyse.getAnalysisAvg(
                 ao.sums[ao.sums.length - 1],
                 ao.sums.length
             );
             // Decide whether the author is a spammer.
-            if (analysis.isSpamming(ao.avg, content.length)) {
-                const severity = analysis.getSeverity(ao);
+            if (analyse.isSpamming(ao.avg, content.length)) {
+                const severity = analyse.getSeverity(ao);
                 if (severity >= 8) {
                     // Extreme.
                 } else if (severity >= 6) {

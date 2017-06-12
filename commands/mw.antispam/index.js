@@ -92,12 +92,12 @@ module.exports = (Settings, name) => {
             ao.sums = analysis.getAppendedSums(
                 ao.sums,
                 ao.last,
-                maxBuffer,
+                maxBuffer
             );
             // Get average of the content analysement history.
             ao.avg = analysis.getAnalysisAvg(
                 ao.sums[ao.sums.length - 1],
-                ao.sums.length,
+                ao.sums.length
             );
             // Decide whether the author is a spammer.
             if (analysis.isSpamming(ao.avg, content.length)) {

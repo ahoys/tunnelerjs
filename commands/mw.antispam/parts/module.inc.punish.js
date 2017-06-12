@@ -1,4 +1,4 @@
-const {print} = require('../../util/module.inc.debug')();
+const {print} = require('../../../util/module.inc.debug')();
 
 module.exports = () => {
     const module = {};

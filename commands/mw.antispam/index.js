@@ -117,8 +117,9 @@ module.exports = (Settings, name) => {
             // Save the author with changes.
             setAuthor(author.id, thisAuthor);
         } catch (e) {
-
+            print(`Could not execute a middleware (${name}).`, name, true, e);
         }
+        return '';
     }
 
     return module;

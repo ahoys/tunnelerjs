@@ -133,16 +133,21 @@ module.exports = (CommandsMap) => {
      * @param {object} middlewaresJSON
      * @return {object}
      */
-    const getGuildMiddlewares = (middlewaresJSON) => {
+    const getGuildMiddlewares = (middlewaresJSON, langJSON) => {
         try {
-            if (typeof middlewaresJSON !== 'object') return {};
+            if (
+                typeof middlewaresJSON !== 'object' ||
+                typeof langJSON !== 'string'
+            ) return {};
             const guildMiddlewares = {};
             Object.keys(middlewaresJSON).forEach((mwKey) => {
                 if (mwMap[mwKey] && middlewaresJSON[mwKey].enabled) {
-                    const {jsPath, settings} = mwMap[mwKey];
+                    const {jsPath, strings, settings} = mwMap[mwKey];
+                    const localization = strings[langJSON] ||
+                        strings['default'];
                     guildMiddlewares[mwKey] = {
                         execute: require(`.${jsPath}`)(
-                            settings, mwKey).execute,
+                            settings, localization, mwKey).execute,
                         enabledChannels: Parser.getListOfType(
                             middlewaresJSON[mwKey]['enabled_channels']),
                         excludedChannels: Parser.getListOfType(
@@ -184,7 +189,8 @@ module.exports = (CommandsMap) => {
                     json,
                     commands: getGuildCommands(
                         id, json.commands, json.localization || json.default),
-                    middlewares: getGuildMiddlewares(json.middlewares),
+                    middlewares: getGuildMiddlewares(
+                        json.middlewares, json.localization || json.default),
                 };
             });
             // Return all the available guilds with commands.

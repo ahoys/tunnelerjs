@@ -56,9 +56,16 @@ module.exports = () => {
         if (typeof require(`.${jsPath}`)().execute !== 'function') return {};
         // Validate the command.json settings file.
         const middlewareJSON = require(`.${jsonPath}`);
-        if (typeof middlewareJSON !== 'object') return {};
+        if (
+            typeof middlewareJSON !== 'object' ||
+            typeof middlewareJSON.localizations !== 'object'
+        ) return {};
         // Return a middleware frame.
-        return {jsPath, settings: middlewareJSON.settings};
+        return {
+            jsPath,
+            settings: middlewareJSON.settings,
+            strings: middlewareJSON.localizations
+        };
     };
 
     /**

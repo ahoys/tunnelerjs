@@ -1,3 +1,13 @@
 {
-    "settings": {}
+    "settings": {},
+    "localizations": {
+        "default": {
+            "warn": "stop spamming or I'll whack your head off.",
+            "punished": " was punished for spamming."
+        },
+        "fi": {
+            "warn": "lopeta se spämmäys tai löydät itsesi päätä lyhyempänä.",
+            "punished": " sai rangaistuksen spämmäyksestä."
+        }
+    }
 }

@@ -3,6 +3,7 @@ const stringAnalysis = require('string-analysis-js');
 
 let AntiSpam;
 const settings = require('../middleware.json').settings;
+const strings = require('../middleware.json').localizations.default;
 const name = 'antispam';
 const message = {
     author: {
@@ -18,7 +19,7 @@ const guildSettings = require('../../../guilds/template.json')
     .middlewares.antispam;
 
 exports.basicExecution = (test) => {
-    AntiSpam = require('../index')(settings, name);
+    AntiSpam = require('../index')(settings, strings, name);
     const thisMessage = message;
     thisMessage.content = 'test';
     const result = AntiSpam.execute(thisMessage, guildSettings);

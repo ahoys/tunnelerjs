@@ -22,7 +22,8 @@
                     "moderate": 2,
                     "low": 3
                 },
-                "punishmentRole": ""
+                "punishmentRole": "",
+                "silentMode": false
             }
         }
     },

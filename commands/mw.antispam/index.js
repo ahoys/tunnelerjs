@@ -3,7 +3,7 @@ const stringAnalysis = require('string-analysis-js');
 const punish = require('./parts/module.inc.punish')();
 const analyse = require('./parts/module.inc.analyse')();
 
-module.exports = (Settings, name) => {
+module.exports = (Settings, Strings, name) => {
     const module = {};
 
     // "authors" includes analysis, warnings and violations of authors.

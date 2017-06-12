@@ -10,6 +10,10 @@ module.exports = () => {
     toolsTemplate.push(0);
 
     // Analysis will ignore values below threshold.
+    // This is important so that the spamming user can still
+    // attempt to correct his/her behaviour.
+    // Zero results from the analysis decreases the changes to get
+    // punished after a warning.
     const threshold = 0.25;
 
     /**

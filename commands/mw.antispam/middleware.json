@@ -9,5 +9,23 @@
             "warn": "lopeta se spämmäys tai löydät itsesi päätä lyhyempänä.",
             "punished": " sai rangaistuksen spämmäyksestä."
         }
+    },
+    "validate": {
+        "required": ["punishment"],
+        "type": {
+            "warnings": "boolean",
+            "punishment": "string",
+            "punishmentRole": ["string", "number"],
+            "silentMode": "boolean"
+        },
+        "available": {
+            "punishment": ["ban", "kick", "role", "warn"]
+        },
+        "default": {
+            "warnings": 0,
+            "punishment": "warn",
+            "punishmentRole": "",
+            "silentMode": false
+        }
     }
 }

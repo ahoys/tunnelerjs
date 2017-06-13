@@ -2,7 +2,7 @@
     "settings": {
         "myCustomSetting": 3
     },
-    "localizations": {
+    "strings": {
         "default": {
             "keywords": ["example"],
             "success_0": "default language example.",

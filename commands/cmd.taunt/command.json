@@ -3,7 +3,7 @@
         "tauntToResponses": true,
         "tauntTimes": 2
     },
-    "localizations": {
+    "strings": {
         "default": {
             "keywords": ["taunt", "insult"],
             "taunts": [

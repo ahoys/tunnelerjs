@@ -1,6 +1,6 @@
 {
     "settings": {},
-    "localizations": {
+    "strings": {
         "default": {
             "keywords": ["ping", "latency", "delay"],
             "success_0": "pong in ",

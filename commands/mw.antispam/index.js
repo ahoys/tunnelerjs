@@ -223,10 +223,8 @@ module.exports = (Settings, Strings, name) => {
                         processPunishment(Message, guildSettings);
                     } else {
                         // Warn.
-                        processPunishment(Message, {
-                            ...guildSettings,
-                            punishment: 'warn',
-                        });
+                        guildSettings.punishment = 'warn';
+                        processPunishment(Message, guildSettings);
                     }
                 } else {
                     // Always punish, no warnings.

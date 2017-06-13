@@ -128,6 +128,6 @@ module.exports = () => {
         }
         return false;
     };
-
+    
     return module;
 };

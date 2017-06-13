@@ -4,24 +4,8 @@
         "antispam": {
             "enabled": true,
             "settings": {
-                "punishments": {
-                    "extreme": "ban",
-                    "high": "kick",
-                    "moderate": "role",
-                    "low": "warn"
-                },
-                "removeMessages": {
-                    "extreme": true,
-                    "high": true,
-                    "moderate": false,
-                    "low": false
-                },
-                "warnings": {
-                    "extreme": 0,
-                    "high": 1,
-                    "moderate": 2,
-                    "low": 3
-                },
+                "warnings": true,
+                "punishment": "ban",
                 "punishmentRole": "",
                 "silentMode": false
             }

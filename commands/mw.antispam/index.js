@@ -74,9 +74,117 @@ module.exports = (Settings, Strings, name) => {
         return {};
     }
 
+    /**
+     * Validates guild settings.
+     * @param {*} guildSettings 
+     * @param {*} roles 
+     * @param {*} member 
+     */
+    const isValidSetup = (guildSettings, roles, member) => {
+        try {
+            const {
+                punishment,
+                punishmentRole,
+                warnings,
+                silentMode
+            } = guildSettings;
+            let replaceType = undefined;
+            if (['ban', 'kick', 'role', 'warn'].indexOf(punishment) === -1) {
+                // Invalid punishment.
+                replaceType = 'warn';
+                print('Invalid punishment type.',
+                    name);
+                return false;
+            } else if (
+                punishment === 'role' &&
+                Object.keys(roles).indexOf(punishmentRole) === -1
+            ) {
+                // Invalid or missing role id.
+                replaceType = 'warn';
+                print(`Invalid role id (${punishmentRole}). `
+                    + `See the log for the available ids.`,
+                    name, true, roles);
+                return false;
+            } else if (punishment === 'kick' && !member.kickable) {
+                // Cannot be kicked.
+                print(`Member (${member.nickname}) is not kickable.`,
+                    name);
+                return false;
+            } else if (punishment === 'ban' && !member.bannable) {
+                // Cannot be banned.
+                print(`Member (${member.nickname}) is not bannable.`,
+                    name);
+                return false;
+            } else if (typeof warnings !== 'boolean') {
+                // Invalid warning.
+                print('Invalid warnings. Should be true or false.',
+                    name);
+                return false;
+            } else if (typeof silentMode !== 'boolean') {
+                // Invalit silentMode.
+                print('Invalid silentMode. Should be true or false.',
+                    name);
+                return false;
+            }
+            return true;
+        } catch (e) {
+            print('Failed to validate the punishment settings.', name,
+                true, e);
+        }
+        return false;
+    }
+
+    /**
+     * Processes a correct punishment to a member.
+     * @param {object} Message
+     * @param {object} guildSettings
+     */
+    const processPunishment = (Message, guildSettings) => {
+        try {
+            switch (guildSettings.punishment) {
+                case 'ban':
+                    print(`Banning ${Message.member.nickname}`, name,
+                        true, Message.member.id);
+                    punish.ban(Message.member, 1);
+                    break;
+                case 'kick':
+                    print(`Kicking ${Message.member.nickname}`, name,
+                        true, Message.member.id);
+                    punish.kick(Message.member, 1);
+                    break;
+                case 'role':
+                    print(`Roling ${Message.member.nickname}`, name,
+                        true, Message.member.id);
+                    punish.role(Message.member, guildSettings.punishmentRole);
+                    break;
+                case 'warn':
+                    print(`Warning ${Message.member.nickname}`, name,
+                        true, Message.member.id);
+                    punish.warn(Message);
+                    break;
+            }
+            return true;
+        } catch (e) {
+            print('Failed to process a punishment.', name, true, e);
+        }
+        return false;
+    }
+
+    /**
+     * Executes the module.
+     * @param {object} Message
+     * @param {object} guildSettings
+     * @return {string}
+     */
     module.execute = (Message, guildSettings) => {
         try {
-            const { author, content, createdTimestamp, member } = Message;
+            const {
+                author,
+                content,
+                createdTimestamp,
+                member,
+                guild
+            } = Message;
             // Load the author.
             const thisAuthor = getAuthor(author.id);
             if (thisAuthor.joinedTimestamp === 0) {
@@ -100,16 +208,29 @@ module.exports = (Settings, Strings, name) => {
                 ao.sums.length
             );
             // Decide whether the author is a spammer.
-            if (analyse.isSpamming(ao.avg, content.length)) {
-                const severity = analyse.getSeverity(ao);
-                if (severity >= 8) {
-                    // Extreme.
-                } else if (severity >= 6) {
-                    // High.
-                } else if (severity >= 4) {
-                    // Moderate.
+            const certainty = (analyse.getCertainty(ao.avg, content.length));
+            if (
+                certainty >= 0.5 &&
+                isValidSetup(guildSettings, guild.roles, member)
+            ) {
+                // Decide how many warnings do we give.
+                if (warnings) {
+                    const givenWarnings = certainty >= 0.8
+                    ? 1 : certainty >= 0.6
+                        ? 2 : 3;
+                    if (thisAuthor.warningCount >= givenWarnings) {
+                        // Time to punish.
+                        processPunishment(Message, guildSettings);
+                    } else {
+                        // Warn.
+                        processPunishment(Message, {
+                            ...guildSettings,
+                            punishment: 'warn',
+                        });
+                    }
                 } else {
-                    // Low.
+                    // Always punish, no warnings.
+                    processPunishment(Message, guildSettings);
                 }
             }
             // Save analysis.

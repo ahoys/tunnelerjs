@@ -15,7 +15,7 @@
         "type": {
             "warnings": "boolean",
             "punishment": "string",
-            "punishmentRole": ["string", "number"],
+            "punishmentRole": "string",
             "silentMode": "boolean"
         },
         "available": {

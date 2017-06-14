@@ -1,5 +1,27 @@
 {
     "settings": {},
+    "guildSettings": {
+        "warnings": {
+            "type": "boolean",
+            "isRequired": false,
+            "defaultValue": 0
+        },
+        "punishment": {
+            "type": "string",
+            "isRequired": false,
+            "defaultValue": "warn"
+        },
+        "punishmentRole": {
+            "type": "string",
+            "isRequired": false,
+            "defaultValue": ""
+        },
+        "silentMode": {
+            "type": "boolean",
+            "isRequired": false,
+            "defaultValue": false
+        }
+    },
     "strings": {
         "default": {
             "warn": "stop spamming or I'll whack your head off.",
@@ -8,24 +30,6 @@
         "fi": {
             "warn": "lopeta se spämmäys tai löydät itsesi päätä lyhyempänä.",
             "punished": " sai rangaistuksen spämmäyksestä."
-        }
-    },
-    "validate": {
-        "required": ["punishment"],
-        "type": {
-            "warnings": "boolean",
-            "punishment": "string",
-            "punishmentRole": "string",
-            "silentMode": "boolean"
-        },
-        "available": {
-            "punishment": ["ban", "kick", "role", "warn"]
-        },
-        "default": {
-            "warnings": 0,
-            "punishment": "warn",
-            "punishmentRole": "",
-            "silentMode": false
         }
     }
 }

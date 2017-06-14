@@ -48,12 +48,13 @@ module.exports = () => {
         const moduleJSON = fs.existsSync(jsonPath)
             ? require(`.${jsonPath}`) : {};
         // Read the json and return the results.
-        const { settings, strings, validate } = moduleJSON;
+        const { settings, strings, guildSettings } = moduleJSON;
         return {
             jsPath,
             settings: typeof settings === 'object' ? settings : {},
             strings: typeof strings === 'object' ? strings : {},
-            validate: typeof validate === 'object' ? validate : {},
+            guildSettings: typeof guildSettings === 'object'
+                ? guildSettings : {},
         }
     };
 

@@ -1,6 +1,6 @@
 {
     "settings": {},
-    "localizations": {
+    "strings": {
         "default": {
             "warn": "stop spamming or I'll whack your head off.",
             "punished": " was punished for spamming."

@@ -12,7 +12,9 @@ const fs = require('fs');
  */
 module.exports = () => {
     const module = {};
+    // cmdMap will include all the mapped commands.
     const cmdMap = {};
+    // mwMap will include all the mapped middlewares.
     const mwMap = {};
 
     /**
@@ -59,42 +61,40 @@ module.exports = () => {
     };
 
     /**
-     * Loads all the available commands into a
-     * command frames that can be later used to execute
-     * commands.
+     * Loads all the available modules into frames
+     * that can be later used to execute the modules.
      * @return {object}
      */
     module.initialize = () => {
         try {
-            const folders = fs.readdirSync('./commands');
-            folders.forEach((dir) => {
-                const nameSplit = dir.split('.');
-                if (nameSplit.length === 2) {
-                    if (nameSplit[0] === 'cmd') {
-                        // Command module.
-                        const thisModule = loadModule(dir, 'command');
-                        if (thisModule.jsPath) {
-                            cmdMap[nameSplit[1]] = thisModule;
+            fs.readdirSync('./commands').forEach((item) => {
+                // The naming convention is following:
+                // "type.name", eg. "cmd.ping".
+                // The type can be either cmd or mw.
+                const nameSplit = item.split('.');
+                const type = nameSplit[0];
+                const name = nameSplit[1];
+                if (['cmd', 'mw'].indexOf(type) >= 0 && name !== undefined) {
+                    // Load the module.
+                    const thisModule = loadModule(item, type, name);
+                    // Loading will return an empty object
+                    // if the load failed. Therefore make sure
+                    // the object has at least the js included.
+                    if (thisModule.jsPath) {
+                        if (type === 'cmd') {
+                            // Save a command.
+                            cmdMap[name] = thisModule;
+                        } else if (type === 'mw') {
+                            // Save a middleware.
+                            mwMap[name] = thisModule;
                         }
-                        log(`Command (${nameSplit[1]}) loaded.`,
-                            `commands`);
-                    } else if (nameSplit[0] === 'mw') {
-                        // Middleware module.
-                        const thisModule = loadModule(dir, 'middleware');
-                        if (thisModule.jsPath) {
-                            mwMap[nameSplit[1]] = thisModule;
-                        }
-                        log(`Middleware (${nameSplit[1]}) loaded.`,
-                            `commands`);
                     }
                 }
             });
-            print(
-                `${Object.keys(cmdMap).length} commands loaded.`,
-                    'commands', false);
-            print(
-                `${Object.keys(mwMap).length} middlewares loaded.`,
-                    'commands', false);
+            print(`${Object.keys(cmdMap).length} command(s) found.`,
+                'commands', false);
+            print(`${Object.keys(mwMap).length} middleware(s) found.`,
+                'commands', false);
             return {cmdMap, mwMap};
         } catch (e) {
             print('Indexing commands failed. The process will now exit.',

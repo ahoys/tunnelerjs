@@ -3,7 +3,7 @@
         "warnings": {
             "type": "boolean",
             "isRequired": false,
-            "defaultValue": 0
+            "defaultValue": true
         },
         "punishment": {
             "type": "string",

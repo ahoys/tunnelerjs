@@ -101,7 +101,6 @@ module.exports = () => {
                 'commands', true, e);
             process.exit(1);
         }
-        return {};
     };
 
     return module;

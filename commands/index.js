@@ -2,9 +2,11 @@ const {print, log} = require('../util/module.inc.debug')();
 const fs = require('fs');
 
 /**
- * Automatic command loader.
- * The loader will map command execution file path and strings
- * into key object pairs.
+ * Automatic command & middleware module frame loader.
+ * The loader will map the required filepaths and resources
+ * into a one frame.
+ * 
+ * These frames are used and tailored by the guild loader.
  *
  * Author: Ari Höysniemi
  * Date: May 5. 2017
@@ -16,47 +18,64 @@ module.exports = () => {
     const cmdMap = {};
     // mwMap will include all the mapped middlewares.
     const mwMap = {};
+    // Setting filenames for the types.
+    const typePaths = {
+        cmd: 'command.json',
+        mw: 'middleware.json',
+    }
 
     /**
-     * Loads a middleware from the given directory.
-     * @param {string} dir
-     * @param {string} type
-     * @return {object}
+     * Loads a module from the given directory.
+     * @param {string} dir directory path
+     * @param {string} type module type, eg. cmd or mw.
+     * @param {string} name name of the module, eg. ping
+     * @return {object} a validated module frame.
      */
-    const loadModule = (dir, type) => {
-        // Load file paths.
-        // jsPath is the actual functioning code with module.execute.
-        // json contains all the required strings, settings and validation.
-        const jsPath = `./commands/${dir}/index.js`;
-        const jsonPath = `./commands/${dir}/${type}.json`;
-        // Make sure the required javascript core file exists.
-        if (!fs.existsSync(jsPath)) {
-            print(`File (${jsPath}) missing.`, 'commands');
-            return {};
-        };
-        // Make sure the execution handle exists by attempting to
-        // load it.
+    const loadModuleFrame = (dir, type, name) => {
         try {
-            if (typeof require(`.${jsPath}`)().execute !== 'function') {
-                print(`Execute handle for ${jsPath} missing.`, 'commands');
+            // Paths to the essential files.
+            const jsPath = `./commands/${dir}/index.js`;
+            const jsonPath = `./commands/${dir}/${typePaths[type]}`;
+            // A valid JavaScript execution file must exist.
+            if (!fs.existsSync(jsPath)) {
+                print(`Missing (${jsPath}), (${name}) cannot be loaded.`,
+                    'commands');
                 return {};
             }
+            // Execution function must exist.
+            if (typeof require(`.${jsPath}`)().execute !== 'function') {
+                print(`Module.execute for (${name}) is invalid or missing.`,
+                    'commands');
+                return {};
+            }
+            const returnPayload = {jsPath};
+            // Handle json settings if available.
+            if (fs.existsSync(jsonPath)) {
+                const moduleJSON = require(`.${jsonPath}`);
+                if (typeof moduleJSON.moduleSettings === 'object') {
+                    // Custom module settings found.
+                    // Module settings are global and affect all guilds.
+                    returnPayload.moduleSettings = moduleJSON.moduleSettings;
+                }
+                if (
+                    typeof moduleJSON.strings === 'object' &&
+                    typeof moduleJSON.strings.default === 'object'
+                ) {
+                    // Custom strings found.
+                    // Default strings must always be present.
+                    returnPayload.strings = moduleJSON.strings;
+                }
+                if (typeof moduleJSON.guildSettings === 'object') {
+                    // Custom guild settings found.
+                    // Guild settings are guild specific.
+                    returnPayload.guildSettings = moduleJSON.guildSettings;
+                }
+            }
+            return returnPayload;
         } catch (e) {
-            print(`File (${jsPath}) contains problems and will not be loaded.`,
+            print(`Failed to load a module (${name}). `
+                + `See the log for more info`,
                 'commands', true, e);
-            return {};
-        }
-        // Load the json file. If not available, use empty object.
-        const moduleJSON = fs.existsSync(jsonPath)
-            ? require(`.${jsonPath}`) : {};
-        // Read the json and return the results.
-        const { settings, strings, guildSettings } = moduleJSON;
-        return {
-            jsPath,
-            settings: typeof settings === 'object' ? settings : {},
-            strings: typeof strings === 'object' ? strings : {},
-            guildSettings: typeof guildSettings === 'object'
-                ? guildSettings : {},
         }
     };
 
@@ -76,17 +95,17 @@ module.exports = () => {
                 const name = nameSplit[1];
                 if (['cmd', 'mw'].indexOf(type) >= 0 && name !== undefined) {
                     // Load the module.
-                    const thisModule = loadModule(item, type, name);
+                    const thisModuleFrame = loadModuleFrame(item, type, name);
                     // Loading will return an empty object
                     // if the load failed. Therefore make sure
                     // the object has at least the js included.
-                    if (thisModule.jsPath) {
+                    if (thisModuleFrame.jsPath) {
                         if (type === 'cmd') {
                             // Save a command.
-                            cmdMap[name] = thisModule;
+                            cmdMap[name] = thisModuleFrame;
                         } else if (type === 'mw') {
                             // Save a middleware.
-                            mwMap[name] = thisModule;
+                            mwMap[name] = thisModuleFrame;
                         }
                     }
                 }

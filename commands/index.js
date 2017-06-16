@@ -1,5 +1,6 @@
 const {print, log} = require('../util/module.inc.debug')();
 const fs = require('fs');
+const validate = require('./module.inc.validate')();
 
 /**
  * Automatic command & middleware module frame loader.
@@ -68,7 +69,8 @@ module.exports = () => {
                 if (typeof moduleJSON.guildSettings === 'object') {
                     // Custom guild settings found.
                     // Guild settings are guild specific.
-                    returnPayload.guildSettings = moduleJSON.guildSettings;
+                    returnPayload.guildSettings = validate
+                        .getValidatedGuildSettings(moduleJSON.guildSettings);
                 }
             }
             return returnPayload;

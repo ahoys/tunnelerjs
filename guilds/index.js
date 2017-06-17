@@ -18,46 +18,6 @@ module.exports = (CommandsMap) => {
     const {cmdMap, mwMap} = CommandsMap;
 
     /**
-     * Reads the available guild files.
-     * Discards invalid files.
-     * @return {object}
-     */
-    const getGuildData = () => {
-        try {
-            const guildData = [];
-            const reg = new RegExp(/^\d{18}$/);
-            // Each /guilds sub dir should represent a guild.
-            fs.readdirSync('./guilds').forEach((dir) => {
-                // Each guild should have a special settings file.
-                const dirPath = `./guilds/${dir}`;
-                const jsonPath = `./guilds/${dir}/guild.json`;
-                // Make sure all the required files exist.
-                if (
-                    reg.test(dir) &&
-                    fs.lstatSync(dirPath) &&
-                    fs.existsSync(jsonPath)
-                ) {
-                    const json = require(`.${jsonPath}`);
-                    // Construct a data object if everything is OK.
-                    if (typeof json === 'object') {
-                        guildData.push({
-                            id: String(dir),
-                            json,
-                        });
-                    }
-                }
-            });
-            return guildData;
-        } catch (e) {
-            print(
-                `Reading guild files failed.`,
-                `GUILDS ERROR`
-            );
-            return [];
-        }
-    };
-
-    /**
      * Returns guild's available commands.
      * @param {string} guildId
      * @param {object} commandsJSON
@@ -176,21 +136,46 @@ module.exports = (CommandsMap) => {
     };
 
     /**
+     * Returns all the available guilds.
+     * @return {array}
+     */
+    module.getGuilds = () => {
+        try {
+            const guilds = [];
+            const reg = new RegExp(/^\d{18}$/);
+            fs.readdirSync('./guilds')
+            .filter(
+                x => reg.test(x) &&
+                fs.lstatSync(`./guilds/${x}`).isDirectory())
+            .forEach((id) => {
+                const json = require(`./${id}/guild.json`);
+                if (typeof json === 'object') {
+                    guilds.push({id, json})
+                }
+            });
+            return guilds;
+        } catch (e) {
+            print('Could not get the guilds.', 'guilds', true, e);
+        }
+        return [];
+    };
+
+    /**
      * Initializes guilds.
      * @return {object}
      */
     module.initialize = () => {
         try {
             // Generate guilds from files.
-            const guildFiles = getGuildData();
+            const guildFiles = getGuilds();
             guildFiles.forEach((guild) => {
                 const {id, json} = guild;
                 guilds[id] = {
                     json,
                     commands: getGuildCommands(
-                        id, json.commands, json.localization || json.default),
+                        id, json.commands, json.strings),
                     middlewares: getGuildMiddlewares(
-                        json.middlewares, json.localization || json.default),
+                        json.middlewares, json.strings),
                 };
             });
             // Return all the available guilds with commands.

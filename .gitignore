@@ -6,3 +6,4 @@ console.log
 guilds/*
 !guilds/*.js
 !guilds/*.json
+!guilds/tests

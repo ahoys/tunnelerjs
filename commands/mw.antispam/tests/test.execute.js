@@ -3,7 +3,7 @@ const stringAnalysis = require('string-analysis-js');
 
 let AntiSpam;
 const settings = require('../middleware.json').settings;
-const strings = require('../middleware.json').localizations.default;
+const strings = require('../middleware.json').strings.default;
 const name = 'antispam';
 const message = {
     author: {

@@ -15,7 +15,7 @@ fs.readdirSync('./guilds')
 
 exports.canLoadAvailableGuilds = (test) => {
     Guilds = require('../index')({cmdMap: {}, mwMap: {}});
-    const result = Guilds.getGuilds();
+    const result = Guilds.getGuildsData();
     test.deepEqual(result, guilds, result);
     test.done();
 }

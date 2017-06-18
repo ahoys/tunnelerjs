@@ -139,7 +139,7 @@ module.exports = (CommandsMap) => {
      * Returns all the available guilds.
      * @return {array}
      */
-    module.getGuilds = () => {
+    module.getGuildsData = () => {
         try {
             const guilds = [];
             const reg = new RegExp(/^\d{18}$/);
@@ -167,7 +167,7 @@ module.exports = (CommandsMap) => {
     module.initialize = () => {
         try {
             // Generate guilds from files.
-            const guildFiles = getGuilds();
+            const guildFiles = getGuildsData();
             guildFiles.forEach((guild) => {
                 const {id, json} = guild;
                 guilds[id] = {

@@ -166,28 +166,25 @@ module.exports = (CommandsMap) => {
      */
     module.initialize = () => {
         try {
-            // Generate guilds from files.
-            const guildFiles = getGuildsData();
-            guildFiles.forEach((guild) => {
-                const {id, json} = guild;
-                guilds[id] = {
-                    json,
+            // Get the guild data for further processing.
+            getGuildsData().forEach((guild) => {
+                guilds[guild.id] = {
                     commands: getGuildCommands(
-                        id, json.commands, json.strings),
+                        guild.json.commands, guild.json.strings),
                     middlewares: getGuildMiddlewares(
-                        json.middlewares, json.strings),
-                };
+                        guild.json.middlewares, guild.json.strings),
+                }
             });
             // Return all the available guilds with commands.
             return guilds;
         } catch (e) {
             print(
                 `Initializing guilds failed. The process will now exit.`,
-                `GUILDS CRITICAL`, true, e
+                'guilds', true, e
             );
             process.exit(1);
-            return {};
         }
+        return {};
     };
 
     return module;

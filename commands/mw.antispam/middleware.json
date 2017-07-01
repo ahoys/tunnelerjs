@@ -1,26 +1,4 @@
 {
-    "guildSettings": {
-        "warnings": {
-            "type": "boolean",
-            "isRequired": false,
-            "defaultValue": true
-        },
-        "punishment": {
-            "type": "string",
-            "isRequired": false,
-            "defaultValue": "warn"
-        },
-        "punishmentRole": {
-            "type": "string",
-            "isRequired": false,
-            "defaultValue": ""
-        },
-        "silentMode": {
-            "type": "boolean",
-            "isRequired": false,
-            "defaultValue": false
-        }
-    },
     "strings": {
         "default": {
             "warn": "stop spamming or I'll whack your head off.",

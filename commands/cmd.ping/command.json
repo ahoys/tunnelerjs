@@ -1,5 +1,4 @@
 {
-    "moduleSettings": {},
     "strings": {
         "default": {
             "keywords": ["ping", "latency", "delay"],

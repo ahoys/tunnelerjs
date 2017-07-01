@@ -1,5 +1,5 @@
 {
-    "moduleSettings": {
+    "globalSettings": {
         "myCustomSetting": 3
     },
     "strings": {

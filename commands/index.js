@@ -51,16 +51,16 @@ module.exports = () => {
             // Minimum defaults.
             const returnPayload = {
                 jsPath,
-                moduleSettings: {},
+                globalSettings: {},
                 strings: {},
             };
             // Handle json settings if available.
             if (fs.existsSync(jsonPath)) {
                 const moduleJSON = require(`.${jsonPath}`);
-                if (typeof moduleJSON.moduleSettings === 'object') {
+                if (typeof moduleJSON.globalSettings === 'object') {
                     // Custom module settings found.
                     // Module settings are global and affect all guilds.
-                    returnPayload.moduleSettings = moduleJSON.moduleSettings;
+                    returnPayload.globalSettings = moduleJSON.globalSettings;
                 }
                 if (
                     typeof moduleJSON.strings === 'object' &&

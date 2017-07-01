@@ -35,7 +35,8 @@ module.exports = (CommandsMap) => {
             Object.keys(commandsJSON).forEach((cmdKey) => {
                 // The command must exist.
                 if (cmdMap[cmdKey] && commandsJSON[cmdKey].enabled) {
-                    const {settings, strings, jsPath} = cmdMap[cmdKey];
+                    console.log(cmdMap[cmdKey]);
+                    const {globalSettings, strings, jsPath} = cmdMap[cmdKey];
                     // Map all the keywords that can be used to call
                     // the command.
                     const localization = strings[langJSON] ||
@@ -48,7 +49,7 @@ module.exports = (CommandsMap) => {
                             // the object.
                             guildCommands[keyword] = {
                                 execute: require(`.${jsPath}`)(
-                                    settings, localization, cmdKey
+                                    globalSettings, localization, cmdKey
                                 ).execute,
                                 access: Parser.getListOfType(
                                     commandsJSON[cmdKey].access),

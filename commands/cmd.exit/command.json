@@ -1,5 +1,5 @@
 {
-    "moduleSettings": {},
+    "globalSettings": {},
     "strings": {
         "default": {
             "keywords": ["exit", "disconnect"],

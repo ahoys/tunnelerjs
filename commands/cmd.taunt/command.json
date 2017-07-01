@@ -1,5 +1,5 @@
 {
-    "moduleSettings": {
+    "globalSettings": {
         "tauntToResponses": true,
         "tauntTimes": 2
     },

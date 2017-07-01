@@ -48,7 +48,12 @@ module.exports = () => {
                     'commands');
                 return {};
             }
-            const returnPayload = {jsPath};
+            // Minimum defaults.
+            const returnPayload = {
+                jsPath,
+                moduleSettings: {},
+                strings: {},
+            };
             // Handle json settings if available.
             if (fs.existsSync(jsonPath)) {
                 const moduleJSON = require(`.${jsonPath}`);
@@ -64,11 +69,6 @@ module.exports = () => {
                     // Custom strings found.
                     // Default strings must always be present.
                     returnPayload.strings = moduleJSON.strings;
-                }
-                if (typeof moduleJSON.guildSettings === 'object') {
-                    // Custom guild settings found.
-                    // Guild settings are guild specific.
-                    returnPayload.guildSettings = moduleJSON.guildSettings;
                 }
             }
             return returnPayload;

@@ -19,16 +19,14 @@ module.exports = (CommandsMap) => {
 
     /**
      * Returns guild's available commands.
-     * @param {string} guildId
      * @param {object} commandsJSON
      * @param {string} langJSON
      * @return {object}
      */
-    const getGuildCommands = (guildId, commandsJSON, langJSON) => {
+    const getGuildCommands = (commandsJSON, langJSON) => {
         try {
             // Validate parameters.
             if (
-                typeof guildId !== 'string' ||
                 typeof commandsJSON !== 'object' ||
                 typeof langJSON !== 'string'
             ) return {};
@@ -170,9 +168,9 @@ module.exports = (CommandsMap) => {
             module.getGuildsData().forEach((guild) => {
                 guilds[guild.id] = {
                     commands: getGuildCommands(
-                        guild.json.commands, guild.json.strings),
+                        guild.json.commands, guild.json.localization),
                     middlewares: getGuildMiddlewares(
-                        guild.json.middlewares, guild.json.strings),
+                        guild.json.middlewares, guild.json.localization),
                 }
             });
             // Return all the available guilds with commands.

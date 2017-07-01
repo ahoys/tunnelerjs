@@ -167,7 +167,8 @@ module.exports = (CommandsMap) => {
     module.initialize = () => {
         try {
             // Get the guild data for further processing.
-            getGuildsData().forEach((guild) => {
+            module.getGuildsData().forEach((guild) => {
+                console.log(guild);
                 guilds[guild.id] = {
                     commands: getGuildCommands(
                         guild.json.commands, guild.json.strings),

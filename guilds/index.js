@@ -35,7 +35,6 @@ module.exports = (CommandsMap) => {
             Object.keys(commandsJSON).forEach((cmdKey) => {
                 // The command must exist.
                 if (cmdMap[cmdKey] && commandsJSON[cmdKey].enabled) {
-                    console.log(cmdMap[cmdKey]);
                     const {globalSettings, strings, jsPath} = cmdMap[cmdKey];
                     // Map all the keywords that can be used to call
                     // the command.

@@ -7,3 +7,4 @@ guilds/*
 !guilds/*.js
 !guilds/*.json
 !guilds/tests
+npm*

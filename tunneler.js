@@ -25,7 +25,7 @@ if (cluster.isMaster) {
                 // Over one second passed since the last crash. Meaning the
                 // app probably isn't in a loop of death.
                 // Reboot.
-                print('Rebooting in 5 seconds...', 'Main');
+                print('Rebooting in 1 second...', 'Main');
                 setTimeout(() => {
                     cluster.fork();
                 }, 1024);
@@ -42,6 +42,13 @@ if (cluster.isMaster) {
             // Eg. close command.
             // Gracefully close the application.
             print('The process was ordered to exit.', 'Main');
+        } else if (flag === 3) {
+            // Controlled reboot.
+            print('The process was ordered to reboot.', 'Main');
+            print('Rebooting in 5 seconds...', 'Main');
+            setTimeout(() => {
+                cluster.fork();
+            }, 5120);
         } else {
             // Unknown exit.
             // Document the crash.

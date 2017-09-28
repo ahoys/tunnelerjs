@@ -1,0 +1,12 @@
+{
+  "strings": {
+    "default": {
+      "warning": "stop spamming or you'll be punished.",
+      "punished": "was punished for spamming."
+    },
+    "fi": {
+      "warning": "lopeta spämmäys ettei tarvitse ojentaa.",
+      "punished": "sai rangaistuksen spämmäyksestä."
+    }
+  }
+}

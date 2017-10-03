@@ -38,25 +38,28 @@ module.exports = (AuthMap, GuildsMap) => {
         Client, GuildsMap, AuthMap.owner);
     Client.on('message', (Message) => {
         try {
-            new Promise((resolve, reject) => {
-                // Middlewares will run first.
-                // The command will run only if the middleware
-                // allows it.
-                const haltReason = onMessage.prepare(Message);
-                if (haltReason.length) {
-                    // An error message received.
-                    reject(haltReason);
-                }
-                resolve(Message);
-            }).then((Message) => {
-                // Run the command.
-                onMessage.handle(Message);
-            }).catch((e) => {
-                log(
-                    `Middlware terminated the processing.`,
-                    `Handler`, true, e
-                );
-            });
+            // Make sure it is not the bot talking.
+            if (String(Message.author.id) !== String(Client.user.id)) {
+                new Promise((resolve, reject) => {
+                    // Middlewares will run first.
+                    // The command will run only if the middleware
+                    // allows it.
+                    const haltReason = onMessage.prepare(Message);
+                    if (haltReason.length) {
+                        // An error message received.
+                        reject(haltReason);
+                    }
+                    resolve(Message);
+                }).then((Message) => {
+                    // Run the command.
+                    onMessage.handle(Message);
+                }).catch((e) => {
+                    log(
+                        `Middlware terminated the processing.`,
+                        `Handler`, true, e
+                    );
+                });
+            }
         } catch (e) {
             print(
                 `Processing a message failed.`,

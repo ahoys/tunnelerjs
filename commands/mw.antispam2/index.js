@@ -50,20 +50,58 @@ module.exports = (Settings, Strings, name) => {
     return false;
   }
 
-  doPunish = (Message, member) => {
+  /**
+   * Punishes the Message author based on
+   * guildSettings.
+   */
+  doPunish = (Message, guildSettings) => {
     try {
-      Message.reply('Punished. Booom!');
+      const { guild, author, member, channel } = Message;
+      const {
+        punishmentType,
+        punishmentRole,
+        daysToClear,
+      } = guildSettings;
+      const dtc = typeof daysToClear === 'number' ? daysToClear : 0;
+      switch (punishmentType) {
+        case 'ban':
+          // Make sure the member is bannable.
+          if (member.bannable) {
+            member.ban(dtc, 'Automatic spam detection')
+            .then(() => {
+              channel.send(`${author.username} ${Strings['punished_ban']}`);
+            }).catch((e) => {
+              print('Banning failed.', name, true, e);
+            });
+          }
+          break;
+        case 'kick':
+          // Make sure the member is kickable.
+          if (member.kickable) {
+            member.kick(dtc, 'Automatic spam detection')
+            .then(() => {
+              channel.send(`${author.username} ${Strings['punished_kick']}`);
+            }).catch((e) => {
+              print('Kicking failed.', name, true, e);
+            });
+          }
+          break;
+        case 'role':
+          // Make sure the role exists, and that the member does not already
+          // has the role.
+          const role = guild.roles.find('id', punishmentRole);
+          if (role) {
+            member.addRole(role, 'Automatic spam detection')
+            .then(() => {
+              channel.send(`${author.username} ${Strings['punished_role']}`);
+            }).catch((e) => {
+              print(`Adding punishment role (${punishmentRole}) failed.`, name, true, e);
+            });
+          }
+          break;
+      }
     } catch (e) {
       print('doPunish failed.', name, true, e);
-    }
-    return false;
-  }
-
-  doWarn = (Message) => {
-    try {
-      Message.reply('Warned. Booom!');
-    } catch (e) {
-      print('doWarn failed.', name, true, e);
     }
     return false;
   }
@@ -78,11 +116,11 @@ module.exports = (Settings, Strings, name) => {
         authors[author.id].violations += 1;
         if (authors[author.id].violations > Number(guildSettings['maxViolations'])) {
           // Punish.
-          doPunish(Message, Message.member);
+          doPunish(Message, guildSettings);
           authors[author.id].violations = 0;
         } else if (Boolean(guildSettings['warnings'])) {
           // Warn.
-          doWarn(Message);
+          Message.reply(Strings['warning']);
         }
       }
     } catch (e) {

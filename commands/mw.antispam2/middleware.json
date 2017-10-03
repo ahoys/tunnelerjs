@@ -2,11 +2,15 @@
   "strings": {
     "default": {
       "warning": "stop spamming or you'll be punished.",
-      "punished": "was punished for spamming."
+      "punished_ban": "was banned because of spamming.",
+      "punished_kick": "was kicked because of spamming.",
+      "punished_role": "got a new role because of spamming."
     },
     "fi": {
       "warning": "lopeta spämmäys ettei tarvitse ojentaa.",
-      "punished": "sai rangaistuksen spämmäyksestä."
+      "punished_ban": "bännättiin spämmäyksestä.",
+      "punished_kick": "potkittiin spämmäyksestä.",
+      "punished_role": "sai uuden roolin spämmäyksestä."
     }
   }
 }

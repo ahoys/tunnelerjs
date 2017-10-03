@@ -13,7 +13,14 @@ module.exports = (Settings, Strings, name) => {
     try {
       const { author } = Message;
       const id = author.id;
-      if (authors.indexOf(id) === -1) {
+      if (authors[id]) {
+        // An existing user.
+        // We use indexes to avoid super long message logs.
+        const i = authors[id].messages.index >= 15
+          ? 0
+          : authors[id].messages.index + 1;
+        authors[id].messages.list[i] = Message;
+      } else {
         // A new user.
         authors[id] = {
           id,
@@ -23,13 +30,6 @@ module.exports = (Settings, Strings, name) => {
           },
           violations: 0,
         }
-      } else {
-        // An existing user.
-        // We use indexes to avoid super long message logs.
-        const i = authors[id].messages.index >= 15
-          ? 0
-          : authors[id].messages.index + 1;
-        authors[id].messages.list[i] = Message;
       }
       return authors[id];
     } catch (e) {
@@ -43,9 +43,27 @@ module.exports = (Settings, Strings, name) => {
    */
   isNewViolation = (author) => {
     try {
-
+      return true;
     } catch (e) {
       print('isNewOffence failed.', name, true, e);
+    }
+    return false;
+  }
+
+  doPunish = (Message, member) => {
+    try {
+      Message.reply('Punished. Booom!');
+    } catch (e) {
+      print('doPunish failed.', name, true, e);
+    }
+    return false;
+  }
+
+  doWarn = (Message) => {
+    try {
+      Message.reply('Warned. Booom!');
+    } catch (e) {
+      print('doWarn failed.', name, true, e);
     }
     return false;
   }
@@ -58,10 +76,20 @@ module.exports = (Settings, Strings, name) => {
       // spam rules.
       if (isNewViolation(author)) {
         authors[author.id].violations += 1;
+        if (authors[author.id].violations > Number(guildSettings['maxViolations'])) {
+          // Punish.
+          doPunish(Message, Message.member);
+          authors[author.id].violations = 0;
+        } else if (Boolean(guildSettings['warnings'])) {
+          // Warn.
+          doWarn(Message);
+        }
       }
     } catch (e) {
       print(`Could not execute a middleware (${name}).`, name, true, e);
     }
     return '';
   };
+
+  return module;
 }

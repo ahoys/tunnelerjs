@@ -6,27 +6,42 @@ module.exports = (Settings, Strings, name) => {
   const authors = {};
 
   /**
-   * Returns a saved or a new author-
+   * Saves the message for the author
+   * and returns the author.
    */
-  getAuthor = (Message) => {
+  getProcessedAuthor = (Message) => {
     try {
       const { author } = Message;
       const id = author.id;
       if (authors.indexOf(id) === -1) {
+        // A new user.
         authors[id] = {
           id,
-          messages: [],
-          warnings: 0,
+          messages: {
+            list: [Message],
+            index: 0,
+          },
+          violations: 0,
         }
+      } else {
+        // An existing user.
+        // We use indexes to avoid super long message logs.
+        const i = authors[id].messages.index >= 15
+          ? 0
+          : authors[id].messages.index + 1;
+        authors[id].messages.list[i] = Message;
       }
       return authors[id];
     } catch (e) {
-      print('getAuthor failed.', name, true, e);
+      print('getProcessedAuthor failed.', name, true, e);
     }
     return {};
   }
 
-  isNewOffence = (author) => {
+  /**
+   * Returns whether a new violation occured.
+   */
+  isNewViolation = (author) => {
     try {
 
     } catch (e) {
@@ -37,14 +52,12 @@ module.exports = (Settings, Strings, name) => {
 
   module.execute = (Message, guildSettings) => {
     try {
-      // Read author.
-      const author = getAuthor(Message);
-      // Save message.
-      authors[author.id].messages.push(Message);
+      // Save message & read author.
+      const author = getProcessedAuthor(Message);
       // Analyse whether the new message is violating
       // spam rules.
-      if (isNewOffence(author)) {
-
+      if (isNewViolation(author)) {
+        authors[author.id].violations += 1;
       }
     } catch (e) {
       print(`Could not execute a middleware (${name}).`, name, true, e);

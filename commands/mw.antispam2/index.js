@@ -67,9 +67,10 @@ module.exports = (Settings, Strings, name) => {
         case 'ban':
           // Make sure the member is bannable.
           if (member.bannable) {
-            member.ban(dtc, 'Automatic spam detection')
+            member.ban({ days: dtc, reason: 'Automatic spam detection.'})
             .then(() => {
               channel.send(`${author.username} ${Strings['punished_ban']}`);
+              print(`Banned "${author.username}".`, name, true);
             }).catch((e) => {
               print('Banning failed.', name, true, e);
             });
@@ -81,6 +82,7 @@ module.exports = (Settings, Strings, name) => {
             member.kick(dtc, 'Automatic spam detection')
             .then(() => {
               channel.send(`${author.username} ${Strings['punished_kick']}`);
+              print(`Kicked "${author.username}".`, name, true);
             }).catch((e) => {
               print('Kicking failed.', name, true, e);
             });
@@ -94,6 +96,7 @@ module.exports = (Settings, Strings, name) => {
             member.addRole(role, 'Automatic spam detection')
             .then(() => {
               channel.send(`${author.username} ${Strings['punished_role']}`);
+              print(`Set role "${role.name}" to "${author.username}".`, name, true);
             }).catch((e) => {
               print(`Adding punishment role (${punishmentRole}) failed.`, name, true, e);
             });

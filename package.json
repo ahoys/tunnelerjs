@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "discord.js": "11.1.x",
-    "string-analysis-js": "0.1.x"
+    "string-analysis-js": "0.1.x",
+    "node-irc": "0.0.x"
   },
   "devDependencies": {
     "eslint-config-google": "0.x.x"

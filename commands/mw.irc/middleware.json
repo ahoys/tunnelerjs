@@ -1,0 +1,10 @@
+{
+  "strings": {
+    "default": {
+      "irc_welcome": "Hey, I'm here to bridge Discord and Irc!"
+    },
+    "fi": {
+      "irc_welcome": "Moi, olen täällä yhdistämässä Discordin ja Ircin!"
+    }
+  }
+}

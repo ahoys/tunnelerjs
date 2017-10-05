@@ -100,11 +100,11 @@ module.exports = (CommandsMap) => {
             const guildMiddlewares = {};
             Object.keys(middlewaresJSON).forEach((mwKey) => {
                 if (mwMap[mwKey] && middlewaresJSON[mwKey].enabled) {
-                    const {jsPath, strings, settings} = mwMap[mwKey];
+                    const {jsPath, strings, globalSettings} = mwMap[mwKey];
                     const localization = strings[langJSON] ||
                         strings['default'];
                     const mwObj = require(`.${jsPath}`)(
-                        settings, localization, mwKey);
+                        globalSettings, localization, mwKey);
                     guildMiddlewares[mwKey] = {
                         execute: mwObj.execute,
                         initialize: mwObj.initialize ? mwObj.initialize : undefined,

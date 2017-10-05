@@ -66,7 +66,7 @@ module.exports = (Settings, Strings, name) => {
         ircClient.verbosity = 2;
         ircClient.on('ready', onReady);
         ircClient.on('CHANMSG', onCHANMSG);
-        ircClient.connect();
+        // ircClient.connect();
         return true;
       }
     } catch (e) {

@@ -1,4 +1,10 @@
 {
+  "globalSettings": {
+    "splitter": " ",
+    "shortWordLength": 2,
+    "longWordLength": 16,
+    "repetitiousChars": 3
+  },
   "strings": {
     "default": {
       "warning": "stop spamming or you'll be punished.",

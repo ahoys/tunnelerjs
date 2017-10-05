@@ -1,5 +1,5 @@
 const { print, log } = require('../../util/module.inc.debug')();
-const stringAnalysis = require('string-analysis-js');
+const StrA = require('string-analysis-js');
 
 module.exports = (Settings, Strings, name) => {
   const module = {};
@@ -41,8 +41,19 @@ module.exports = (Settings, Strings, name) => {
   /**
    * Returns whether a new violation occured.
    */
-  isNewViolation = (author) => {
+  isNewViolation = (author, Message) => {
     try {
+      const { content } = Message;
+      console.log(Settings);
+      const rStructure = StrA.getPercentageOfRepetitiveStructure(
+        content, Settings['splitter']);
+      const pOfShortStrings = StrA.getPercentageOfShortStrings(
+        content, Settings['shortWordLength']);
+      const pOfLongStrings = StrA.getPercentageOfLongStrings(
+        content, Settings['longWordLength']);
+      const pOfRepetitiveChars = StrA.getPercentageOfRepetitiveChars(
+        content, Settings['repetitiousChars']);
+      console.log(rStructure, pOfShortStrings, pOfLongStrings, pOfRepetitiveChars);
       return true;
     } catch (e) {
       print('isNewOffence failed.', name, true, e);
@@ -115,7 +126,7 @@ module.exports = (Settings, Strings, name) => {
       const author = getProcessedAuthor(Message);
       // Analyse whether the new message is violating
       // spam rules.
-      if (isNewViolation(author)) {
+      if (isNewViolation(author, Message)) {
         authors[author.id].violations += 1;
         if (authors[author.id].violations > Number(guildSettings['maxViolations'])) {
           // Punish.

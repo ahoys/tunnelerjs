@@ -42,7 +42,7 @@ module.exports = (Settings, Strings, name) => {
     return '';
   }
 
-  module.initialize = () => {
+  module.initialize = (guildSettings) => {
     try {
       //client.connect();
       return true;

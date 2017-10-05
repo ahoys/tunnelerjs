@@ -58,11 +58,25 @@ module.exports = (Client, GuildsMap) => {
      */
     module.handle = () => {
         const {user, guilds} = Client;
+        print('Initializing middlewares, if any.', 'Handler');
         guilds.forEach((guild) => {
             if (!GuildsMap[guild.id]) {
                 print(`Could not find configuration for a guild `
                 + `(${guild.id}). Generating files...`, 'Handler');
                 checkGuildFiles(guild.id);
+            } else {
+                // Some middlewares have an initialization function.
+                // Find them and initialize.
+                Object.keys(GuildsMap[guild.id].middlewares).forEach(mwKey => {
+                    if (GuildsMap[guild.id].middlewares[mwKey].initialize) {
+                        print(`Initializing middleware "${mwKey}"...`, 'Handler');
+                        if (GuildsMap[guild.id].middlewares[mwKey].initialize()) {
+                            print(`Successful initialization of "${mwKey}".`, 'Handler');
+                        } else {
+                            print(`Initialization of "${mwKey}" failed.`, 'Handler');
+                        }
+                    }
+                });
             }
         });
         print(`Serving ${guilds.array().length} server(s).`, 'Handler');

@@ -103,9 +103,11 @@ module.exports = (CommandsMap) => {
                     const {jsPath, strings, settings} = mwMap[mwKey];
                     const localization = strings[langJSON] ||
                         strings['default'];
+                    const mwObj = require(`.${jsPath}`)(
+                        settings, localization, mwKey);
                     guildMiddlewares[mwKey] = {
-                        execute: require(`.${jsPath}`)(
-                            settings, localization, mwKey).execute,
+                        execute: mwObj.execute,
+                        initialize: mwObj.initialize ? mwObj.initialize : undefined,
                         enabledChannels: Parser.getListOfType(
                             middlewaresJSON[mwKey]['enabled_channels']),
                         excludedChannels: Parser.getListOfType(

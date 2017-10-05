@@ -3,14 +3,13 @@ const irc = require('node-irc');
 
 module.exports = (Settings, Strings, name) => {
   const module = {};
-  const client = new irc('se.quakenet.org', 6667, 'Tunneler', 'fn');
+  const client = new irc('se.quakenet.org', 6667, 'Tunneler', 'Discord Bridger');
   client.debug = true;
   client.verbosity = 2;
   let initialized = false;
   let ready = false;
 
   client.on('ready', () => {
-    console.log('noniin');
     try {
       ready = true;
       client.join('#tunneler');
@@ -33,18 +32,24 @@ module.exports = (Settings, Strings, name) => {
 
   module.execute = (Message, guildSettings) => {
     try {
-      if (ready && initialized) {
-        // Catch the message and bridge forward.
+      if (ready && Message.channel.id === guildSettings['discordChannel']) {
+        // Catch the message and bridge it forward.
         client.say('#tunneler', `<${Message.author.username}> ${Message.content}`);
-      } else if (!initialized) {
-        // Connect the client.
-        initialized = true;
-        client.connect();
       }
     } catch (e) {
       print(`Could not execute a middleware (${name}).`, name, true, e);
     }
     return '';
+  }
+
+  module.initialize = () => {
+    try {
+      //client.connect();
+      return true;
+    } catch (e) {
+      print(`Initialization of a middleware (${name}) failed.`, name, true, e);
+    }
+    return false;
   }
 
   return module;

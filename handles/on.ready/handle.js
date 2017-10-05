@@ -72,7 +72,10 @@ module.exports = (Client, GuildsMap) => {
                         print(`Initializing middleware "${mwKey}"...`, 'Handler');
                         if (
                             GuildsMap[guild.id].middlewares[mwKey]
-                            .initialize(GuildsMap[guild.id].middlewares[mwKey].guildSettings)
+                            .initialize(
+                                Client,
+                                GuildsMap[guild.id].middlewares[mwKey].guildSettings
+                            )
                         ) {
                             print(`Successful initialization of "${mwKey}".`, 'Handler');
                         } else {

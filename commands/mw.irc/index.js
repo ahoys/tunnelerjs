@@ -6,6 +6,7 @@ module.exports = (Settings, Strings, name) => {
   let client = {};
   let initialized = false;
   let ready = false;
+  let botClient = undefined;
   let handlerSettings = {}; // Guild settings for handlers.
 
   onReady = (channel) => {
@@ -41,8 +42,9 @@ module.exports = (Settings, Strings, name) => {
     return '';
   }
 
-  module.initialize = (guildSettings) => {
+  module.initialize = (Client, guildSettings) => {
     try {
+      botClient = Client;
       handlerSettings = guildSettings;
       client = new irc(
         guildSettings['ircServer'],

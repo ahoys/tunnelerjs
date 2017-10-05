@@ -3,18 +3,18 @@ const irc = require('node-irc');
 
 module.exports = (Settings, Strings, name) => {
   const module = {};
-  let client = {};
   let initialized = false;
   let ready = false;
+  let ircClient = undefined;
   let botClient = undefined;
   let handlerSettings = {}; // Guild settings for handlers.
 
   onReady = (channel) => {
     try {
       ready = true;
-      client.join(handlerSettings['channel']);
+      ircClient.join(handlerSettings['channel']);
       setTimeout(() => {
-        client.say(handlerSettings['channel'], Strings['irc_welcome']);
+        ircClient.say(handlerSettings['channel'], Strings['irc_welcome']);
       }, 1024);
     } catch (e) {
       print('onReady failed.', name, true, e);
@@ -34,7 +34,7 @@ module.exports = (Settings, Strings, name) => {
     try {
       if (ready && Message.channel.id === guildSettings['discordChannel']) {
         // Catch the message and bridge it forward.
-        client.say('#tunneler', `<${Message.author.username}> ${Message.content}`);
+        ircClient.say('#tunneler', `<${Message.author.username}> ${Message.content}`);
       }
     } catch (e) {
       print(`Could not execute a middleware (${name}).`, name, true, e);
@@ -46,18 +46,18 @@ module.exports = (Settings, Strings, name) => {
     try {
       botClient = Client;
       handlerSettings = guildSettings;
-      client = new irc(
+      ircClient = new irc(
         guildSettings['ircServer'],
         guildSettings['ircPort'],
         guildSettings['ircNickname'],
         'Discord Bridger',
         guildSettings['ircPassword']
       );
-      client.debug = true;
-      client.verbosity = 2;
-      client.on('ready', onReady);
-      client.on('CHANMSG', onCHANMSG);
-      client.connect();
+      ircClient.debug = true;
+      ircClient.verbosity = 2;
+      ircClient.on('ready', onReady);
+      ircClient.on('CHANMSG', onCHANMSG);
+      ircClient.connect();
       return true;
     } catch (e) {
       print(`Initialization of a middleware (${name}) failed.`, name, true, e);

@@ -39,6 +39,7 @@ module.exports = (Settings, Strings, name) => {
         if (Message.content === 'quit') {
           print(`Irc connection quitted by "${Message.author.username}".`, name, true);
           ircClient.quit();
+          ready = false;
         }
       }
     } catch (e) {

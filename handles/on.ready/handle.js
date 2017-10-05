@@ -73,7 +73,7 @@ module.exports = (Client, GuildsMap) => {
                         if (
                             GuildsMap[guild.id].middlewares[mwKey]
                             .initialize(
-                                Client,
+                                guild,
                                 GuildsMap[guild.id].middlewares[mwKey].guildSettings
                             )
                         ) {

@@ -3,32 +3,31 @@ const irc = require('node-irc');
 
 module.exports = (Settings, Strings, name) => {
   const module = {};
-  const client = new irc('se.quakenet.org', 6667, 'Tunneler', 'Discord Bridger');
-  client.debug = true;
-  client.verbosity = 2;
+  let client = {};
   let initialized = false;
   let ready = false;
+  let handlerSettings = {}; // Guild settings for handlers.
 
-  client.on('ready', () => {
+  onReady = (channel) => {
     try {
       ready = true;
-      client.join('#tunneler');
+      client.join(handlerSettings['channel']);
       setTimeout(() => {
-        client.say(Strings['irc_welcome']);
+        client.say(handlerSettings['channel'], Strings['irc_welcome']);
       }, 1024);
     } catch (e) {
       print('onReady failed.', name, true, e);
     }
-  });
+  };
 
-  client.on('CHANMSG', (data) => {
+  onCHANMSG = (data) => {
     try {
       const { receiver, sender, message } = data;
       console.log(message);
     } catch (e) {
       print('onCHANMSG failed.', name, true, e);
     }
-  });
+  };
 
   module.execute = (Message, guildSettings) => {
     try {
@@ -44,7 +43,19 @@ module.exports = (Settings, Strings, name) => {
 
   module.initialize = (guildSettings) => {
     try {
-      //client.connect();
+      handlerSettings = guildSettings;
+      client = new irc(
+        guildSettings['ircServer'],
+        guildSettings['ircPort'],
+        guildSettings['ircNickname'],
+        'Discord Bridger',
+        guildSettings['ircPassword']
+      );
+      client.debug = true;
+      client.verbosity = 2;
+      client.on('ready', onReady);
+      client.on('CHANMSG', onCHANMSG);
+      client.connect();
       return true;
     } catch (e) {
       print(`Initialization of a middleware (${name}) failed.`, name, true, e);

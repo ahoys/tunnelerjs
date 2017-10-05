@@ -44,17 +44,21 @@ module.exports = (Settings, Strings, name) => {
   isNewViolation = (author, Message) => {
     try {
       const { content } = Message;
-      console.log(Settings);
+      // Individual message analysis.
       const rStructure = StrA.getPercentageOfRepetitiveStructure(
         content, Settings['splitter']);
       const pOfShortStrings = StrA.getPercentageOfShortStrings(
-        content, Settings['shortWordLength']);
+        content, Settings['splitter'], Settings['shortWordLength']);
       const pOfLongStrings = StrA.getPercentageOfLongStrings(
-        content, Settings['longWordLength']);
+        content, Settings['splitter'], Settings['longWordLength']);
       const pOfRepetitiveChars = StrA.getPercentageOfRepetitiveChars(
         content, Settings['repetitiousChars']);
-      console.log(rStructure, pOfShortStrings, pOfLongStrings, pOfRepetitiveChars);
-      return true;
+      const len = content.length;
+      if (len > 16 && rStructure >= 0.9) return true;
+      if (len > 128 && pOfShortStrings >= 0.5) return true;
+      if (len > 64 && pOfLongStrings >= 0.5) return true;
+      if (len > 10 && pOfRepetitiveChars >= 0.5) return true;
+      // Message history analysis.
     } catch (e) {
       print('isNewOffence failed.', name, true, e);
     }

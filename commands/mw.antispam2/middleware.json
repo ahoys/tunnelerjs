@@ -2,7 +2,7 @@
   "globalSettings": {
     "splitter": " ",
     "shortWordLength": 2,
-    "longWordLength": 16,
+    "longWordLength": 24,
     "repetitiousChars": 3
   },
   "strings": {

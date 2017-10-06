@@ -1,5 +1,5 @@
 const { print, log } = require('../../util/module.inc.debug')();
-const StrA = require('string-analysis-js');
+const analyse = require('./parts/module.inc.analyse')();
 
 module.exports = (Settings, Strings, name) => {
   const module = {};
@@ -36,33 +36,6 @@ module.exports = (Settings, Strings, name) => {
       print('getProcessedAuthor failed.', name, true, e);
     }
     return {};
-  }
-
-  /**
-   * Returns whether a new violation occured.
-   */
-  isNewViolation = (author, Message) => {
-    try {
-      const { content } = Message;
-      // Individual message analysis.
-      const rStructure = StrA.getPercentageOfRepetitiveStructure(
-        content, Settings['splitter']);
-      const pOfShortStrings = StrA.getPercentageOfShortStrings(
-        content, Settings['splitter'], Settings['shortWordLength']);
-      const pOfLongStrings = StrA.getPercentageOfLongStrings(
-        content, Settings['splitter'], Settings['longWordLength']);
-      const pOfRepetitiveChars = StrA.getPercentageOfRepetitiveChars(
-        content, Settings['repetitiousChars']);
-      const len = content.length;
-      if (len > 16 && rStructure >= 0.9) return true;
-      if (len > 128 && pOfShortStrings >= 0.5) return true;
-      if (len > 64 && pOfLongStrings >= 0.5) return true;
-      if (len > 10 && pOfRepetitiveChars >= 0.5) return true;
-      // Message history analysis.
-    } catch (e) {
-      print('isNewOffence failed.', name, true, e);
-    }
-    return false;
   }
 
   /**
@@ -130,7 +103,7 @@ module.exports = (Settings, Strings, name) => {
       const author = getProcessedAuthor(Message);
       // Analyse whether the new message is violating
       // spam rules.
-      if (isNewViolation(author, Message)) {
+      if (analyse.isViolation(Message.content, author.messages, Settings)) {
         authors[author.id].violations += 1;
         if (authors[author.id].violations > Number(guildSettings['maxViolations'])) {
           // Punish.

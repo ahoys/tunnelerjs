@@ -3,6 +3,16 @@ const sajs = require('string-analysis-js');
 
 module.exports = () => {
   const module = {};
+  
+  /**
+   * Some WIP guidelines:
+   * - If user has a long history of valid posts, be merciful with
+   * the violations.
+   * 
+   * Ideas:
+   * - Perhaps a way to clear user's violations?
+   * - Perhaps a way to disable antispam temporarly?
+   */
 
   /**
    * Returns true if a new violation.

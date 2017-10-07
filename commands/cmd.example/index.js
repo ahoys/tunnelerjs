@@ -1,4 +1,4 @@
-const {print, log} = require('../../util/module.inc.debug')();
+const { print, log } = require('../../util/module.inc.debug')();
 
 /**
  * This file is intented to be an example template for
@@ -25,40 +25,40 @@ const {print, log} = require('../../util/module.inc.debug')();
  * @return {object}
  */
 module.exports = (Settings, Strings, name) => {
-    const module = {};
+  const module = {};
 
-    /**
-     * Returns an example string.
-     *
-     * Methods like these are not mandatory, you can also
-     * only use the module.execute if it suits the command better.
-     * @param {string} msg : A simple message string.
-     * @return {number}
-     */
-    const getString = (msg) => {
-        log(`I'm going to log this. `
-        + `Log won't be displayed in the console. Only log.`, name);
-        return `${msg} example.`;
-    };
+  /**
+   * Returns an example string.
+   *
+   * Methods like these are not mandatory, you can also
+   * only use the module.execute if it suits the command better.
+   * @param {string} msg : A simple message string.
+   * @return {number}
+   */
+  const getString = (msg) => {
+    log(`I'm going to log this. `
+      + `Log won't be displayed in the console. Only log.`, name);
+    return `${msg} example.`;
+  };
 
-    /**
-     * Executes the command.
-     *
-     * This public handle function is mandatory. The system will
-     * access this command from here. Commands without module.execute won't
-     * be registered.
-     * @param {object} Message : Discord.js Message object.
-     * @return {string} : The string that will be used as a reply.
-     */
-    module.execute = (Message) => {
-        try {
-            const string = getString('just an');
-            return `${Strings['success_0']}${string}${Strings['success_1']}`;
-        } catch (e) {
-            print(`Command execution failed.`, name, true, e);
-        }
-        return '';
-    };
+  /**
+   * Executes the command.
+   *
+   * This public handle function is mandatory. The system will
+   * access this command from here. Commands without module.execute won't
+   * be registered.
+   * @param {object} Message : Discord.js Message object.
+   * @return {string} : The string that will be used as a reply.
+   */
+  module.execute = (Message) => {
+    try {
+      const string = getString('just an');
+      return `${Strings['success_0']}${string}${Strings['success_1']}`;
+    } catch (e) {
+      print(`Command execution failed.`, name, true, e);
+    }
+    return '';
+  };
 
-    return module;
+  return module;
 };

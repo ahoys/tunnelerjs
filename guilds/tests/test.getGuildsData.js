@@ -6,16 +6,16 @@ let Guilds;
 const reg = new RegExp(/^\d{18}$/);
 const guilds = [];
 fs.readdirSync('./guilds')
-.filter(
-    x => reg.test(x) &&
+  .filter(
+  x => reg.test(x) &&
     fs.lstatSync(`./guilds/${x}`).isDirectory()
-).forEach((id) => {
-    guilds.push({id, json: require(`../${id}/guild.json`)});
-});
+  ).forEach((id) => {
+    guilds.push({ id, json: require(`../${id}/guild.json`) });
+  });
 
 exports.canLoadAvailableGuilds = (test) => {
-    Guilds = require('../index')({cmdMap: {}, mwMap: {}});
-    const result = Guilds.getGuildsData();
-    test.deepEqual(result, guilds, result);
-    test.done();
+  Guilds = require('../index')({ cmdMap: {}, mwMap: {} });
+  const result = Guilds.getGuildsData();
+  test.deepEqual(result, guilds, result);
+  test.done();
 }

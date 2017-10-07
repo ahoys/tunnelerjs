@@ -1,28 +1,34 @@
 {
-    "localization": "en",
-    "middlewares": {
-        "antispam": {
-            "enabled": true,
-            "settings": {
-                "warnings": true,
-                "punishment": "ban",
-                "punishmentRole": "",
-                "silentMode": false
-            }
-        }
-    },
-    "commands": {
-        "ping": {
-            "enabled": true,
-            "access": ["owner"]
-        },
-        "exit": {
-            "enabled": true,
-            "access": ["owner"]
-        },
-        "taunt": {
-            "enabled": true,
-            "access": ["owner"]
-        }
+  "localization": "en",
+  "middlewares": {
+    "antispam": {
+      "enabled": true,
+      "settings": {
+        "warnings": true,
+        "punishment": "ban",
+        "punishmentRole": "",
+        "silentMode": false
+      }
     }
+  },
+  "commands": {
+    "ping": {
+      "enabled": true,
+      "access": [
+        "owner"
+      ]
+    },
+    "exit": {
+      "enabled": true,
+      "access": [
+        "owner"
+      ]
+    },
+    "taunt": {
+      "enabled": true,
+      "access": [
+        "owner"
+      ]
+    }
+  }
 }

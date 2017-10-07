@@ -1,11 +1,21 @@
 {
   "strings": {
     "default": {
-      "keywords": ["reboot", "restart", "reconnect"],
+      "keywords": [
+        "reboot",
+        "restart",
+        "reconnect"
+      ],
       "success_0": "I'll be back in a few seconds."
     },
     "fi": {
-      "keywords": ["reboot", "restart", "uudelleenkäynnistä", "käynnisty uudelleen", "yhdistä uudelleen"],
+      "keywords": [
+        "reboot",
+        "restart",
+        "uudelleenkäynnistä",
+        "käynnisty uudelleen",
+        "yhdistä uudelleen"
+      ],
       "success_0": "palaan takaisin muutamassa sekunnissa."
     }
   }

@@ -1,7 +1,9 @@
 {
   "strings": {
     "default": {
-      "keywords": ["uptime"],
+      "keywords": [
+        "uptime"
+      ],
       "success_0": "my uptime is",
       "hours": "hours",
       "minutes": "minutes",
@@ -9,7 +11,9 @@
       "days": "days"
     },
     "fi": {
-      "keywords": ["käynnissäoloaika"],
+      "keywords": [
+        "käynnissäoloaika"
+      ],
       "success_0": "olen ollut toiminnassa",
       "hours": "tuntia",
       "minutes": "minuuttia",

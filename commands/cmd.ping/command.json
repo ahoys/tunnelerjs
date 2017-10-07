@@ -1,16 +1,24 @@
 {
-    "strings": {
-        "default": {
-            "keywords": ["ping", "latency", "delay"],
-            "success_0": "pong in",
-            "high_ping_0": "(high)",
-            "high_ping_1": "(very high)"
-        },
-        "fi": {
-            "keywords": ["ping", "pingi", "viive"],
-            "success_0": "pong ajassa",
-            "high_ping_0": "(korkea)",
-            "high_ping_1": "(hyvin korkea)"
-        }
+  "strings": {
+    "default": {
+      "keywords": [
+        "ping",
+        "latency",
+        "delay"
+      ],
+      "success_0": "pong in",
+      "high_ping_0": "(high)",
+      "high_ping_1": "(very high)"
+    },
+    "fi": {
+      "keywords": [
+        "ping",
+        "pingi",
+        "viive"
+      ],
+      "success_0": "pong ajassa",
+      "high_ping_0": "(korkea)",
+      "high_ping_1": "(hyvin korkea)"
     }
+  }
 }

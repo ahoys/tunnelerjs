@@ -97,7 +97,7 @@ module.exports = (Settings, Strings, name) => {
         return false;
       } else if (
         punishment === 'role' &&
-        Object.keys(roles).indexOf(punishmentRole) === -1
+        !roles.find(x => x.id === punishmentRole)
       ) {
         // Invalid or missing role id.
         replaceType = 'warn';
@@ -214,7 +214,7 @@ module.exports = (Settings, Strings, name) => {
         isValidSetup(guildSettings, guild.roles, member)
       ) {
         // Decide how many warnings do we give.
-        if (warnings) {
+        if (guildSettings.warnings) {
           const givenWarnings = certainty >= 0.8
             ? 1 : certainty >= 0.6
               ? 2 : 3;

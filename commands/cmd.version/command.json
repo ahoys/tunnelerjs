@@ -2,11 +2,11 @@
   "strings": {
     "default": {
       "keywords": ["version"],
-      "fail_0": "The version has not been set."
+      "fail_0": "the version has not been set."
     },
     "fi": {
       "keywords": ["versio"],
-      "fail_0": "Versiota ei ole asetettu."
+      "fail_0": "versiota ei ole asetettu."
     }
   }
 }

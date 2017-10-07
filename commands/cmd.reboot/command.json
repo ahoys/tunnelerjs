@@ -6,7 +6,7 @@
     },
     "fi": {
       "keywords": ["reboot", "restart", "uudelleenkäynnistä", "käynnisty uudelleen", "yhdistä uudelleen"],
-      "success_0": "Palaan takaisin muutamassa sekunnissa."
+      "success_0": "palaan takaisin muutamassa sekunnissa."
     }
   }
 }

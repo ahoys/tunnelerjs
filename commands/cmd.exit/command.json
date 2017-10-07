@@ -3,7 +3,7 @@
     "strings": {
         "default": {
             "keywords": ["exit", "disconnect"],
-            "success_0": "okay, see you later!"
+            "success_0": "ok, see you later!"
         },
         "fi": {
             "keywords": ["exit", "poistu"],

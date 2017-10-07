@@ -84,6 +84,6 @@ exports.repeatingMessages = (test) => {
     };
   }
   const result = Analyse.getAnalysis(thisLog);
-  test.deepEqual(result[4], 1, result);
+  test.deepEqual(result[5], 1, result);
   test.done();
 }

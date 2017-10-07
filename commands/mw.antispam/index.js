@@ -208,7 +208,7 @@ module.exports = (Settings, Strings, name) => {
         ao.sums.length
       );
       // Decide whether the author is a spammer.
-      const certainty = (analyse.getCertainty(ao.avg, content.length));
+      const certainty = (analyse.isSpamming(ao.avg, content.length));
       if (
         certainty >= 0.5 &&
         isValidSetup(guildSettings, guild.roles, member)

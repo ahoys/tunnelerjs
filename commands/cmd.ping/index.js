@@ -11,32 +11,28 @@ const {print} = require('../../util/module.inc.debug')();
  * @return {object}
  */
 module.exports = (Settings, Strings, name) => {
-    const module = {};
+  const module = {};
+  
+  /**
+   * Executes the command.
+   * @param {object} Message
+   * @param {object} Client
+   * @return {string}
+   */
+  module.execute = (Message, Client) => {
+    try {
+      const ping = Math.round(Client.ping);
+      if (ping >= 300) {
+        return `${Strings['success_0']} ${ping} ms. ${Strings['high_ping_1']}`;
+      } else if (ping >= 100) {
+        return `${Strings['success_0']} ${ping} ms. ${Strings['high_ping_0']}`;
+      }
+      return `${Strings['success_0']} ${ping} ms.`;
+    } catch (e) {
+      print(`Command execution failed.`, name, true, e);
+    }
+    return '';
+  };
 
-    /**
-     * Returns a client ping.
-     * @param {object} Client
-     * @return {number}
-     */
-    const getPing = (Client) => {
-        return Math.round(Client.ping);
-    };
-
-    /**
-     * Executes the command.
-     * @param {object} Message
-     * @param {object} Client
-     * @return {string}
-     */
-    module.execute = (Message, Client) => {
-        try {
-            const ping = getPing(Client);
-            return `${Strings['success_0']} ${ping} ${Strings['success_1']}`;
-        } catch (e) {
-            print(`Command execution failed.`, name, true, e);
-        }
-        return '';
-    };
-
-    return module;
+  return module;
 };

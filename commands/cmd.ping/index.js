@@ -24,7 +24,7 @@ module.exports = (Settings, Strings, name) => {
       const ping = Math.round(Client.ping);
       if (ping >= 300) {
         return `${Strings['success_0']} ${ping} ms. ${Strings['high_ping_1']}`;
-      } else if (ping >= 100) {
+      } else if (ping >= 200) {
         return `${Strings['success_0']} ${ping} ms. ${Strings['high_ping_0']}`;
       }
       return `${Strings['success_0']} ${ping} ms.`;

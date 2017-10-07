@@ -12,6 +12,7 @@ module.exports = () => {
    * Ideas:
    * - Perhaps a way to clear user's violations?
    * - Perhaps a way to disable antispam temporarly?
+   * - Levels of punishment?
    */
 
   /**

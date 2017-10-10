@@ -11,7 +11,7 @@ module.exports = () => {
     try {
       return {
         repetitiveStructure: sajs.getPercentageOfRepetitiveStructure(message),
-        shortStrings: sajs.getPercentageOfShortStrings(message),
+        shortStrings: sajs.getPercentageOfShortStrings(message, ' ', 3),
         longStrings: sajs.getPercentageOfLongStrings(message),
         repetitiveChars: sajs.getPercentageOfRepetitiveChars(message),
         upperCaseChars: sajs.getPercentageOfUpperCaseChars(message),
@@ -25,7 +25,7 @@ module.exports = () => {
   /**
    * Returns true if a new violation.
    */
-  module.isViolation = (messages = []) => {
+  module.hasViolation = (messages = []) => {
     try {
       if (!messages.length) return false;
       const c = messages.length;
@@ -34,8 +34,8 @@ module.exports = () => {
       // The latest message analysis --------------------------
       const msg = messages[c - 1];
       const len = msg.length;
-      if (len > 24 && msg.analysis.repetitiveStructure > 0.5) return true;
-      if (len > 32 && msg.analysis.shortStrings > 0.5) return true;
+      if (len > 12 && msg.analysis.repetitiveStructure > 0.5) return true;
+      if (len > 24 && msg.analysis.shortStrings > 0.5) return true;
       if (len > 64 && msg.analysis.longStrings > 0.5) return true;
       if (len > 8 && msg.analysis.repetitiveChars > 0.5) return true;
       if (len > 8 && msg.analysis.upperCaseChars > 0.5) return true;
@@ -44,9 +44,9 @@ module.exports = () => {
       // Low duration between messages average.
       // Caution: Network issues may cause a similar effect.
       if (
-        c >= 3 &&
-        messages.map(x => d - x.editedTimestamp || x.createdTimestamp)
-        .reduce((sum, value) => sum + value) / c < 2000
+        c >= 4 &&
+        messages.map(x => d - x.createdTimestamp)
+        .reduce((sum, value) => sum + value) / c < 6000
       ) {
         return true;
       }
@@ -59,18 +59,17 @@ module.exports = () => {
         return true;
       }
 
-      // High repetitive structure average.
+      // Highly repetitive structure average.
       if (
-        c >= 2 &&
-        messages.map(x => x.analysis.repetitiveStructure)
-        .reduce((sum, value) => sum + value) / c > 0.5
+        c >= 3 &&
+        sajs.getPercentageOfRepetitiveStructure(messages.map(x => x.content)) > 0.5
       ) {
         return true;
       }
 
       // High short strings average.
       if (
-        c >= 2 &&
+        c >= 4 &&
         messages.map(x => x.analysis.shortStrings)
         .reduce((sum, value) => sum + value) / c > 0.5
       ) {

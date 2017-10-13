@@ -3,13 +3,15 @@ const irc = require('node-irc');
 
 module.exports = (Settings, Strings, name) => {
   const module = {};
-  let initialized = false;
   let ready = false;
   let ircClient = undefined;
-  let discordChannel = undefined;
-  let handlerSettings = {}; // Guild settings for handlers.
+  let discordClient = undefined;
+  let handlerSettings = {};
 
-  onReady = (channel) => {
+  /**
+   * Ready handler.
+   */
+  onReady = () => {
     try {
       ready = true;
       ircClient.join(handlerSettings['ircChannel']);
@@ -21,25 +23,38 @@ module.exports = (Settings, Strings, name) => {
     }
   };
 
+  /**
+   * IRC message handler.
+   * @param {data} object
+   */
   onCHANMSG = (data) => {
     try {
-      const { receiver, sender, message } = data;
-      console.log(message);
-      discordChannel.send(`<${sender}> ${message}`);
+      discordClient.send(`<${data.sender}> ${data.message}`);
     } catch (e) {
       print('onCHANMSG failed.', name, true, e);
     }
   };
 
+  /**
+   * Discord message handler.
+   * @param {object} Message
+   * @param {object} guildSettings
+   */
   module.execute = (Message, guildSettings) => {
     try {
-      if (ready && Message.channel.id === guildSettings['discordChannel']) {
+      if (ready && Message.channel.id === discordClient.id) {
         // Catch the message and bridge it forward.
-        ircClient.say('#tunneler', `<${Message.author.username}> ${Message.content}`);
-        if (Message.content === 'quit') {
-          print(`Irc connection quitted by "${Message.author.username}".`, name, true);
-          ircClient.quit();
+        if (Message.content === '/irc-part' && Message.author.id === guildSettings['ownerId']) {
+          // Owner asked to part.
           ready = false;
+          ircClient.quit();
+          Message.reply(Strings['dc_part']);
+          print(`Irc connection closed by "${Message.author.username}".`, name, true);
+        } else {
+          ircClient.say(
+            guildSettings['ircChannel'],
+            `<${Message.author.username}> ${Message.content}`
+          );
         }
       }
     } catch (e) {
@@ -48,19 +63,59 @@ module.exports = (Settings, Strings, name) => {
     return '';
   }
 
+  /**
+   * Initializes the middleware.
+   * @param {object} Guild
+   * @param {object} guildSettings
+   */
   module.initialize = (Guild, guildSettings) => {
     try {
+      const {
+        ircServer,
+        ircPort,
+        ircNickname,
+        ircPassword,
+        ircChannel,
+        discordChannel,
+        ownerId,
+      } = guildSettings;
+      // Make sure that all the required settings exist.
+      if (typeof ircServer !== 'string') {
+        print('Missing guild setting "ircServer" or invalid type.', name, true);
+        return false;
+      }
+      if (typeof ircPort !== 'number') {
+        print('Missing guild setting "ircPort" or invalid type.', name, true);
+        return false;
+      }
+      if (typeof ircNickname !== 'string') {
+        print('Missing guild setting "ircNickname" or invalid type.', name, true);
+        return false;
+      }
+      if (typeof ircPassword !== 'string') {
+        print('Missing guild setting "ircChannel" or invalid type.', name, true);
+        return false;
+      }
+      if (typeof discordChannel !== 'string') {
+        print('Missing guild setting "discordChannel" or invalid type.', name, true);
+        return false;
+      }
+      if (typeof ownerId !== 'string') {
+        print('Missing guild setting "ownerId" or invalid type.', name, true);
+        return false;
+      }
+      // Make sure the given discord channel exists.
       const channel = Guild.channels
-        .find(x => x.id === guildSettings['discordChannel']);
+        .find(x => x.id === discordChannel);
       if (channel) {
-        discordChannel = channel;
+        discordClient = channel;
         handlerSettings = guildSettings;
         ircClient = new irc(
-          guildSettings['ircServer'],
-          guildSettings['ircPort'],
-          guildSettings['ircNickname'],
-          'Discord Bridger',
-          guildSettings['ircPassword']
+          ircServer,
+          ircPort,
+          ircNickname,
+          'Tunnelerjs',
+          ircPassword
         );
         ircClient.debug = true;
         ircClient.verbosity = 2;
@@ -68,6 +123,8 @@ module.exports = (Settings, Strings, name) => {
         ircClient.on('CHANMSG', onCHANMSG);
         ircClient.connect();
         return true;
+      } else {
+        print(`Discord channel "${discordChannel}" does not exist.`, name, true);
       }
     } catch (e) {
       print(`Initialization of a middleware (${name}) failed.`, name, true, e);

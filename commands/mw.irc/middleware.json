@@ -1,10 +1,12 @@
 {
   "strings": {
     "default": {
-      "irc_welcome": "Hey, I'm here to bridge Discord and Irc!"
+      "irc_welcome": "Hey, I'm here to bridge Discord and Irc!",
+      "dc_part": "The IRC connection is no more."
     },
     "fi": {
-      "irc_welcome": "Moi, olen täällä yhdistämässä Discordin ja Ircin!"
+      "irc_welcome": "Moi, olen täällä yhdistämässä Discordin ja Ircin!",
+      "dc_part": "IRC yhteys on katkaistu."
     }
   }
 }

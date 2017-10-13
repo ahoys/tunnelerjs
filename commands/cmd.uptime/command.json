@@ -12,7 +12,8 @@
     },
     "fi": {
       "keywords": [
-        "käynnissäoloaika"
+        "käynnissäoloaika",
+        "päälläoloaika"
       ],
       "success_0": "olen ollut toiminnassa",
       "hours": "tuntia",

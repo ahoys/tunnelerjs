@@ -41,7 +41,7 @@ module.exports = (CommandsMap) => {
           const localization = strings[langJSON] ||
             strings['default'];
           localization.keywords.forEach((keyword) => {
-            const regKeyword = new RegExp(/^[a-z]{1,18}$/);
+            const regKeyword = new RegExp(/^[a-zA-ZäÄöÖåÅæÆøØ]{1,24}$/);
             if (regKeyword.test(keyword)) {
               // Construct the command object.
               // Each keyword will have their own instance of

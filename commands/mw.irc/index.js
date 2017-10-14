@@ -74,7 +74,7 @@ module.exports = (Settings, Strings, name) => {
         setTimeout(() => {
           ircClient.connect();
           ready = true;
-        }, 5120);
+        }, 10240);
       }
     } catch (e) {
       print('handleErrors failed.', name, true, e);

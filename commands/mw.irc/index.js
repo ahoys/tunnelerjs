@@ -36,17 +36,44 @@ module.exports = (Settings, Strings, name) => {
   };
 
   /**
+   * IRC part handler.
+   */
+  onPART = (data) => {
+    try {
+      if (ready) {
+        print(`Unexpected /part with a message: ${data.message}.`, name, true);
+      }
+      ircClient.quit();
+    } catch (e) {
+      print('onPART failed.', name, true, e);
+    }
+  }
+
+  /**
+   * IRC quit handler.
+   */
+  onQUIT = (data) => {
+    try {
+      if (ready) {
+        print(`Unexpected /quit with a message: ${data.message}`, name, true);
+      }
+    } catch (e) {
+      print('onQUIT failed.', name, true, e);
+    }
+  }
+
+  /**
    * Discord message handler.
    * @param {object} Message
    * @param {object} guildSettings
    */
   module.execute = (Message, guildSettings) => {
     try {
-      if (Message.content === '/irc-part' && Message.author.id === guildSettings['ownerId']) {
-        // Owner asked to part.
+      if (Message.content === '/irc-quit' && Message.author.id === guildSettings['ownerId']) {
+        // Owner asked to quit.
         ready = false;
         ircClient.quit();
-        Message.reply(Strings['dc_part']);
+        Message.reply(Strings['dc_quit']);
         print(`Irc connection closed by "${Message.author.username}".`, name, true);
       } else if (ready && Message.channel.id === discordClient.id) {
         // Catch the message and bridge it forward.
@@ -119,6 +146,8 @@ module.exports = (Settings, Strings, name) => {
         ircClient.verbosity = 2;
         ircClient.on('ready', onReady);
         ircClient.on('CHANMSG', onCHANMSG);
+        ircClient.on('PART', onPART);
+        ircClient.on('QUIT', onQUIT);
         ircClient.connect();
         return true;
       } else {

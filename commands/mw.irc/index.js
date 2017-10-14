@@ -71,10 +71,6 @@ module.exports = (Settings, Strings, name) => {
       if (err.indexOf('This socket has been ended by the other party') !== -1) {
         ready = false;
         ircClient.quit();
-        setTimeout(() => {
-          ircClient.connect();
-          ready = true;
-        }, 10240);
       }
     } catch (e) {
       print('handleErrors failed.', name, true, e);

@@ -1,4 +1,6 @@
-# Antispam Middleware
+# mw.antispam
+
+Punishes users of spamming.
 
 ## Guild Settings
 ### "punishment"

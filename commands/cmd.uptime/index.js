@@ -19,16 +19,16 @@ module.exports = (Settings, Strings, name) => {
           const uptime = process.uptime();
           if (uptime < 60) {
             // Seconds
-            return `${Strings['success_0']} ${Math.floor(process.uptime().toFixed(2))} ${Strings['seconds']}.`;
+            return `${Strings['success_0']} ${Math.floor(process.uptime())} ${Strings['seconds']}.`;
           } else if (uptime >= 60 && uptime < 3600) {
             // Minutes
-            return `${Strings['success_0']} ${Math.floor((process.uptime() / 60).toFixed(2))} ${Strings['minutes']}.`;
+            return `${Strings['success_0']} ${Math.floor((process.uptime() / 60))} ${Strings['minutes']}.`;
           } else if (uptime >= 3600 && uptime < 68400) {
             // Hours
-            return `${Strings['success_0']} ${Math.floor((process.uptime() / 3600).toFixed(2))} ${Strings['hours']}.`;
+            return `${Strings['success_0']} ${Math.floor((process.uptime() / 3600))} ${Strings['hours']}.`;
           }
           // Days
-          return `${Strings['success_0']} ${Math.floor((process.uptime() / 68400).toFixed(2))} ${Strings['days']}.`;
+          return `${Strings['success_0']} ${Math.floor((process.uptime() / 68400))} ${Strings['days']}.`;
         } catch (e) {
             print(`Command execution failed.`, name, true, e);
         }

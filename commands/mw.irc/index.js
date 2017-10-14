@@ -168,7 +168,7 @@ module.exports = (Settings, Strings, name) => {
           ircPassword
         );
         ircClient.debug = true;
-        ircClient.verbosity = 2;
+        ircClient.verbosity = 1;
         ircClient.on('ready', onReady);
         ircClient.on('CHANMSG', onCHANMSG);
         ircClient.on('PART', onPART);

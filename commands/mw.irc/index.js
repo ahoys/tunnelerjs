@@ -63,6 +63,25 @@ module.exports = (Settings, Strings, name) => {
   }
 
   /**
+   * Attempt to handle irc-based errors.
+   * @param {string} err
+   */
+  handleErrors = (err) => {
+    try {
+      if (err.indexOf('This socket has been ended by the other party') !== -1) {
+        ready = false;
+        ircClient.quit();
+        setTimeout(() => {
+          ircClient.connect();
+          ready = true;
+        }, 5120);
+      }
+    } catch (e) {
+      print('handleErrors failed.', name, true, e);
+    }
+  }
+
+  /**
    * Discord message handler.
    * @param {object} Message
    * @param {object} guildSettings
@@ -84,6 +103,7 @@ module.exports = (Settings, Strings, name) => {
       }
     } catch (e) {
       print(`Could not execute a middleware (${name}).`, name, true, e);
+      handleErrors(e);
     }
     return '';
   }

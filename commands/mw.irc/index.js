@@ -42,20 +42,19 @@ module.exports = (Settings, Strings, name) => {
    */
   module.execute = (Message, guildSettings) => {
     try {
+      if (Message.content === '/irc-part' && Message.author.id === guildSettings['ownerId']) {
+        // Owner asked to part.
+        ready = false;
+        ircClient.quit();
+        Message.reply(Strings['dc_part']);
+        print(`Irc connection closed by "${Message.author.username}".`, name, true);
+      }
       if (ready && Message.channel.id === discordClient.id) {
         // Catch the message and bridge it forward.
-        if (Message.content === '/irc-part' && Message.author.id === guildSettings['ownerId']) {
-          // Owner asked to part.
-          ready = false;
-          ircClient.quit();
-          Message.reply(Strings['dc_part']);
-          print(`Irc connection closed by "${Message.author.username}".`, name, true);
-        } else {
-          ircClient.say(
-            guildSettings['ircChannel'],
-            `<${Message.author.username}> ${Message.content}`
-          );
-        }
+        ircClient.say(
+          guildSettings['ircChannel'],
+          `<${Message.author.username}> ${Message.content}`
+        );
       }
     } catch (e) {
       print(`Could not execute a middleware (${name}).`, name, true, e);

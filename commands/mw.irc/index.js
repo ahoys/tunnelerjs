@@ -90,6 +90,15 @@ module.exports = (Settings, Strings, name) => {
         ircClient.quit();
         Message.reply(Strings['dc_quit']);
         print(`Irc connection closed by "${Message.author.username}".`, name, true);
+      } else if (Message.content === '/irc-connect' && Message.author.id === guildSettings['ownerId']) {
+        // Owner asked to connect.
+        if (ready) {
+          Message.reply(Strings['dc_already_connected']);
+        } else {
+          ircClient.connect();
+          ready = true;
+          Message.reply(Strings['dc_connecting']);
+        }
       } else if (ready && Message.channel.id === discordClient.id) {
         // Catch the message and bridge it forward.
         ircClient.say(

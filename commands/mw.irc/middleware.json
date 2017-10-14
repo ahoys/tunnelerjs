@@ -2,11 +2,13 @@
   "strings": {
     "default": {
       "irc_welcome": "Hey, I'm here to bridge Discord and Irc!",
-      "dc_quit": "The IRC connection is no more."
+      "dc_quit": "The IRC connection is no more.",
+      "dc_connecting": "Connection attempt initialized."
     },
     "fi": {
       "irc_welcome": "Moi, olen täällä yhdistämässä Discordin ja Ircin!",
-      "dc_quit": "IRC yhteys on katkaistu."
+      "dc_quit": "IRC yhteys on katkaistu.",
+      "dc_connecting": "Yhdistysyritys lähetetty."
     }
   }
 }

@@ -99,6 +99,13 @@ module.exports = (Settings, Strings, name) => {
           ready = true;
           Message.reply(Strings['dc_connecting']);
         }
+      } else if (Message.content === '/irc-status') {
+        // User asked for status.
+        if (ready) {
+          Message.reply(Strings['dc_connected']);
+        } else {
+          Message.reply(Strings['dc_disconnected']);
+        }
       } else if (ready && Message.channel.id === discordClient.id) {
         // Catch the message and bridge it forward.
         ircClient.say(

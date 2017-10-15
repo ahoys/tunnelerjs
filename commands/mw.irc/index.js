@@ -30,7 +30,7 @@ module.exports = (Settings, Strings, name) => {
   onCHANMSG = (data) => {
     try {
       const msg = data.message;
-      if (msg.toLowerCase().indexOf(':p') !== -1) {
+      if (msg.toLowerCase().indexOf('::p') !== -1) {
         const members = discordClient.members.array();
         if (members.length) {
           ircClient.say(
@@ -40,7 +40,7 @@ module.exports = (Settings, Strings, name) => {
         } else {
           ircClient.say(handlerSettings['ircChannel'], Strings['irc_empty_channel']);
         }
-      } else if (msg.toLowerCase().indexOf(':i') !== -1) {
+      } else if (msg.toLowerCase().indexOf('::i') !== -1) {
         ircClient.say(handlerSettings['ircChannel'], Strings['irc_ignore']);
       } else {
         discordClient.send(`<${data.sender}> ${msg}`);

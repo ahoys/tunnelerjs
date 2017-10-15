@@ -130,7 +130,7 @@ module.exports = (Client, GuildsMap, ownerId) => {
       log(
         `A triggered command (${cmdKey}) took `
         + `${process.hrtime(perfMeasure)[0]}s (`
-        + `${process.hrtime(perfMeasure)[1]}ms) to execute on `
+        + `${process.hrtime(perfMeasure)[1]}ns) to execute on `
         + `a channel (${channel.name}).`,
         'Handler'
       );

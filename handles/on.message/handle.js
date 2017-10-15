@@ -129,8 +129,7 @@ module.exports = (Client, GuildsMap, ownerId) => {
       const response = execute(Message, Client);
       log(
         `A triggered command (${cmdKey}) took `
-        + `${process.hrtime(perfMeasure)[0]}s (`
-        + `${process.hrtime(perfMeasure)[1]}ns) to execute on `
+        + `${process.hrtime(perfMeasure)[1] / 1000000}ms to execute on `
         + `a channel (${channel.name}).`,
         'Handler'
       );

@@ -29,7 +29,22 @@ module.exports = (Settings, Strings, name) => {
    */
   onCHANMSG = (data) => {
     try {
-      discordClient.send(`<${data.sender}> ${data.message}`);
+      const msg = data.message;
+      if (msg.toLowerCase().indexOf(':p') !== -1) {
+        const members = discordClient.members.array();
+        if (members.length) {
+          ircClient.say(
+            handlerSettings['ircChannel'],
+            members.filter(x => x.presence.status === 'online').map(x => x.displayName)
+          );
+        } else {
+          ircClient.say(handlerSettings['ircChannel'], Strings['irc_empty_channel']);
+        }
+      } else if (msg.toLowerCase().indexOf(':i') !== -1) {
+        ircClient.say(handlerSettings['ircChannel'], Strings['irc_ignore']);
+      } else {
+        discordClient.send(`<${data.sender}> ${msg}`);
+      }
     } catch (e) {
       print('onCHANMSG failed.', name, true, e);
     }

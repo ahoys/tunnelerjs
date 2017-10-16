@@ -1,0 +1,38 @@
+{
+  "strings": {
+    "default": {
+      "irc_joined": "Hello! I'm here to bridge IRC and Discord!",
+      "irc_listening_0": "Discord channels listening: ",
+      "irc_listening_1": "Discord channels broadcasting: ",
+      "irc_flags": "Enabled message flags: ",
+      "irc_w": "::w (whisper past broadcasting)",
+      "irc_l": "::l (listening people)",
+      "irc_b": "::b (broadcasting info)",
+      "irc_a": "::a (anonymous message)",
+      "dc_listening_0": "IRC channels listening: ",
+      "dc_listening_1": "IRC channels broadcasting: ",
+      "dc_connected": "Connected.",
+      "dc_disconnected": "Disconnected.",
+      "dc_quit": "IRC disconnected.",
+      "dc_connecting": "Connecting...",
+      "dc_already_connected": "IRC already connected."
+    },
+    "fi": {
+      "irc_joined": "Terve! Tulin yhdistämään IRC:in ja Discordin!",
+      "irc_listening_0": "Kuuntelevat Discord kanavat: ",
+      "irc_listening_1": "Lähettävät Discord kanavat: ",
+      "irc_flags": "Käytettävät viestiflägit: ",
+      "irc_w": "::w (kuiskaa lähetyksen ohitse)",
+      "irc_l": "::l (kuuntelevat ihmiset)",
+      "irc_b": "::b (lähetystietoja)",
+      "irc_a": "::a (anonyymi viesti)",
+      "dc_listening_0": "Kuuntelevat IRC-kanavat: ",
+      "dc_listening_1": "Lähettävät IRC-kanavat: ",
+      "dc_connected": "Yhdistetty.",
+      "dc_disconnected": "Ei yhteyttä.",
+      "dc_quit": "IRC yhteys katkaistu.",
+      "dc_connecting": "Yhdistetään...",
+      "dc_already_connected": "IRC on jo yhdistetty."
+    }
+  }
+}

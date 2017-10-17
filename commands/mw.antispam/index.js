@@ -84,6 +84,10 @@ module.exports = (Settings, Strings, name) => {
         case 'warn':
           Message.reply(Strings['warning']);
         break;
+        case 'log':
+          log(`Logged punishment for "${author.username}". `
+            + `Message history: ${JSON.stringify(authors[author.id].messages.list)}`, name);
+        break;
       }
     } catch (e) {
       print('doPunish failed.', name, true, e);
@@ -105,10 +109,7 @@ module.exports = (Settings, Strings, name) => {
       author.messages.index += 1;
       if (analyse.hasViolation(author.messages.list)) {
         // Spam detected.
-        // Clear the message buffer. This will make the antispam
-        // very reactive against new violations.
-        author.messages.list = [];
-        author.messages.index = 0;
+        // Read the guild punishments.
         const punishment = guildSettings.punishment;
         if (typeof punishment === 'string') {
           // Only a one type of punishment given.
@@ -121,8 +122,8 @@ module.exports = (Settings, Strings, name) => {
           // Steps of punishments. Violation points
           // what punishment comes next.
           if (
-            ['warning', 'role', 'kick', 'ban']
-            .indexOf(punishment[author.violations] !== -1)
+            ['warning', 'role', 'kick', 'ban', 'log']
+            .indexOf(punishment[author.violations]) !== -1
           ) {
             // Punishment found.
             // If not found, it means that the first
@@ -143,6 +144,10 @@ module.exports = (Settings, Strings, name) => {
             }
           }
         }
+        // Clear the message buffer. This will make the antispam
+        // very reactive against new violations.
+        author.messages.list = [];
+        author.messages.index = 0;
       }
       // Save the author.
       setAuthor(Message.author.id, author);

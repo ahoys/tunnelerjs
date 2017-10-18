@@ -43,7 +43,8 @@ module.exports = (Settings, Strings, name) => {
       } else if (msg.toLowerCase().indexOf('::i') !== -1) {
         ircClient.say(handlerSettings['ircChannel'], Strings['irc_ignore']);
       } else {
-        discordClient.send(`<${data.sender}> ${msg}`);
+        console.log(msg);
+        discordClient.send(`<${data.sender}> ${decodeURIComponent(msg)}`);
       }
     } catch (e) {
       print('onCHANMSG failed.', name, true, e);

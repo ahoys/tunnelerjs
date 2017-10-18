@@ -43,7 +43,6 @@ module.exports = (Settings, Strings, name) => {
       } else if (msg.toLowerCase().indexOf('::i') !== -1) {
         ircClient.say(handlerSettings['ircChannel'], Strings['irc_ignore']);
       } else {
-        console.log(msg);
         discordClient.send(`<${data.sender}> ${decodeURIComponent(msg)}`);
       }
     } catch (e) {
@@ -124,10 +123,24 @@ module.exports = (Settings, Strings, name) => {
         }
       } else if (ready && Message.channel.id === discordClient.id) {
         // Catch the message and bridge it forward.
-        ircClient.say(
-          guildSettings['ircChannel'],
-          `<${Message.author.username}> ${Message.content}`
-        );
+        if (typeof Message.content === 'string' && Message.content.length) {
+          ircClient.say(
+            guildSettings['ircChannel'],
+            `<${Message.author.username}> ${Message.content}`
+          );
+        }
+        // Print attachments if any.
+        const attachments = Message.attachments ? Message.attachments.array() : [];
+        attachments.forEach((a) => {
+          if (a.url && typeof a.filename === 'string') {
+            const size = a.filesize ? ` [${Math.floor(a.filesize * 0.001)}KB]` : '';
+            const dimensions = a.width && a.height ? ` [${a.width}x${a.height}]` : '';
+            ircClient.say(
+              guildSettings['ircChannel'],
+              `<${Message.author.username}> [${a.filename}]${size}${dimensions} ${a.url}`
+            );
+          }
+        });
       }
     } catch (e) {
       print(`Could not execute a middleware (${name}).`, name, true, e);

@@ -66,11 +66,12 @@ module.exports = (Settings, Strings, name) => {
 
   /**
    * IRC quit handler.
+   * This happens when a client quits. Not the bot!
    */
   onQUIT = (data) => {
     try {
       if (ready) {
-        print(`Unexpected /quit with a message: ${data.message}`, name, true);
+        print(`Quit with a message: ${data.message}`, name, true);
       }
     } catch (e) {
       print('onQUIT failed.', name, true, e);

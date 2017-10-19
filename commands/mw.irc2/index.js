@@ -1,10 +1,12 @@
 const {print} = require('../../util/module.inc.debug')();
+const NodeIrc = require('node-irc');
 
 module.exports = (Settings, Strings, name) => {
   const module = {};
   const settings = {};
   const ircBroadcasts = {}; // Irc channels and to where they broadcast.
   const discordBroadcasts = {}; // Discord channels and to where they broadcast.
+  let ircClient;
   const flags = {
     '::p': 'present',
     '::i': 'ignore',
@@ -112,7 +114,19 @@ module.exports = (Settings, Strings, name) => {
         !Object.keys(ircBroadcasts).length &&
         !Object.keys(discordBroadcasts).length
       ) return false;
-      // Initialize a connection.
+      // Collect settings.
+      const {server, port, nickname, password} = irc;
+      if (typeof server !== 'string' || typeof port !== 'number' || typeof nickname !== 'string') {
+        print('Missing mandatory irc settings. See the documentation for a proper configuration.',
+          name, true, e);
+        return false;
+      };
+      // Initialize the connection.
+      ircClient = new NodeIrc(server, port, nickname, 'Tunneler.js', password);
+      ircClient.on('ready', module.onReady);
+      ircClient.on('CHANMSG', module.onCHANMSG);
+      ircClient.connect();
+      return true;
     } catch (e) {
       print(`Could not execute a middleware (${name}).`, name, true, e);
     }

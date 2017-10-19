@@ -17,6 +17,7 @@
     "string-analysis-js": "^0.2.0"
   },
   "devDependencies": {
+    "eslint": "^4.9.0",
     "eslint-config-google": "^0.9.1"
   }
 }

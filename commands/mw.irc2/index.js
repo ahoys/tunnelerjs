@@ -1,4 +1,4 @@
-const { print } = require('../../util/module.inc.debug')();
+const {print} = require('../../util/module.inc.debug')();
 
 module.exports = (Settings, Strings, name) => {
   const module = {};
@@ -17,7 +17,7 @@ module.exports = (Settings, Strings, name) => {
     } catch (e) {
       print('onReady failed.', name, true, e);
     }
-  }
+  };
 
   module.onCHANMSG = () => {
     try {
@@ -25,7 +25,7 @@ module.exports = (Settings, Strings, name) => {
     } catch (e) {
       print('onReady failed.', name, true, e);
     }
-  }
+  };
 
   module.onPART = () => {
     try {
@@ -33,7 +33,7 @@ module.exports = (Settings, Strings, name) => {
     } catch (e) {
       print('onReady failed.', name, true, e);
     }
-  }
+  };
 
   module.onQUIT = () => {
     try {
@@ -41,7 +41,7 @@ module.exports = (Settings, Strings, name) => {
     } catch (e) {
       print('onReady failed.', name, true, e);
     }
-  }
+  };
 
   module.execute = (Message, guildSettings) => {
     try {
@@ -50,19 +50,20 @@ module.exports = (Settings, Strings, name) => {
       print(`Could not execute a middleware (${name}).`, name, true, e);
     }
     return '';
-  }
+  };
 
   module.initialize = (Guild, guildSettings) => {
     try {
-      const { irc, discord } = guildSettings;
+      const {irc, discord} = guildSettings;
       // Process valid irc broadcasts.
       if (irc && typeof irc.broadcasts === 'object') {
         Object.keys(irc.broadcasts).forEach((ircChannel) => {
           const discordChannels = typeof irc.broadcasts[ircChannel] === 'string'
             ? [irc.broadcasts[ircChannel]]
             : irc.broadcasts[ircChannel];
-            discordChannels.forEach((discordChannelId) => {
-            const ch = Guild.channels.find(x => String(x.id) === String(discordChannelId));
+          discordChannels.forEach((discordChannelId) => {
+            const ch = Guild.channels
+              .find((x) => String(x.id) === String(discordChannelId));
             if (ch) {
               // Discord channel exists. Save the channel for broadcasting.
               if (ircBroadcasts[ircChannel]) {
@@ -77,7 +78,10 @@ module.exports = (Settings, Strings, name) => {
       // Process valid discord broadcasts.
       if (discord && typeof discord.broadcasts === 'object') {
         Object.keys(discord.broadcasts).forEach((discordChannelId) => {
-          if (Guild.channels.find(x => String(x.id) === String(discordChannelId))) {
+          if (
+            Guild.channels
+              .find((x) => String(x.id) === String(discordChannelId))
+          ) {
             // Discord channel exists.
             // Validate irc channels.
             const ircChannels = typeof discord.broadcasts[discordChannelId] === 'string'
@@ -109,7 +113,7 @@ module.exports = (Settings, Strings, name) => {
       print(`Could not execute a middleware (${name}).`, name, true, e);
     }
     return false;
-  }
+  };
 
   return module;
-}
+};

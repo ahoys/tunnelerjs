@@ -11,6 +11,10 @@ module.exports = (Settings, Strings, name) => {
     '::q': 'quit',
   };
 
+  /**
+   * Ready handle.
+   * Triggered when the IRC client has connected.
+   */
   module.onReady = () => {
     try {
 
@@ -19,6 +23,10 @@ module.exports = (Settings, Strings, name) => {
     }
   };
 
+  /**
+   * On channel message handle.
+   * Triggered on a new IRC channel message.
+   */
   module.onCHANMSG = () => {
     try {
 
@@ -27,22 +35,12 @@ module.exports = (Settings, Strings, name) => {
     }
   };
 
-  module.onPART = () => {
-    try {
-
-    } catch (e) {
-      print('onReady failed.', name, true, e);
-    }
-  };
-
-  module.onQUIT = () => {
-    try {
-
-    } catch (e) {
-      print('onReady failed.', name, true, e);
-    }
-  };
-
+  /**
+   * Discord message handler.
+   * @param {object} Message
+   * @param {object} guildSettings
+   * @return {string}
+   */
   module.execute = (Message, guildSettings) => {
     try {
 
@@ -52,6 +50,12 @@ module.exports = (Settings, Strings, name) => {
     return '';
   };
 
+  /**
+   * Initializes the middleware.
+   * @param {object} Guild
+   * @param {object} guildSettings
+   * @return {boolean} true if success and the mw can be used.
+   */
   module.initialize = (Guild, guildSettings) => {
     try {
       const {irc, discord} = guildSettings;

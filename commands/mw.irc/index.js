@@ -96,9 +96,10 @@ module.exports = (Settings, Strings, name) => {
   /**
    * Discord message handler.
    * @param {object} Message
+   * @param {object} Client
    * @param {object} guildSettings
    */
-  module.execute = (Message, guildSettings) => {
+  module.execute = (Message, Client, guildSettings) => {
     try {
       if (Message.content === '/irc-quit' && Message.author.id === guildSettings['ownerId']) {
         // Owner asked to quit.

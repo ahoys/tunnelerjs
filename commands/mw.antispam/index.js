@@ -94,7 +94,7 @@ module.exports = (Settings, Strings, name) => {
     }
   }
 
-  module.execute = (Message, guildSettings) => {
+  module.execute = (Message, Client, guildSettings) => {
     try {
       // Load the message author.
       const author = getAuthor(Message.author.id);

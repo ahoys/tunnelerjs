@@ -40,10 +40,11 @@ module.exports = (Settings, Strings, name) => {
   /**
    * Discord message handler.
    * @param {object} Message
+   * @param {object} Client
    * @param {object} guildSettings
    * @return {string}
    */
-  module.execute = (Message, guildSettings) => {
+  module.execute = (Message, Client, guildSettings) => {
     try {
 
     } catch (e) {

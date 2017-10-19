@@ -45,7 +45,7 @@ module.exports = (Client, GuildsMap, ownerId) => {
           Parser.isIncluded(member.roles, enabledRoles,
             excludedRoles, true)
         ) {
-          const haltReason = execute(Message, guildSettings);
+          const haltReason = execute(Message, Client, guildSettings);
           if (typeof haltReason !== 'string' || haltReason.length) {
             // An invalid return or an error message encountered.
             return typeof haltReason === 'string'

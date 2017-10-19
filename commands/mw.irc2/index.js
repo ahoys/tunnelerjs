@@ -47,18 +47,6 @@ module.exports = (Settings, Strings, name) => {
   module.execute = (Message, Client, guildSettings) => {
     try {
       const {content} = Message;
-      if (Message.isMentioned(Client.user)) {
-        // This is a command for the middlware.
-        if (content.indexOf('irc-quit') !== -1) {
-          print(`Command irc-quit by "${Message.author.username}".`, name, true);
-        } else if (content.indexOf('irc-status') !== -1) {
-          print(`Command irc-status by "${Message.author.username}".`, name, true);
-        } else if (content.indexOf('irc-listening') !== 1) {
-          print(`Command irc-listening by "${Message.author.username}".`, name, true);
-        }
-      } else {
-        // This message should be broadcasted.
-      }
     } catch (e) {
       print(`Could not execute a middleware (${name}).`, name, true, e);
     }
@@ -75,7 +63,13 @@ module.exports = (Settings, Strings, name) => {
    */
   module.control = (Message, Client, guildSettings, controlKey) => {
     try {
-      console.log(controlKey);
+      if (controlKey === 'irc-quit') {
+        print(`Command irc-quit by "${Message.author.username}".`, name, true);
+      } else if (controlKey === 'irc-status') {
+        print(`Command irc-status by "${Message.author.username}".`, name, true);
+      } else if (controlKey === 'irc-listening') {
+        print(`Command irc-listening by "${Message.author.username}".`, name, true);
+      }
     } catch (e) {
       print(`Could not execute a middleware control (${name}).`, name, true, e);
     }

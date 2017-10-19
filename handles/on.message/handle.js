@@ -27,6 +27,8 @@ module.exports = (Client, GuildsMap, ownerId) => {
       Object.keys(thisGuild.middlewares).forEach((mwKey) => {
         const {
           execute,
+          control,
+          keywords,
           enabledChannels,
           excludedChannels,
           enabledAuthors,
@@ -35,6 +37,16 @@ module.exports = (Client, GuildsMap, ownerId) => {
           excludedRoles,
           guildSettings,
         } = thisGuild.middlewares[mwKey];
+        // Execute middleware control if has.
+        if (Message.isMentioned(Client.user) && control && keywords && keywords.length) {
+          const controlKey = Parser.firstMatch(
+            keywords,
+            Parser.trim(Message.content)
+          );
+          if (typeof controlKey === 'string' && controlKey.length) {
+            control(Message, Client, guildSettings, controlKey);
+          }
+        }
         // Make sure the channel is included to be middlewared.
         // Also make sure the author or the role are not excluded.
         if (

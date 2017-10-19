@@ -66,6 +66,23 @@ module.exports = (Settings, Strings, name) => {
   };
 
   /**
+   * Command handler.
+   * @param {object} Message
+   * @param {object} Client
+   * @param {object} guildSettings
+   * @param {string} controlKey
+   * @return {string}
+   */
+  module.control = (Message, Client, guildSettings, controlKey) => {
+    try {
+      console.log(controlKey);
+    } catch (e) {
+      print(`Could not execute a middleware control (${name}).`, name, true, e);
+    }
+    return '';
+  };
+
+  /**
    * Initializes the middleware.
    * @param {object} Guild
    * @param {object} guildSettings

@@ -107,6 +107,13 @@ module.exports = (CommandsMap) => {
             globalSettings, localization, mwKey);
           guildMiddlewares[mwKey] = {
             execute: mwObj.execute,
+            control: mwObj.control
+              ? mwObj.control
+              : undefined,
+            keywords: typeof localization.keywords === 'object' &&
+              localization.keywords.constructor === Array
+              ? localization.keywords
+              : [],
             initialize: mwObj.initialize ? mwObj.initialize : undefined,
             enabledChannels: Parser.getListOfType(
               middlewaresJSON[mwKey]['enabled_channels']),

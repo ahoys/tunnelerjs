@@ -1,4 +1,4 @@
-const { log, print } = require('../../util/module.inc.debug')();
+const {log, print} = require('../../util/module.inc.debug')();
 const Parser = require('../../util/module.inc.parser')();
 
 /**

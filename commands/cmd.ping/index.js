@@ -12,7 +12,7 @@ const {print} = require('../../util/module.inc.debug')();
  */
 module.exports = (Settings, Strings, name) => {
   const module = {};
-  
+
   /**
    * Executes the command.
    * @param {object} Message

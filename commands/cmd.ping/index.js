@@ -17,21 +17,19 @@ module.exports = (Settings, Strings, name) => {
    * Executes the command.
    * @param {object} Message
    * @param {object} Client
-   * @return {string}
    */
   module.execute = (Message, Client) => {
     try {
       const ping = Math.round(Client.ping);
       if (ping >= 300) {
-        return `${Strings['success_0']} ${ping} ms. ${Strings['high_ping_1']}`;
+        Message.reply(`${Strings['success_0']} ${ping} ms. ${Strings['high_ping_1']}`);
       } else if (ping >= 200) {
-        return `${Strings['success_0']} ${ping} ms. ${Strings['high_ping_0']}`;
+        Message.reply(`${Strings['success_0']} ${ping} ms. ${Strings['high_ping_0']}`);
       }
-      return `${Strings['success_0']} ${ping} ms.`;
+      Message.reply(`${Strings['success_0']} ${ping} ms.`);
     } catch (e) {
       print(`Command execution failed.`, name, true, e);
     }
-    return '';
   };
 
   return module;

@@ -12,65 +12,12 @@ module.exports = (Client, GuildsMap, ownerId) => {
   const module = {};
 
   /**
-   * Executes middleware for the handle.
-   * Is able to block the execution is necessary.
-   * @param {object} Message
-   * @return {string}
+   * Returns whether the given author has an access
+   * to the command or middleware.
+   * @param {array} accesses 
+   * @param {string} authorId 
+   * @return {boolean}
    */
-  module.prepare = (Message) => {
-    const { guild, channel, author, member } = Message;
-    const thisGuild = GuildsMap[guild.id];
-    if (
-      thisGuild &&
-      thisGuild.middlewares
-    ) {
-      Object.keys(thisGuild.middlewares).forEach((mwKey) => {
-        const {
-          execute,
-          control,
-          keywords,
-          enabledChannels,
-          excludedChannels,
-          enabledAuthors,
-          excludedAuthors,
-          enabledRoles,
-          excludedRoles,
-          guildSettings,
-        } = thisGuild.middlewares[mwKey];
-        // Execute middleware control if has.
-        if (Message.isMentioned(Client.user) && control && keywords && keywords.length) {
-          const controlKey = Parser.firstMatch(
-            keywords,
-            Parser.trim(Message.content)
-          );
-          if (typeof controlKey === 'string' && controlKey.length) {
-            control(Message, Client, guildSettings, controlKey);
-          }
-        }
-        // Make sure the channel is included to be middlewared.
-        // Also make sure the author or the role are not excluded.
-        if (
-          Parser.isIncluded(channel.name, enabledChannels,
-            excludedChannels, true) &&
-          Parser.isIncluded(author.id, enabledAuthors,
-            excludedAuthors, true) &&
-          Parser.isIncluded(member.roles, enabledRoles,
-            excludedRoles, true)
-        ) {
-          const haltReason = execute(Message, Client, guildSettings);
-          if (typeof haltReason !== 'string' || haltReason.length) {
-            // An invalid return or an error message encountered.
-            return typeof haltReason === 'string'
-              ? haltReason
-              : `Middleware ${mwKey} halted the processing.`;
-          }
-        };
-      });
-    }
-    // No middlewares specified or the execution was ok.
-    return '';
-  };
-
   const hasAccess = (accesses, authorId) => {
     try {
       // No access.
@@ -95,63 +42,183 @@ module.exports = (Client, GuildsMap, ownerId) => {
   };
 
   /**
-   * Executes the handle.
+   * Returns an action object.
+   * @param {object} Message
+   * @return {object}
+   */
+  module.getAction = (Message) => {
+    // This action object will be returned.
+    const action = {
+      key: '',
+      module: undefined,
+      params: [],
+      isMiddleware: false,
+      isPrivate: !Message.guild,
+    };
+    // Contents of the message in an array.
+    // Length (len) of the array.
+    const contents = Message.content
+      ? Message.content.trim().split(' ')
+      : [];
+    const len = contents.length;
+    // GuildModule contains the guild's
+    // access settings and available commands.
+    // All commands are bound to a guild!
+    const GuildModule = Message.guild
+      ? GuildsMap[Message.guild.id]
+      : len >= 2
+        ? GuildsMap[contents[0]]
+        : undefined;
+    // The bot must always be mentioned if a guild channel.
+    // No mentions are required for a private message, but
+    // then the message must contain the guild id.
+    const isMentioned = Message.guild
+      ? Message.isMentioned(Client.user)
+      : len >= 2
+        ? Object.keys(GuildsMap).indexOf(contents[0]) !== -1
+        : false;
+    // If a valid guild is found and the bot is properly mentioned,
+    // we then try to find out what command the user wants to
+    // initialize.
+    // The command must be the second word (the first one being guild id
+    // or the bot mention).
+    if (GuildModule && isMentioned) {
+      if (
+        GuildModule.middlewares[contents[1]] &&
+        GuildModule.middlewares[contents[1]].control &&
+        hasAccess(GuildModule.middlewares[contents[1]].access, Message.author.id) &&
+        len >= 3
+      ) {
+        // Middleware command found.
+        // Because middlewares aren't direct commands, the message
+        // must contain parameters.
+        // The middleware decides what to do with these parameters.
+        action.key = contents[1];
+        action.module = GuildModule.middlewares[contents[1]];
+        action.isMiddleware = true;
+        action.params = contents.splice(2, 32);
+      } else if (
+        GuildModule.commands[contents[1]] &&
+        GuildModule.commands[contents[1]].execute &&
+        hasAccess(GuildModule.commands[contents[1]].access, Message.author.id)
+      ) {
+        // Command found.
+        action.key = contents[1];
+        action.module = GuildModule.commands[contents[1]];
+        action.params = contents.splice(2, 32);
+      }
+    }
+    // Only a valid action will be returned.
+    return action.module
+      ? action
+      : undefined;
+  };
+
+  /**
+   * Executes middlewares for the handle.
+   * Is able to block the execution is necessary.
    * @param {object} Message
    * @return {boolean}
    */
-  module.handle = (Message) => {
-    const { content, guild, channel, author, member } = Message;
-    const { user } = Client;
-    // Listen for direct commands only.
-    const thisGuild = GuildsMap[guild.id];
+  module.prepare = (Message) => {
+    let pass = true;
+    // Normal middleware preparation.
+    // Middleware works only on guild channels.
+    const GuildModule = Message.guild
+      ? GuildsMap[Message.guild.id]
+      : undefined;
+    // If no guild or middlewares, no reason to continue.
     if (
-      !thisGuild ||
-      !Message.isMentioned(user) ||
-      !Parser.isSafe(content)
-    ) return false;
-    const { commands } = thisGuild;
-    const cmdKey = Parser.firstMatch(
-      Object.keys(commands),
-      Parser.trim(content)
-    );
-    // The command must exist.
-    if (commands[cmdKey] === undefined) return false;
-    // Look for user access.
-    const {
-      execute,
-      access,
-      enabledChannels,
-      excludedChannels,
-      enabledAuthors,
-      excludedAuthors,
-      enabledRoles,
-      excludedRoles,
-    } = commands[cmdKey];
+      !GuildModule ||
+      typeof GuildModule.middlewares !== 'object'
+    ) return true;
+    // Execute all middlewares, if any.
+    Object.keys(GuildModule.middlewares).forEach((mwKey) => {
+      const {
+        execute,
+        enabledChannels,
+        excludedChannels,
+        enabledAuthors,
+        excludedAuthors,
+        enabledRoles,
+        excludedRoles,
+        guildSettings,
+      } = GuildModule.middlewares[mwKey];
+      // Make sure the channel is included to be middlewared.
+      // Also make sure the author or the role are not excluded.
+      if (
+        Parser.isIncluded(Message.channel.name, enabledChannels,
+          excludedChannels, true) &&
+        Parser.isIncluded(Message.author.id, enabledAuthors,
+          excludedAuthors, true) &&
+        Parser.isIncluded(Message.member.roles, enabledRoles,
+          excludedRoles, true)
+      ) {
+        // Look for a halting reason.
+        const haltReason = execute(Message, Client, guildSettings);
+        if (typeof haltReason !== 'string' || haltReason.length) {
+          // An invalid return or an error message.
+          const errMsg = typeof haltReason === 'string'
+            ? haltReason
+            : 'Unknown reason (invalid return type)';
+          log(`Middleware "${mwKey}" halted the processing.`, 'Handler', errMsg);
+          pass = false;
+        }
+      }
+    });
+    // Whether to let the process continue (true/false).
+    return pass;
+  };
+
+  /**
+   * Handles command execution.
+   * @param {object} Message
+   * @param {object} action
+   */
+  module.handle = (Message, action) => {
+    // Before executing, make sure the guild settings
+    // allow this execution.
     if (
-      Parser.isIncluded(channel.name, enabledChannels,
-        excludedChannels, true) &&
-      Parser.isIncluded(author.id, enabledAuthors, excludedAuthors,
-        true) &&
-      Parser.isIncluded(member.roles, enabledRoles, excludedRoles,
-        true) &&
-      hasAccess(access, author.id)
+      // Channels.
+      (
+        action.isPrivate ||
+        Parser.isIncluded(
+          Message.channel.name,
+          action.module.enabledChannels,
+          action.module.excludedChannels,
+          true
+        )
+      ) &&
+      // Authors.
+      Parser.isIncluded(
+        Message.author.id,
+        action.module.enabledAuthors,
+        action.module.excludedAuthors,
+        true
+      ) &&
+      // Roles.
+      (
+        action.isPrivate ||
+        Parser.isIncluded(
+          Message.member.roles,
+          action.module.enabledRoles,
+          action.module.excludedRoles,
+          true
+        )
+      )
     ) {
-      // Measure execution time for the command.
+      // Measure the performance while executing.
       const perfMeasure = process.hrtime();
-      const response = execute(Message, Client);
+      // It is up to the command author to handle the message displaying.
+      // Commands are executed externaly and they shouldn't affect the bot.
+      action.module.execute(Message, Client);
       log(
-        `A triggered command (${cmdKey}) took `
-        + `${process.hrtime(perfMeasure)[1] / 1000000}ms to execute on `
-        + `a channel (${channel.name}).`,
+        `A triggered command "${action.key}" took `
+        + `${process.hrtime(perfMeasure)[1] / 1000000}ms to execute. `
+        + `Execution was made by "${Message.author.username}".`,
         'Handler'
       );
-      if (typeof response === 'string' && response.length) {
-        // The command responded with something to say...
-        Message.reply(response);
-      }
-      return true;
     }
-    return false;
   };
 
   return module;

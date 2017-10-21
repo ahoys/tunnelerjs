@@ -51,7 +51,7 @@ module.exports = (CommandsMap) => {
                   globalSettings, localization, cmdKey
                 ).execute,
                 access: Parser.getListOfType(
-                  commandsJSON[cmdKey].access),
+                  commandsJSON[cmdKey]['access']),
                 enabledChannels: Parser.getListOfType(
                   commandsJSON[cmdKey]['enabled_channels']),
                 excludedChannels: Parser.getListOfType(
@@ -107,14 +107,10 @@ module.exports = (CommandsMap) => {
             globalSettings, localization, mwKey);
           guildMiddlewares[mwKey] = {
             execute: mwObj.execute,
-            control: mwObj.control
-              ? mwObj.control
-              : undefined,
-            keywords: typeof localization.keywords === 'object' &&
-              localization.keywords.constructor === Array
-              ? localization.keywords
-              : [],
-            initialize: mwObj.initialize ? mwObj.initialize : undefined,
+            control: mwObj.control,
+            initialize: mwObj.initialize,
+            access: Parser.getListOfType(
+              middlewaresJSON[mwKey]['access']),
             enabledChannels: Parser.getListOfType(
               middlewaresJSON[mwKey]['enabled_channels']),
             excludedChannels: Parser.getListOfType(

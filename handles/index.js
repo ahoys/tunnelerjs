@@ -40,25 +40,19 @@ module.exports = (AuthMap, GuildsMap) => {
     try {
       // Make sure it is not the bot talking.
       if (String(Message.author.id) !== String(Client.user.id)) {
-        new Promise((resolve, reject) => {
-          // Middlewares will run first.
-          // The command will run only if the middleware
-          // allows it.
-          const haltReason = onMessage.prepare(Message);
-          if (haltReason.length) {
-            // An error message received.
-            reject(haltReason);
-          }
-          resolve(Message);
-        }).then((Message) => {
-          // Run the command.
-          onMessage.handle(Message);
-        }).catch((e) => {
-          log(
-            `Middlware terminated the processing.`,
-            `Handler`, true, e
-          );
-        });
+        const action = onMessage.getAction(Message);
+        if (action && action.isMiddleware) {
+          // If a middleware action, don't run the middlewares.
+          // This action may be configuring a middleware.
+          onMessage.handle(Message, action);
+        } else if (action && onMessage.prepare(Message)) {
+          // Don't process the action if it does not exist
+          // or if a middleware halted the processing (spam).
+          onMessage.handle(Message, action);
+        } else {
+          // Just run the middleware.
+          onMessage.prepare(Message);
+        }
       }
     } catch (e) {
       print(

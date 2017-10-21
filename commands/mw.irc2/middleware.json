@@ -1,11 +1,6 @@
 {
   "strings": {
     "default": {
-      "keywords": [
-        "irc-quit",
-        "irc-status",
-        "irc-listening"
-      ],
       "irc_joined": "Hello! I'm here to bridge IRC and Discord!",
       "irc_listening_0": "Discord channels listening: ",
       "irc_listening_1": "Discord channels broadcasting: ",
@@ -23,11 +18,6 @@
       "dc_already_connected": "IRC already connected."
     },
     "fi": {
-      "keywords": [
-        "irc-poistu",
-        "irc-tilanne",
-        "irc-kuuntelemassa"
-      ],
       "irc_joined": "Terve! Tulin yhdistämään IRC:in ja Discordin!",
       "irc_listening_0": "Kuuntelevat Discord kanavat: ",
       "irc_listening_1": "Lähettävät Discord kanavat: ",

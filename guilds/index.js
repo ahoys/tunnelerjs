@@ -40,6 +40,12 @@ module.exports = (CommandsMap) => {
           // the command.
           const localization = strings[langJSON] ||
             strings['default'];
+          // Keywords list must exist.
+          // Keywords are used as triggers for the command.
+          if (
+            typeof localization.keywords !== 'object' ||
+            localization.keywords.constructor !== Array
+          ) localization.keywords = [];
           // Command's name can always be used as a keyword.
           localization.keywords.push(cmdKey);
           localization.keywords.forEach((keyword) => {

@@ -47,7 +47,10 @@ module.exports = (CommandsMap) => {
             localization.keywords.constructor !== Array
           ) localization.keywords = [];
           // Command's name can always be used as a keyword.
-          localization.keywords.push(cmdKey);
+          // Just make sure there are no duplicates.
+          if (localization.keywords.indexOf(cmdKey) === -1) {
+            localization.keywords.push(cmdKey);
+          }
           localization.keywords.forEach((keyword) => {
             const regKeyword = new RegExp(/^[a-zA-ZäÄöÖåÅæÆøØ]{1,24}$/);
             if (regKeyword.test(keyword)) {

@@ -1,6 +1,7 @@
 {
   "name": "tunnelerjs",
   "main": "tunneler.js",
+  "description": "A fully modular Discord antispam bot with an additude.",
   "version": "1.0.0",
   "license": "MIT",
   "repository": {

@@ -110,7 +110,7 @@ module.exports = (Settings, Strings, name) => {
       if (analyse.hasViolation(author.messages.list)) {
         // Spam detected.
         // Read the guild punishments.
-        const punishment = guildSettings.punishment;
+        const punishment = guildSettings.punishments;
         if (
           typeof punishment === 'string' &&
           ['warn', 'role', 'kick', 'ban', 'log'].indexOf(punishment) !== -1

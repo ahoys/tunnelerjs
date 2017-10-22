@@ -40,6 +40,8 @@ module.exports = (CommandsMap) => {
           // the command.
           const localization = strings[langJSON] ||
             strings['default'];
+          // Command's name can always be used as a keyword.
+          localization.keywords.push(cmdKey);
           localization.keywords.forEach((keyword) => {
             const regKeyword = new RegExp(/^[a-zA-ZäÄöÖåÅæÆøØ]{1,24}$/);
             if (regKeyword.test(keyword)) {

@@ -1,4 +1,4 @@
-const { print, log } = require('../../util/module.inc.debug')();
+const {print, log} = require('../../util/module.inc.debug')();
 
 /**
  * Logs out, terminates the connection to Discord, and destroys the client.
@@ -20,7 +20,7 @@ module.exports = (Settings, Strings, name) => {
    */
   module.execute = (Message, Client) => {
     try {
-      const { author } = Message;
+      const {author} = Message;
       print('Exit command executed. Bye, bye!', name, false);
       log(`Message author (${author.username}, ${author.id}) `
         + `terminated the bot.`);

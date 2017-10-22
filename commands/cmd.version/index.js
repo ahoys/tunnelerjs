@@ -26,7 +26,7 @@ module.exports = (Settings, Strings, name) => {
       }
       Message.reply(`v.${version}`);
     } catch (e) {
-        print(`Command execution failed.`, name, true, e);
+      print(`Command execution failed.`, name, true, e);
     }
   };
 

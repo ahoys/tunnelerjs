@@ -1,4 +1,4 @@
-const { print, log } = require('../../util/module.inc.debug')();
+const {print, log} = require('../../util/module.inc.debug')();
 
 /**
  * This file is intented to be an example template for

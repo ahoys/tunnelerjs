@@ -20,7 +20,7 @@ module.exports = (Settings, Strings, name) => {
    */
   module.execute = (Message, Client) => {
     try {
-      const { author } = Message;
+      const {author} = Message;
       log(`Message author (${author.username}, ${author.id}) `
       + `rebooted the bot.`);
       Message.reply(`${Strings['success_0']}`);
@@ -29,7 +29,7 @@ module.exports = (Settings, Strings, name) => {
         process.exit(3);
       }, 1024);
     } catch (e) {
-        print(`Command execution failed.`, name, true, e);
+      print(`Command execution failed.`, name, true, e);
     }
   };
 

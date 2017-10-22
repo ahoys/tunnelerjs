@@ -33,10 +33,11 @@ module.exports = (Settings, Strings, name) => {
         // Hours
         Message.reply(`${Strings['success_0']} `
         + `${Math.floor((process.uptime() / 3600))} ${Strings['hours']}.`);
+      } else {
+        // Days
+        Message.reply(`${Strings['success_0']} `
+        + `${Math.floor((process.uptime() / 68400))} ${Strings['days']}.`);
       }
-      // Days
-      Message.reply(`${Strings['success_0']} `
-      + `${Math.floor((process.uptime() / 68400))} ${Strings['days']}.`);
     } catch (e) {
       print(`Command execution failed.`, name, true, e);
     }

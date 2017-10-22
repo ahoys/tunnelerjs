@@ -108,14 +108,16 @@ module.exports = (Settings, Strings, name) => {
       };
       author.messages.index += 1;
       if (analyse.hasViolation(author.messages.list)) {
-        console.log('hasViolation', guildSettings.punishment);
         // Spam detected.
         // Read the guild punishments.
         const punishment = guildSettings.punishment;
-        if (typeof punishment === 'string') {
+        if (
+          typeof punishment === 'string' &&
+          ['warn', 'role', 'kick', 'ban', 'log'].indexOf(punishment) !== -1
+        ) {
           // Only a one type of punishment given.
           // Violations are irrelevant.
-          doPunish(Message.member, Message.author.username, punishment);
+          doPunish(Message, punishment, guildSettings.punishmentRole, guildSettings.silentMode);
         } else if (
           typeof punishment === 'object' &&
           punishment.constructor === Array
@@ -124,7 +126,7 @@ module.exports = (Settings, Strings, name) => {
           // what punishment comes next.
           if (
             ['warn', 'role', 'kick', 'ban', 'log']
-            .indexOf(punishment[author.violations]) !== -1
+              .indexOf(punishment[author.violations]) !== -1
           ) {
             // Punishment found.
             // If not found, it means that the first

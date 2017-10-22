@@ -17,7 +17,6 @@ module.exports = (Settings, Strings, name) => {
    * Executes the command.
    * @param {object} Message
    * @param {object} Client
-   * @return {string}
    */
   module.execute = (Message, Client) => {
     try {
@@ -32,7 +31,6 @@ module.exports = (Settings, Strings, name) => {
     } catch (e) {
         print(`Command execution failed.`, name, true, e);
     }
-    return '';
   };
 
   return module;

@@ -14,7 +14,7 @@ const { print, log } = require('../../util/module.inc.debug')();
  * The language is selected automatically based on the settings.
  *
  * "name" : The main key-word of the command. eg. "example" if cmd.example.
- * Note that the used key word may differ.
+ * Note that the used keyword may differ based on localization.
  *
  * Author: Your Name
  * Date: Jan 1. 1970
@@ -48,16 +48,16 @@ module.exports = (Settings, Strings, name) => {
    * access this command from here. Commands without module.execute won't
    * be registered.
    * @param {object} Message : Discord.js Message object.
-   * @return {string} : The string that will be used as a reply.
+   * @param {object} Client : Discord.js Client object (the bot).
+   * @param {Array} params : Additional user inputted parameters for the command.
    */
-  module.execute = (Message) => {
+  module.execute = (Message, Client, params) => {
     try {
       const string = getString('just an');
-      return `${Strings['success_0']}${string}${Strings['success_1']}`;
+      Message.reply(`${Strings['success_0']}${string}${Strings['success_1']}`);
     } catch (e) {
       print(`Command execution failed.`, name, true, e);
     }
-    return '';
   };
 
   return module;

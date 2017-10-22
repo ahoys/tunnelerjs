@@ -17,7 +17,6 @@ module.exports = (Settings, Strings, name) => {
    * Executes the command.
    * @param {object} Message
    * @param {object} Client
-   * @return {string}
    */
   module.execute = (Message, Client) => {
     try {
@@ -35,7 +34,6 @@ module.exports = (Settings, Strings, name) => {
         + `Force shut down...`, name, true, e);
       process.exit(0);
     }
-    return '';
   };
 
   return module;

@@ -16,21 +16,18 @@ module.exports = (Settings, Strings, name) => {
   /**
    * Executes the command.
    * @param {object} Message
-   * @param {object} Client
-   * @return {string}
    */
-  module.execute = (Message, Client) => {
+  module.execute = (Message) => {
     try {
-      const package = require('../../package.json');
-      const version = package.version;
+      const packageJSON = require('../../package.json');
+      const version = packageJSON.version;
       if (!version) {
-        return Strings['fail_0'];
+        Message.reply(Strings['fail_0']);
       }
-      return `v.${version}`;
+      Message.reply(`v.${version}`);
     } catch (e) {
         print(`Command execution failed.`, name, true, e);
     }
-    return '';
   };
 
   return module;

@@ -1,4 +1,4 @@
-const { print, log } = require('../../util/module.inc.debug')();
+const {print, log} = require('../../util/module.inc.debug')();
 const analyse = require('./parts/module.inc.analyse')();
 
 module.exports = (Settings, Strings, name) => {
@@ -8,6 +8,8 @@ module.exports = (Settings, Strings, name) => {
   /**
    * Saves the message for the author
    * and returns the author.
+   * @param {string} id
+   * @return {object}
    */
   getAuthor = (id) => {
     try {
@@ -24,14 +26,14 @@ module.exports = (Settings, Strings, name) => {
             index: 0,
           },
           violations: 0,
-        }
+        };
       }
       return authors[id];
     } catch (e) {
       print(`getAuthor (${id}) failed.`, name, true, e);
     }
     return {};
-  }
+  };
 
   setAuthor = (id, author) => {
     try {
@@ -39,15 +41,15 @@ module.exports = (Settings, Strings, name) => {
     } catch (e) {
       print(`setAuthor (${id}) failed.`, name, true, e);
     }
-  }
+  };
 
   doPunish = (Message, punishment, role, silent) => {
     try {
-      const { member, author, channel, guild } = Message;
+      const {member, author, channel, guild} = Message;
       switch (punishment) {
-        case 'ban':
-          if (member.bannable) {
-            member.ban({ days: 1, reason: 'Automatic spam detection.' })
+      case 'ban':
+        if (member.bannable) {
+          member.ban({days: 1, reason: 'Automatic spam detection.'})
             .then(() => {
               print(`Banned "${author.username}".`, name, true);
               if (!silent) channel.send(`${author.username} ${Strings['punished_ban']}`);
@@ -55,11 +57,11 @@ module.exports = (Settings, Strings, name) => {
             .catch((e) => {
               print('Banning failed.', name, true, e);
             });
-          }
+        }
         break;
-        case 'kick':
-          if (member.kickable) {
-            member.kick({ days: 1, reason: 'Automatic spam detection.' })
+      case 'kick':
+        if (member.kickable) {
+          member.kick({days: 1, reason: 'Automatic spam detection.'})
             .then(() => {
               print(`Kicked "${author.username}".`, name, true);
               if (!silent) channel.send(`${author.username} ${Strings['punished_kick']}`);
@@ -67,32 +69,32 @@ module.exports = (Settings, Strings, name) => {
             .catch((e) => {
               print('Kicking failed.', name, true, e);
             });
-          }
+        }
         break;
-        case 'role':
-          const roleObj = guild.roles.find('id', role);
-          if (roleObj) {
-            member.addRole(roleObj, 'Automatic spam detection')
+      case 'role':
+        const roleObj = guild.roles.find('id', role);
+        if (roleObj) {
+          member.addRole(roleObj, 'Automatic spam detection')
             .then(() => {
               print(`Set role "${roleObj.name}" to "${author.username}".`, name, true);
               if (!silent) channel.send(`${author.username} ${Strings['punished_role']}`);
             }).catch((e) => {
               print(`Adding a punishment role (${role}) failed.`, name, true, e);
             });
-          }
+        }
         break;
-        case 'warn':
-          Message.reply(Strings['warning']);
+      case 'warn':
+        Message.reply(Strings['warning']);
         break;
-        case 'log':
-          log(`Logged punishment for "${author.username}". `
-            + `Message history: ${JSON.stringify(authors[author.id].messages.list)}`, name);
+      case 'log':
+        log(`Logged punishment for "${author.username}". `
+          + `Message history: ${JSON.stringify(authors[author.id].messages.list)}`, name);
         break;
       }
     } catch (e) {
       print('doPunish failed.', name, true, e);
     }
-  }
+  };
 
   module.execute = (Message, Client, guildSettings) => {
     try {
@@ -161,4 +163,4 @@ module.exports = (Settings, Strings, name) => {
   };
 
   return module;
-}
+};

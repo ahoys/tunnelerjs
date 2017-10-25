@@ -86,13 +86,15 @@ module.exports = (Settings, Strings, name) => {
    */
   module.execute = (Message, Client, guildSettings) => {
     try {
-      const {content} = Message;
+      const {content, channel} = Message;
       if (
         getStatus() &&
+        channel &&
+        Object.keys(discordBroadcasts).indexOf(channel.id) !== -1 &&
         typeof content === 'string' &&
         content.trim().length > 0
       ) {
-        
+
       }
     } catch (e) {
       print(`Could not execute a middleware (${name}).`, name, true, e);
@@ -107,7 +109,6 @@ module.exports = (Settings, Strings, name) => {
    * @param {object} key
    * @param {array} params
    * @param {object} guildSettings
-   * @return {string}
    */
   module.control = (Message, Client, key, params, guildSettings) => {
     try {
@@ -124,7 +125,6 @@ module.exports = (Settings, Strings, name) => {
     } catch (e) {
       print(`Could not execute a middleware control (${name}).`, name, true, e);
     }
-    return '';
   };
 
   /**

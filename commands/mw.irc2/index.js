@@ -89,7 +89,6 @@ module.exports = (Settings, Strings, name) => {
       const {content, channel} = Message;
       if (
         getStatus() &&
-        channel &&
         Object.keys(discordBroadcasts).indexOf(channel.id) !== -1 &&
         typeof content === 'string' &&
         content.trim().length > 0

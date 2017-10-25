@@ -212,7 +212,7 @@ module.exports = (Client, GuildsMap, ownerId) => {
       // It is up to the command author to handle the message displaying.
       // Commands are executed externaly and they shouldn't affect the bot.
       if (action.isMiddleware) {
-        action.module.control(Message, Client, action.key, action.params, action.guildSettings);
+        action.module.control(Message, Client, action.params, action.guildSettings);
       } else {
         action.module.execute(Message, Client, action.params);
       }

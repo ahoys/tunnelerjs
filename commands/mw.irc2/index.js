@@ -47,7 +47,7 @@ module.exports = (Settings, Strings, name) => {
 
   const handleStatus = (key, params) => {
     try {
-
+      console.log('handleStatus');
     } catch (e) {
       print('handleStatus failed.', name, true, e);
     }
@@ -55,7 +55,7 @@ module.exports = (Settings, Strings, name) => {
 
   const handleConnect = (key, params) => {
     try {
-
+      console.log('handleConnect');
     } catch (e) {
       print('handleConnect failed.', name, true, e);
     }
@@ -63,7 +63,7 @@ module.exports = (Settings, Strings, name) => {
 
   const handleDisconnect = (key, params) => {
     try {
-
+      console.log('handleDisconnect');
     } catch (e) {
       print('handleDisconnect failed.', name, true, e);
     }
@@ -71,7 +71,7 @@ module.exports = (Settings, Strings, name) => {
 
   const handlePresent = (key, params) => {
     try {
-
+      console.log('handlePresent');
     } catch (e) {
       print('handlePresent failed.', name, true, e);
     }
@@ -93,7 +93,7 @@ module.exports = (Settings, Strings, name) => {
         typeof content === 'string' &&
         content.trim().length > 0
       ) {
-
+        console.log(discordBroadcasts[channel.id]);
       }
     } catch (e) {
       print(`Could not execute a middleware (${name}).`, name, true, e);
@@ -105,13 +105,12 @@ module.exports = (Settings, Strings, name) => {
    * Command handler.
    * @param {object} Message
    * @param {object} Client
-   * @param {object} key
    * @param {array} params
    * @param {object} guildSettings
    */
-  module.control = (Message, Client, key, params, guildSettings) => {
+  module.control = (Message, Client, params, guildSettings) => {
     try {
-      console.log('control', key, params);
+      const key = params.length && params[0] !== undefined ? params[0] : '';
       const validKeys = {
         status: handleStatus,
         connect: handleConnect,

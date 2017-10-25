@@ -57,19 +57,14 @@ module.exports = (Settings, Strings, name) => {
    * Command handler.
    * @param {object} Message
    * @param {object} Client
+   * @param {object} key
+   * @param {array} params
    * @param {object} guildSettings
-   * @param {string} controlKey
    * @return {string}
    */
-  module.control = (Message, Client, guildSettings, controlKey) => {
+  module.control = (Message, Client, key, params, guildSettings) => {
     try {
-      if (controlKey === 'irc-quit') {
-        print(`Command irc-quit by "${Message.author.username}".`, name, true);
-      } else if (controlKey === 'irc-status') {
-        print(`Command irc-status by "${Message.author.username}".`, name, true);
-      } else if (controlKey === 'irc-listening') {
-        print(`Command irc-listening by "${Message.author.username}".`, name, true);
-      }
+      console.log('control', key, params);
     } catch (e) {
       print(`Could not execute a middleware control (${name}).`, name, true, e);
     }

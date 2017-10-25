@@ -211,7 +211,11 @@ module.exports = (Client, GuildsMap, ownerId) => {
       const perfMeasure = process.hrtime();
       // It is up to the command author to handle the message displaying.
       // Commands are executed externaly and they shouldn't affect the bot.
-      action.module.execute(Message, Client, action.params);
+      if (action.isMiddleware) {
+        action.module.control(Message, Client, action.key, action.params, action.guildSettings);
+      } else {
+        action.module.execute(Message, Client, action.params);
+      }
       log(
         `A triggered command "${action.key}" took `
         + `${process.hrtime(perfMeasure)[1] / 1000000}ms to execute. `

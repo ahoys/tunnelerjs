@@ -37,6 +37,46 @@ module.exports = (Settings, Strings, name) => {
     }
   };
 
+  const getStatus = () => {
+    try {
+      return true;
+    } catch (e) {
+      print('getStatus failed.', name, true, e);
+    }
+  };
+
+  const handleStatus = (key, params) => {
+    try {
+
+    } catch (e) {
+      print('handleStatus failed.', name, true, e);
+    }
+  };
+
+  const handleConnect = (key, params) => {
+    try {
+
+    } catch (e) {
+      print('handleConnect failed.', name, true, e);
+    }
+  };
+
+  const handleDisconnect = (key, params) => {
+    try {
+
+    } catch (e) {
+      print('handleDisconnect failed.', name, true, e);
+    }
+  };
+
+  const handlePresent = (key, params) => {
+    try {
+
+    } catch (e) {
+      print('handlePresent failed.', name, true, e);
+    }
+  };
+
   /**
    * Discord message handler.
    * @param {object} Message
@@ -47,6 +87,13 @@ module.exports = (Settings, Strings, name) => {
   module.execute = (Message, Client, guildSettings) => {
     try {
       const {content} = Message;
+      if (
+        getStatus() &&
+        typeof content === 'string' &&
+        content.trim().length > 0
+      ) {
+        
+      }
     } catch (e) {
       print(`Could not execute a middleware (${name}).`, name, true, e);
     }
@@ -65,6 +112,15 @@ module.exports = (Settings, Strings, name) => {
   module.control = (Message, Client, key, params, guildSettings) => {
     try {
       console.log('control', key, params);
+      const validKeys = {
+        status: handleStatus,
+        connect: handleConnect,
+        disconnect: handleDisconnect,
+        present: handlePresent,
+      };
+      if (Object.keys(validKeys).indexOf(key) !== -1) {
+        validKeys[key](key, params);
+      }
     } catch (e) {
       print(`Could not execute a middleware control (${name}).`, name, true, e);
     }

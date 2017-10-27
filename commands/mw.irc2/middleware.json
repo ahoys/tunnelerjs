@@ -14,7 +14,8 @@
       "dc_connected": "connected.",
       "dc_disconnected": "disconnected.",
       "dc_connecting": "connecting...",
-      "dc_already_connected": "IRC already connected."
+      "dc_already_connected": "IRC already connected.",
+      "dc_already_disconnected": "IRC already disconnected."
     },
     "fi": {
       "irc_joined": "Terve! Tulin yhdistämään IRC:in ja Discordin!",
@@ -30,7 +31,8 @@
       "dc_connected": "yhdistetty.",
       "dc_disconnected": "yhteys katkaistu.",
       "dc_connecting": "yhdistetään...",
-      "dc_already_connected": "IRC on jo yhdistetty."
+      "dc_already_connected": "IRC on jo yhdistetty.",
+      "dc_already_disconnected": "IRC yhteys on jo katkaistu."
     }
   }
 }

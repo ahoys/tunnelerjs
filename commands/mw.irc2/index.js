@@ -69,9 +69,12 @@ module.exports = (Settings, Strings, name) => {
 
   const handleDisconnect = (params) => {
     try {
-      ready = false;
-      ircClient.quit();
-      return Strings['dc_disconnected'];
+      if (getStatus()) {
+        ready = false;
+        ircClient.quit();
+        return Strings['dc_disconnected'];
+      }
+      return Strings['dc_already_disconnected'];
     } catch (e) {
       print('handleDisconnect failed.', name, true, e);
     }

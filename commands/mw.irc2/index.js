@@ -77,15 +77,6 @@ module.exports = (Settings, Strings, name) => {
     }
   };
 
-  const handleSet = (params) => {
-    try {
-      console.log('handleSet');
-
-    } catch (e) {
-      print('handleSet failed.', name, true, e);
-    }
-  };
-
   /**
    * Discord message handler.
    * @param {object} Message
@@ -125,7 +116,6 @@ module.exports = (Settings, Strings, name) => {
         connect: handleConnect,
         disconnect: handleDisconnect,
         present: handlePresent,
-        set: handleSet,
       };
       if (Object.keys(validKeys).indexOf(key) !== -1) {
         validKeys[key](params);

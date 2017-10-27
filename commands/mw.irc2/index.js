@@ -45,7 +45,7 @@ module.exports = (Settings, Strings, name) => {
     }
   };
 
-  const handleStatus = (key, params) => {
+  const handleStatus = (params) => {
     try {
       console.log('handleStatus');
     } catch (e) {
@@ -53,7 +53,7 @@ module.exports = (Settings, Strings, name) => {
     }
   };
 
-  const handleConnect = (key, params) => {
+  const handleConnect = (params) => {
     try {
       console.log('handleConnect');
     } catch (e) {
@@ -61,7 +61,7 @@ module.exports = (Settings, Strings, name) => {
     }
   };
 
-  const handleDisconnect = (key, params) => {
+  const handleDisconnect = (params) => {
     try {
       console.log('handleDisconnect');
     } catch (e) {
@@ -69,11 +69,20 @@ module.exports = (Settings, Strings, name) => {
     }
   };
 
-  const handlePresent = (key, params) => {
+  const handlePresent = (params) => {
     try {
       console.log('handlePresent');
     } catch (e) {
       print('handlePresent failed.', name, true, e);
+    }
+  };
+
+  const handleSet = (params) => {
+    try {
+      console.log('handleSet');
+
+    } catch (e) {
+      print('handleSet failed.', name, true, e);
     }
   };
 
@@ -116,9 +125,10 @@ module.exports = (Settings, Strings, name) => {
         connect: handleConnect,
         disconnect: handleDisconnect,
         present: handlePresent,
+        set: handleSet,
       };
       if (Object.keys(validKeys).indexOf(key) !== -1) {
-        validKeys[key](key, params);
+        validKeys[key](params);
       }
     } catch (e) {
       print(`Could not execute a middleware control (${name}).`, name, true, e);

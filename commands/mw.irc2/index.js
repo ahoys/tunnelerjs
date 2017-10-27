@@ -48,7 +48,7 @@ module.exports = (Settings, Strings, name) => {
 
   const handleStatus = (params) => {
     try {
-      return getStatus() ? String['dc_connected'] : String['dc_disconnected'];
+      return getStatus() ? Strings['dc_connected'] : Strings['dc_disconnected'];
     } catch (e) {
       print('handleStatus failed.', name, true, e);
     }
@@ -125,6 +125,7 @@ module.exports = (Settings, Strings, name) => {
         disconnect: handleDisconnect,
         present: handlePresent,
       };
+      print(`"${Message.author.username}" asked for "${key}".`, name, true);
       if (Object.keys(validKeys).indexOf(key) !== -1) {
         const response = validKeys[key](params, guildSettings);
         if (typeof response === 'string' && response.length) {

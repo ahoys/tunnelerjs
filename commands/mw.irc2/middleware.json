@@ -11,9 +11,9 @@
       "irc_a": "::a (anonymous message)",
       "dc_listening_0": "IRC channels listening: ",
       "dc_listening_1": "IRC channels broadcasting: ",
-      "dc_connected": "Connected.",
-      "dc_disconnected": "Disconnected.",
-      "dc_connecting": "Connecting...",
+      "dc_connected": "connected.",
+      "dc_disconnected": "disconnected.",
+      "dc_connecting": "connecting...",
       "dc_already_connected": "IRC already connected."
     },
     "fi": {
@@ -27,9 +27,9 @@
       "irc_a": "::a (anonyymi viesti)",
       "dc_listening_0": "Kuuntelevat IRC-kanavat: ",
       "dc_listening_1": "Lähettävät IRC-kanavat: ",
-      "dc_connected": "Yhdistetty.",
-      "dc_disconnected": "Yhteys katkaistu.",
-      "dc_connecting": "Yhdistetään...",
+      "dc_connected": "yhdistetty.",
+      "dc_disconnected": "yhteys katkaistu.",
+      "dc_connecting": "yhdistetään...",
       "dc_already_connected": "IRC on jo yhdistetty."
     }
   }

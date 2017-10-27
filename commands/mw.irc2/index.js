@@ -53,9 +53,11 @@ module.exports = (Settings, Strings, name) => {
     }
   };
 
-  const handleConnect = (params) => {
+  const handleConnect = (params, guildSettings) => {
     try {
       console.log('handleConnect');
+      ircClient.connect();
+      print('Connecting by request.', name, true, e);
     } catch (e) {
       print('handleConnect failed.', name, true, e);
     }
@@ -63,7 +65,8 @@ module.exports = (Settings, Strings, name) => {
 
   const handleDisconnect = (params) => {
     try {
-      console.log('handleDisconnect');
+      ircClient.quit();
+      print('Disconnected by request.', name, true, e);
     } catch (e) {
       print('handleDisconnect failed.', name, true, e);
     }
@@ -118,7 +121,10 @@ module.exports = (Settings, Strings, name) => {
         present: handlePresent,
       };
       if (Object.keys(validKeys).indexOf(key) !== -1) {
-        validKeys[key](params);
+        const response = validKeys[key](params, guildSettings);
+        if (typeof response === 'string' && response.length) {
+          Message.reply(response);
+        }
       }
     } catch (e) {
       print(`Could not execute a middleware control (${name}).`, name, true, e);

@@ -58,10 +58,9 @@ module.exports = (Settings, Strings, name) => {
     try {
       if (getStatus()) {
         return Strings['dc_already_connected'];
-      } else {
-        ircClient.connect();
-        return Strings['dc_connecting'];
       }
+      ircClient.connect();
+      return Strings['dc_connecting'];
     } catch (e) {
       print('handleConnect failed.', name, true, e);
     }

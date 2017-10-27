@@ -6,6 +6,7 @@ module.exports = (Settings, Strings, name) => {
   const settings = {};
   const ircBroadcasts = {}; // Irc channels and to where they broadcast.
   const discordBroadcasts = {}; // Discord channels and to where they broadcast.
+  let ready = false;
   let ircClient;
   const flags = {
     '::p': 'present',
@@ -19,7 +20,7 @@ module.exports = (Settings, Strings, name) => {
    */
   module.onReady = () => {
     try {
-
+      ready = true;
     } catch (e) {
       print('onReady failed.', name, true, e);
     }
@@ -39,7 +40,7 @@ module.exports = (Settings, Strings, name) => {
 
   const getStatus = () => {
     try {
-      return true;
+      return ready;
     } catch (e) {
       print('getStatus failed.', name, true, e);
     }
@@ -47,7 +48,7 @@ module.exports = (Settings, Strings, name) => {
 
   const handleStatus = (params) => {
     try {
-      console.log('handleStatus');
+      return getStatus() ? String['dc_connected'] : String['dc_disconnected'];
     } catch (e) {
       print('handleStatus failed.', name, true, e);
     }
@@ -55,9 +56,12 @@ module.exports = (Settings, Strings, name) => {
 
   const handleConnect = (params, guildSettings) => {
     try {
-      console.log('handleConnect');
-      ircClient.connect();
-      print('Connecting by request.', name, true, e);
+      if (getStatus()) {
+        return Strings['dc_already_connected'];
+      } else {
+        ircClient.connect();
+        return Strings['dc_connecting'];
+      }
     } catch (e) {
       print('handleConnect failed.', name, true, e);
     }
@@ -65,8 +69,9 @@ module.exports = (Settings, Strings, name) => {
 
   const handleDisconnect = (params) => {
     try {
+      ready = false;
       ircClient.quit();
-      print('Disconnected by request.', name, true, e);
+      return Strings['dc_disconnected'];
     } catch (e) {
       print('handleDisconnect failed.', name, true, e);
     }

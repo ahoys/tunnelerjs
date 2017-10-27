@@ -13,7 +13,6 @@
       "dc_listening_1": "IRC channels broadcasting: ",
       "dc_connected": "Connected.",
       "dc_disconnected": "Disconnected.",
-      "dc_quit": "IRC disconnected.",
       "dc_connecting": "Connecting...",
       "dc_already_connected": "IRC already connected."
     },
@@ -29,8 +28,7 @@
       "dc_listening_0": "Kuuntelevat IRC-kanavat: ",
       "dc_listening_1": "Lähettävät IRC-kanavat: ",
       "dc_connected": "Yhdistetty.",
-      "dc_disconnected": "Ei yhteyttä.",
-      "dc_quit": "IRC yhteys katkaistu.",
+      "dc_disconnected": "Yhteys katkaistu.",
       "dc_connecting": "Yhdistetään...",
       "dc_already_connected": "IRC on jo yhdistetty."
     }

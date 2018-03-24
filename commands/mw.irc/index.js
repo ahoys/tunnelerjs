@@ -79,6 +79,17 @@ module.exports = (Settings, Strings, name) => {
   }
 
   /**
+   * IRC error handler.
+   */
+  onError = (data) => {
+    try {
+      print(`Received error: ${data}`, name, true, data);
+    } catch (e) {
+      print('onError failed.', name, true, e);
+    }
+  }
+
+  /**
    * Attempt to handle irc-based errors.
    * @param {string} err
    */
@@ -205,12 +216,21 @@ module.exports = (Settings, Strings, name) => {
           'Tunnelerjs',
           ircPassword
         );
-        ircClient.debug = true;
+        ircClient.debug = false;
         ircClient.verbosity = 1;
+        ircClient.showErrors = true;
+        ircClient.autoRejoin = true;
+        ircClient.autoConnect = true;
+        ircClient.retryCount = 10;
+        ircChannel.retryDelay = 5000;
+        ircChannel.floodProtection = true;
+        ircChannel.floodProtectionDelay = 500;
+        ircChannel.encoding = 'UTF-8';
         ircClient.on('ready', onReady);
         ircClient.on('CHANMSG', onCHANMSG);
         ircClient.on('PART', onPART);
         ircClient.on('QUIT', onQUIT);
+        ircClient.on('error', onError)
         ircClient.connect();
         return true;
       } else {

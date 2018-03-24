@@ -1,0 +1,18 @@
+{
+  "globalSettings": {
+    "masonRoles": ["mason", "the order", "mason order", "the mason order"],
+    "agathaRoles": ["agatha", "agatha knights", "loyalists"],
+    "masonKeywords": ["mason", "order", "iron"],
+    "agathaKeywords": ["agatha", "knight", "loyalists"]
+  },
+  "strings": {
+    "default": {
+      "keywords": [
+        "chivalry",
+        "faction"
+      ],
+      "set_mason": "hits with an iron fist!",
+      "set_agatha": "is a true loyalist!"
+    }
+  }
+}

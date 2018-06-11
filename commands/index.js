@@ -1,4 +1,4 @@
-const { print, log } = require('../util/module.inc.debug')();
+const {print} = require('../util/module.inc.debug')();
 const fs = require('fs');
 
 /**
@@ -22,7 +22,7 @@ module.exports = () => {
   const typePaths = {
     cmd: 'command.json',
     mw: 'middleware.json',
-  }
+  };
 
   /**
    * Loads a module from the given directory.
@@ -74,8 +74,7 @@ module.exports = () => {
       return returnPayload;
     } catch (e) {
       print(`Failed to load a module (${name}). `
-        + `See the log for more info`,
-        'commands', true, e);
+        + `See the log for more info commands`, true, e);
     }
   };
 
@@ -114,7 +113,7 @@ module.exports = () => {
         'commands', false);
       print(`${Object.keys(mwMap).length} middleware(s) found.`,
         'commands', false);
-      return { cmdMap, mwMap };
+      return {cmdMap, mwMap};
     } catch (e) {
       print('Indexing commands failed. The process will now exit.',
         'commands', true, e);

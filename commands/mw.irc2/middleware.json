@@ -1,4 +1,5 @@
 {
+  "globalSettings": {},
   "strings": {
     "default": {
       "irc_joined": "Hello! I'm here to bridge IRC and Discord!",

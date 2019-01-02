@@ -24,7 +24,8 @@ module.exports = (Settings, Strings, name) => {
   /**
    * Punish the Message author.
    */
-  doPunish = (Message, punishment = 'role', punishmentRole = '', silent = true) => {
+  doPunishBadContent = (Message, punishment = 'role', punishmentRole = '', silent = true) => {
+    console.log('active');
     const {member, author, channel, guild} = Message;
     try {
       switch(punishment) {
@@ -69,7 +70,7 @@ module.exports = (Settings, Strings, name) => {
           break;
       }
     } catch (e) {
-      print('doPunish failed.', name, true, e);
+      print('doPunishBadContent failed.', name, true, e);
     }
   }
 
@@ -88,7 +89,7 @@ module.exports = (Settings, Strings, name) => {
         const foundings = illegalContent.filter(c => str.includes(c.toLowerCase()));
         if (foundings[0]) {
           // We have found illegal content.
-          doPunish(Message, punishment, punishmentRole, silent);
+          doPunishBadContent(Message, punishment, punishmentRole, silent);
         }
       }
     } catch (e) {

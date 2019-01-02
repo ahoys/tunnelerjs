@@ -10,7 +10,8 @@
   },
   "scripts": {
     "test": "nodeunit tests.js",
-    "start": "npm test && node tunneler"
+    "start": "npm test && node tunneler",
+    "offline": "node tunneler OFFLINE"
   },
   "dependencies": {
     "discord.js": "^11.4.2",

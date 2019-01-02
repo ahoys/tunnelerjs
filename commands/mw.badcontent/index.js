@@ -25,7 +25,6 @@ module.exports = (Settings, Strings, name) => {
    * Punish the Message author.
    */
   doPunishBadContent = (Message, punishment = 'role', punishmentRole = '', silent = true) => {
-    console.log('active');
     const {member, author, channel, guild} = Message;
     try {
       switch(punishment) {

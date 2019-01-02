@@ -65,7 +65,6 @@ module.exports = (Settings, Strings, name) => {
           }
           break;
         case 'warn':
-          console.log(Strings);
           Message.reply(Strings['badcontent_warn']);
           break;
       }

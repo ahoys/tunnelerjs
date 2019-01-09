@@ -3,7 +3,7 @@ const {print, log} = require('../../util/module.inc.debug')();
 module.exports = (Settings, Strings, name) => {
   const module = {};
   const failedAttempts = {};
-  const silentModeSetting = true;
+  let silentModeSetting = true;
 
   /**
    * Verifies how many times the author has failed.

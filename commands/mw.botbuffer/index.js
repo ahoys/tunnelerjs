@@ -19,6 +19,7 @@ module.exports = (Settings, Strings, name) => {
         removeMessage(Message, silentMode);
         if (failedAttempts[id] >= maxAttempts - 1) {
           member.kick('Sent too many messages after just joining the server. A bot perhaps?');
+          log(`Kicked ${author.username} (${author.id}).`, name);
         }
       } else if (failedAttempt) {
         // This is the first failed message for the author.

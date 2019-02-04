@@ -13,9 +13,9 @@ like to download a working copy.
 3) Registered [Discord application](https://discordapp.com/developers/applications/me/). Must be registered as a client.
 
 ## Installation
-1) [Download](https://github.com/ahoys/tunnelerjs/archive/v.0.9.5.zip) source files to your local computer (v.0.9.5.).
+1) See releases and download the newest version. Extract the package.
 
-2) Create `auth.json` file into `/config` dir. On windows, make sure your file extensions are not hidden (default), otherwise you'll end up having e.g. `auth.json.txt` instead of `auth.json`.
+2) Create `auth.json` file into `<extracted package>/config` dir. On windows, make sure your file extensions are not hidden (default), otherwise you'll end up having e.g. `auth.json.txt` instead of `auth.json`.
 
 3) Input your [application](https://discordapp.com/developers/applications/me/) credentials into the `auth.json` file. See the syntax below.
 

@@ -4,18 +4,18 @@
     "antispam": {
       "enabled": true,
       "settings": {
-        "warnings": true,
-        "punishment": "ban",
+        "punishments": ["warn", "warn", "ban"],
         "punishmentRole": "",
+        "cyclePunishments": true,
         "silentMode": false
       }
     }
   },
   "commands": {
-    "ping": {
+    "about": {
       "enabled": true,
       "access": [
-        "owner"
+        "all"
       ]
     },
     "exit": {
@@ -24,7 +24,19 @@
         "owner"
       ]
     },
-    "taunt": {
+    "ping": {
+      "enabled": true,
+      "access": [
+        "owner"
+      ]
+    },
+    "reboot": {
+      "enabled": true,
+      "access": [
+        "owner"
+      ]
+    },
+    "uptime": {
       "enabled": true,
       "access": [
         "owner"

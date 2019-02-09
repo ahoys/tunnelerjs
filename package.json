@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "discord.js": "^11.4.2",
-    "node-irc": "^0.0.4",
     "string-analysis-js": "^0.2.0"
   },
   "devDependencies": {

@@ -1,0 +1,17 @@
+{
+  "globalSettings": {},
+  "strings": {
+    "default": {
+      "badcontent_warn": "that kind of content is not allowed here.",
+      "badcontent_ban": "was banned because of not allowed content.",
+      "badcontent_kick": "was kicked because of not allowed content.",
+      "badcontent_role": "got a new role because of not allowed content."
+    },
+    "fi": {
+      "badcontent_warn": "tuollainen sisältö ei ole sallittua täällä.",
+      "badcontent_ban": "bännättiin ei sallitun sisällön takia.",
+      "badcontent_kick": "potkittiin ei sallitun sisällön takia.",
+      "badcontent_role": "sai uuden roolin ei sallitun sisällön takia."
+    }
+  }
+}

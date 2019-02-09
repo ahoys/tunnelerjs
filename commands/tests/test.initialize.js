@@ -14,7 +14,7 @@ exports.readCmdSetup = (test) => {
     result.cmdMap.ping,
     cmdTemplate, result);
   test.done();
-}
+};
 
 exports.readMwSetup = (test) => {
   Commands = require('../index')();
@@ -23,4 +23,4 @@ exports.readMwSetup = (test) => {
     result.mwMap.antispam,
     mwTemplate, result);
   test.done();
-}
+};

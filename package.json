@@ -10,15 +10,16 @@
   },
   "scripts": {
     "test": "nodeunit tests.js",
-    "start": "npm test && node tunneler"
+    "start": "npm test && node tunneler",
+    "offline": "node tunneler OFFLINE"
   },
   "dependencies": {
-    "discord.js": "^11.2.1",
+    "discord.js": "^11.4.2",
     "node-irc": "^0.0.4",
     "string-analysis-js": "^0.2.0"
   },
   "devDependencies": {
-    "eslint": "^4.9.0",
+    "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1"
   }
 }

@@ -72,7 +72,7 @@ module.exports = (Settings, Strings, name) => {
         }
         break;
       case 'role':
-        const roleObj = guild.roles.find('id', role);
+        const roleObj = guild.roles.get(role);
         if (roleObj) {
           member.addRole(roleObj, 'Automatic spam detection')
             .then(() => {

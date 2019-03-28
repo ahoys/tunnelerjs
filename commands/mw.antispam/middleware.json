@@ -3,7 +3,8 @@
     "splitter": " ",
     "shortWordLength": 2,
     "longWordLength": 24,
-    "repetitiousChars": 3
+    "repetitiousChars": 3,
+    "lowDurationBetweenMessages": 1000
   },
   "strings": {
     "default": {

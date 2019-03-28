@@ -7,13 +7,13 @@ module.exports = () => {
   /**
    * Processes a singular message.
    */
-  module.getMessageAnalysis = (message) => {
+  module.getMessageAnalysis = (message, Settings) => {
     try {
       return {
-        repetitiveStructure: sajs.getPercentageOfRepetitiveStructure(message),
-        shortStrings: sajs.getPercentageOfShortStrings(message, ' ', 3),
-        longStrings: sajs.getPercentageOfLongStrings(message),
-        repetitiveChars: sajs.getPercentageOfRepetitiveChars(message),
+        repetitiveStructure: sajs.getPercentageOfRepetitiveStructure(message, Settings.splitter),
+        shortStrings: sajs.getPercentageOfShortStrings(message, Settings.splitter, Settings.shortWordLength),
+        longStrings: sajs.getPercentageOfLongStrings(message, Settings.splitter, Settings.longWordLength),
+        repetitiveChars: sajs.getPercentageOfRepetitiveChars(message, Settings.repetitiousChars),
         upperCaseChars: sajs.getPercentageOfUpperCaseChars(message),
       }
     } catch (e) {
@@ -25,7 +25,7 @@ module.exports = () => {
   /**
    * Returns true if a new violation.
    */
-  module.hasViolation = (messages = []) => {
+  module.hasViolation = (messages = [], Settings) => {
     try {
       if (!messages.length) return false;
       const c = messages.length;
@@ -46,7 +46,8 @@ module.exports = () => {
       if (
         c >= 4 &&
         messages.map(x => d - x.createdTimestamp)
-        .reduce((sum, value) => sum + value) / c < 6000
+        .reduce((sum, value) => sum + value) / c <
+        Settings.lowDurationBetweenMessages || 1000
       ) {
         return true;
       }

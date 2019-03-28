@@ -106,10 +106,10 @@ module.exports = (Settings, Strings, name) => {
         createdTimestamp: Message.createdTimestamp,
         editedTimestamp: undefined,
         everyone: Message.mentions.everyone,
-        analysis: analyse.getMessageAnalysis(Message.content),
+        analysis: analyse.getMessageAnalysis(Message.content, Settings),
       };
       author.messages.index += 1;
-      if (analyse.hasViolation(author.messages.list)) {
+      if (analyse.hasViolation(author.messages.list, Settings)) {
         // Spam detected.
         // Read the guild punishments.
         const punishment = guildSettings.punishments;

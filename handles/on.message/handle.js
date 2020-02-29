@@ -97,7 +97,7 @@ module.exports = (Client, GuildsMap, ownerId) => {
         action.key = contents[1];
         action.module = GuildModule.middlewares[contents[1]];
         action.isMiddleware = true;
-        action.params = contents.splice(2, 32);
+        action.params = contents.splice(2, 512);
         action.guildSettings = GuildModule.guildSettings;
       } else if (
         GuildModule.commands[contents[1]] &&
@@ -107,7 +107,7 @@ module.exports = (Client, GuildsMap, ownerId) => {
         // Command found.
         action.key = contents[1];
         action.module = GuildModule.commands[contents[1]];
-        action.params = contents.splice(2, 32);
+        action.params = contents.splice(2, 512);
         action.guildSettings = GuildModule.guildSettings;
       }
     }

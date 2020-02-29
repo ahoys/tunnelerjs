@@ -1,0 +1,22 @@
+{
+  "globalSettings": {},
+  "strings": {
+    "default": {
+      "keywords": [
+        "delete",
+        "remove"
+      ],
+      "fail_0": "Invalid parameters. The first parameter is a number of previous messages to be searched. The second one is a string that is used to identify the message(s).",
+      "fail_1": "Reading messages failed. I wonder, are my privileges set correctly?",
+      "fail_max100": "Maximum lines is 100."
+    },
+    "fi": {
+      "keywords": [
+        "poista viestejä"
+      ],
+      "fail_0": "Väärät parametrit. Ensin tulee luku joka ilmaisee montako viimeisintä viestiä tutkitaan. Seuraavana tulee etsittävä tunnistesana tai lause.",
+      "fail_1": "Viestien lukeminen epäonnistui. Onkohan minulla riittävät oikeudet?",
+      "fail_max100": "Maksimimäärä viestejä on 100."
+    }
+  }
+}

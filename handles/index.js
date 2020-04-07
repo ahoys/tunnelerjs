@@ -81,7 +81,7 @@ module.exports = (AuthMap, GuildsMap) => {
   /**
    * Client reconnecting.
    */
-  const onReconnecting = require('./on.Reconnecting/handle.js')();
+  const onReconnecting = require('./on.reconnecting/handle.js')();
   Client.on('reconnecting', () => {
     try {
       onReconnecting.handle();

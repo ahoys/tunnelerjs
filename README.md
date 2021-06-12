@@ -105,11 +105,17 @@ Tip: see the flags interface (IFlags) to learn about utility variables that are 
 
 Enabling features is simple in Tunneler. Just add `<cmd/mw>.<name>=true` into your .env-file. For example: `cmd.ping=true`
 
+## Time to build
+
+Run `npm run dist` to build production ready code. The development build can be started with a `npm start`
+
 ## Other tips
 
+- Create a `dev.env` file to specify development environment specific variables.
 - Tunneler won't trigger your command if the command name wasn't mentioned. No need to double-check it in your function.
 - Using the given flags is a really handy way to make sure not everyone can execute mission critical commands.
 - Tunneler doesn't react to its own messages.
+- Use VS Code with ESLint and Prettier extensions.
 
 # Migrating from Tunneler 0.x to 1.x
 

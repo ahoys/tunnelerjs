@@ -134,9 +134,11 @@ client.on("message", (message) => {
 loadCommands()
   .then((cmds) => {
     commands = [...cmds];
+    p("Enabled commands:", commands.map((c) => c.name).join(", "));
     loadMiddlewares()
       .then((mws) => {
         middlewares = [...mws];
+        p("Enabled middlewares:", middlewares.map((c) => c.name).join(", "));
         login();
       })
       .catch(() => {

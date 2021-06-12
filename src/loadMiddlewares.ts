@@ -35,7 +35,7 @@ export const loadMiddlewares = async (): Promise<TMw[]> =>
       Promise.all(folders).then((mws) => {
         const onMessages: TMw[] = [];
         mws.forEach((mw) => {
-          if (mw) {
+          if (mw && process.env[`DISABLE_mw.${mw.name}`] !== "true") {
             onMessages.push(mw);
           }
         });

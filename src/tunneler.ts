@@ -2,6 +2,7 @@ import { Client, Message } from "discord.js";
 import { config } from "dotenv";
 import { p } from "logscribe";
 import { loadCommands } from "./loadCommands";
+import { loadMiddlewares } from "./loadMiddlewares";
 
 config({ path: __dirname + "/.env" });
 const {
@@ -26,8 +27,6 @@ if (
 }
 
 export interface IFlags {
-  command: string;
-  isMentioned: boolean;
   isDirectMessage: boolean;
   isWhitelisted: boolean;
   isAdmin: boolean;
@@ -35,7 +34,12 @@ export interface IFlags {
 }
 
 export type TCmd = (client: Client, message: Message, flags?: IFlags) => void;
-let onMessages: TCmd[] = [];
+export type TMw = (client: Client, message: Message, flags?: IFlags) => void;
+
+let commands: { name: string; command: TCmd }[] = [];
+let middlewares: TMw[] = [];
+
+// This is the main Discord-client.
 const client: Client = new Client();
 
 /**
@@ -91,22 +95,35 @@ client.on("message", (message) => {
   try {
     if (client && client.user && message.author.id !== APPLICATION_ID) {
       const isMentioned = message.mentions.has(client?.user?.id);
-      const isWhitelisted =
-        whitelistedRoleId !== "" &&
-        !!message.member?.roles?.cache.some((r) => r.id === whitelistedRoleId);
       const isDirectMessage = !message.guild;
       const command = message.content.split(" ")[isDirectMessage ? 0 : 1] ?? "";
       const isAdmin = message.member?.hasPermission("ADMINISTRATOR") ?? false;
-      onMessages.forEach((cmd) => {
-        cmd(client, message, {
-          command,
-          isMentioned,
-          isDirectMessage,
-          isWhitelisted,
-          isAdmin,
-          isDevelopment,
+      const isWhitelisted =
+        whitelistedRoleId !== "" &&
+        !!message.member?.roles?.cache.some((r) => r.id === whitelistedRoleId);
+      if (isMentioned && command) {
+        // The user seems to be asking for a command.
+        // Look for the given command. If found, execute.
+        const foundCmd = commands.find((cmd) => cmd.name === command);
+        if (foundCmd) {
+          foundCmd.command(client, message, {
+            isDirectMessage,
+            isWhitelisted,
+            isAdmin,
+            isDevelopment,
+          });
+        }
+      }
+      if (!isDirectMessage) {
+        middlewares.forEach((cmd) => {
+          cmd(client, message, {
+            isDirectMessage,
+            isWhitelisted,
+            isAdmin,
+            isDevelopment,
+          });
         });
-      });
+      }
     }
   } catch (err) {
     p(err);
@@ -116,8 +133,15 @@ client.on("message", (message) => {
 // Load commands and then login to Discord.
 loadCommands()
   .then((cmds) => {
-    onMessages = [...cmds];
-    login();
+    commands = [...cmds];
+    loadMiddlewares()
+      .then((mws) => {
+        middlewares = [...mws];
+        login();
+      })
+      .catch(() => {
+        p("Failed to load middlewares.");
+      });
   })
   .catch(() => {
     p("Failed to load commands.");

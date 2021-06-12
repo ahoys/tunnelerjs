@@ -3,13 +3,13 @@ import { p } from "logscribe";
 import { IFlags } from "../../tunneler";
 
 const roles: string[] =
-  typeof process.env.CMD_ROLE_IDS === "string"
-    ? process.env.CMD_ROLE_IDS.split(",")
+  typeof process.env["cmd.role.allowed_role_ids"] === "string"
+    ? process.env["cmd.role.allowed_role_ids"].split(",")
     : [];
 
 const allowMultiple: boolean =
-  typeof process.env.CMD_ROLE_ALLOW_MULTIPLE === "string"
-    ? process.env.CMD_ROLE_ALLOW_MULTIPLE === "true"
+  typeof process.env["cmd.role.allow_multiple_roles"] === "string"
+    ? process.env["cmd.role.allow_multiple_roles"] === "true"
     : false;
 /**
  * Gives the requested role for the requester, if allowed.

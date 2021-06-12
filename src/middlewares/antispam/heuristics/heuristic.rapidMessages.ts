@@ -2,8 +2,8 @@ import { p } from "logscribe";
 import { IDbUser } from "../mw.antispam";
 
 const limit: number =
-  typeof process.env.MW_ANTISPAM_RAPID_MESSAGES === "string"
-    ? Number(process.env.MW_ANTISPAM_RAPID_MESSAGES)
+  typeof process.env["mw.antispam.rapid_messaging_avg"] === "string"
+    ? Number(process.env["mw.antispam.rapid_messaging_avg"])
     : 1024;
 
 /**

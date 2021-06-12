@@ -4,13 +4,13 @@ import { IFlags } from "../../tunneler";
 import { rapidMessages } from "./heuristics/heuristic.rapidMessages";
 
 const maxWarnings: number =
-  typeof process.env.MW_ANTISPAM_MAX_WARNINGS === "string"
-    ? Number(process.env.MW_ANTISPAM_MAX_WARNINGS)
+  typeof process.env["mw.antispam.warnings"] === "string"
+    ? Number(process.env["mw.antispam.warnings"])
     : 2;
 
 const banDays: number =
-  typeof process.env.MW_ANTISPAM_BAN_DAYS === "string"
-    ? Number(process.env.MW_ANTISPAM_BAN_DAYS)
+  typeof process.env["mw.antispam.ban_days"] === "string"
+    ? Number(process.env["mw.antispam.ban_days"])
     : 1;
 
 export interface IDbUser {

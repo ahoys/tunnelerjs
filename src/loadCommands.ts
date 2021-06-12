@@ -44,7 +44,7 @@ export const loadCommands = async (): Promise<
       Promise.all(folders).then((cmds) => {
         const commands: { name: string; command: TCmd }[] = [];
         cmds.forEach((cmd) => {
-          if (cmd && process.env[`DISABLE_cmd.${cmd.name}`] !== "true") {
+          if (cmd && process.env[`cmd.${cmd.name}`] === "true") {
             commands.push({
               name: cmd.name,
               command: cmd.command,

@@ -22,15 +22,12 @@ Comes with several ready-to-use commands and middlewares. Like a role assigner a
 1. [Register a new application for the bot](https://discord.com/developers/applications)
 2. Download the most recent release from [releases](https://github.com/ahoys/discaptcha/releases).
 3. Extract the package and run `npm install` in the extraction folder.
-4. Open .env in a text editor and configure the bot (the first 3 keys are mandatory):
+4. Open .env in a text editor and configure the bot (the following are mandatory):
 
 ```
-BOT_TOKEN=<Token of the application>
-APPLICATION_ID=<Id of the application>
-OWNER_ID=<Your Discord user id>
-WHITELISTED_ROLE_ID=<Optional role id>
-cmd.ping=<true/false>
-mw.antispam=<true/false>
+discord.token=Your bot's application token.
+discord.application_id=Your bot's application id.
+discord.owner_id=Your own Discord client id.
 ```
 
 You are all set. You can run the bot now with a `node tunneler` command. Make sure you give the bot suitable permissions to execute its tasks.

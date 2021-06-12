@@ -5,27 +5,19 @@ import { loadCommands } from "./loadCommands";
 import { loadMiddlewares } from "./loadMiddlewares";
 
 config({ path: __dirname + "/.env" });
-const { BOT_TOKEN, APPLICATION_ID, OWNER_ID, WHITELISTED_ROLES, DEVELOPMENT } =
-  process.env;
 
-if (
-  typeof BOT_TOKEN !== "string" ||
-  typeof APPLICATION_ID !== "string" ||
-  typeof OWNER_ID !== "string"
-) {
-  throw new Error("Missing the .env file that configures the bot.");
-}
-
-const whitelistedRoles: string[] =
-  typeof WHITELISTED_ROLES === "string" && WHITELISTED_ROLES !== ""
-    ? WHITELISTED_ROLES.split(",")
-    : [];
-const isDevelopment = DEVELOPMENT === "true";
+const token: string = process.env["discord.token"] ?? "";
+const applicationId: string = process.env["discord.application_id"] ?? "";
+const ownerId: string = process.env["discord.owner_id"] ?? "";
+const whitelisted: string[] =
+  process.env["bot.whitelisted_roles"]?.split(",") ?? [];
+const isDevelopment: boolean = process.env["bot.development"] === "true";
 
 export interface IFlags {
   isDirectMessage: boolean;
   isWhitelisted: boolean;
   isAdmin: boolean;
+  isOwner: boolean;
   isDevelopment: boolean;
 }
 
@@ -43,7 +35,7 @@ const client: Client = new Client();
  */
 let reconnect: ReturnType<typeof setTimeout> | null = null;
 const login = () => {
-  client.login(BOT_TOKEN).catch((err) => {
+  client.login(token).catch((err) => {
     p(err);
     console.error("Failed to login.");
     if (reconnect) {
@@ -89,13 +81,14 @@ client.on("ready", () => {
  */
 client.on("message", (message) => {
   try {
-    if (client && client.user && message.author.id !== APPLICATION_ID) {
+    if (client && client.user && message.author.id !== applicationId) {
       const isMentioned = message.mentions.has(client?.user?.id);
       const isDirectMessage = !message.guild;
       const command = message.content.split(" ")[isDirectMessage ? 0 : 1] ?? "";
       const isAdmin = message.member?.hasPermission("ADMINISTRATOR") ?? false;
+      const isOwner = message.author.id === ownerId;
       const isWhitelisted = !!message.member?.roles.cache.find((r) =>
-        whitelistedRoles.includes(r.id)
+        whitelisted.includes(r.id)
       );
       if (isMentioned && command) {
         // The user seems to be asking for a command.
@@ -106,6 +99,7 @@ client.on("message", (message) => {
             isDirectMessage,
             isWhitelisted,
             isAdmin,
+            isOwner,
             isDevelopment,
           });
         }
@@ -116,6 +110,7 @@ client.on("message", (message) => {
             isDirectMessage,
             isWhitelisted,
             isAdmin,
+            isOwner,
             isDevelopment,
           });
         });

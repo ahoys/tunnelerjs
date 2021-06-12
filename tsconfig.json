@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "es6",
+      "dom",
+      "es2017"
+    ],
+    "module": "commonjs",
+    "declaration": false,
+    "sourceMap": false,
+    "outDir": "dist",
+    "removeComments": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "types": [
+      "node"
+    ],
+  },
+  "include": [
+    "./src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/__tests__/*",
+  ]
+}

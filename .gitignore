@@ -1,10 +1,4 @@
-auth/auth.json
-node_modules/*
-.idea/*
-dist/*
-console.log
-guilds/*
-!guilds/*.js
-!guilds/*.json
-!guilds/tests
-npm*
+node_modules
+dist
+dev.env
+*.log

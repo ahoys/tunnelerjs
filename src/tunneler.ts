@@ -5,18 +5,8 @@ import { loadCommands } from "./loadCommands";
 import { loadMiddlewares } from "./loadMiddlewares";
 
 config({ path: __dirname + "/.env" });
-const {
-  BOT_TOKEN,
-  APPLICATION_ID,
-  OWNER_ID,
-  WHITELISTED_ROLE_ID,
-  DEVELOPMENT,
-} = process.env;
-const isDevelopment = DEVELOPMENT === "true";
-const whitelistedRoleId =
-  typeof WHITELISTED_ROLE_ID === "string" && WHITELISTED_ROLE_ID !== ""
-    ? WHITELISTED_ROLE_ID
-    : "";
+const { BOT_TOKEN, APPLICATION_ID, OWNER_ID, WHITELISTED_ROLES, DEVELOPMENT } =
+  process.env;
 
 if (
   typeof BOT_TOKEN !== "string" ||
@@ -25,6 +15,12 @@ if (
 ) {
   throw new Error("Missing the .env file that configures the bot.");
 }
+
+const whitelistedRoles: string[] =
+  typeof WHITELISTED_ROLES === "string" && WHITELISTED_ROLES !== ""
+    ? WHITELISTED_ROLES.split(",")
+    : [];
+const isDevelopment = DEVELOPMENT === "true";
 
 export interface IFlags {
   isDirectMessage: boolean;
@@ -98,9 +94,9 @@ client.on("message", (message) => {
       const isDirectMessage = !message.guild;
       const command = message.content.split(" ")[isDirectMessage ? 0 : 1] ?? "";
       const isAdmin = message.member?.hasPermission("ADMINISTRATOR") ?? false;
-      const isWhitelisted =
-        whitelistedRoleId !== "" &&
-        !!message.member?.roles?.cache.some((r) => r.id === whitelistedRoleId);
+      const isWhitelisted = !!message.member?.roles.cache.find((r) =>
+        whitelistedRoles.includes(r.id)
+      );
       if (isMentioned && command) {
         // The user seems to be asking for a command.
         // Look for the given command. If found, execute.

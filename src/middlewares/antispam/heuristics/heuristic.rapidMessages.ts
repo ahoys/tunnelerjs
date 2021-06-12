@@ -1,14 +1,9 @@
 import { p } from "logscribe";
-
-interface IDbUser {
-  index: number;
-  timestamps: number[];
-  contentLengths: number[];
-}
+import { IDbUser } from "../mw.antispam";
 
 const limit: number =
-  typeof process.env.RAPID_MESSAGES === "string"
-    ? Number(process.env.RAPID_MESSAGES)
+  typeof process.env.ANTISPAM_RAPID_MESSAGES === "string"
+    ? Number(process.env.ANTISPAM_RAPID_MESSAGES)
     : 1024;
 
 /**

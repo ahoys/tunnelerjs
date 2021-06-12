@@ -4,9 +4,6 @@ import { IFlags } from "../../tunneler";
 
 /**
  * Returns the current latencies as a reply.
- * @param client
- * @param message
- * @param flags
  */
 const ping = (client: Client, message: Message, flags: IFlags): void => {
   try {

@@ -25,5 +25,8 @@
     "dotenv": "^10.0.0",
     "logscribe": "^2.0.2",
     "typescript": "^4.3.2"
+  },
+  "eslintConfig": {
+    "@typescript-eslint/no-var-requires": false
   }
 }

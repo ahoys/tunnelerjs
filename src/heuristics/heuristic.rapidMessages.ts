@@ -1,5 +1,10 @@
 import { p } from "logscribe";
-import { IDbUser } from "../tunneler";
+
+interface IDbUser {
+  index: number;
+  timestamps: number[];
+  contentLengths: number[];
+}
 
 const limit: number =
   typeof process.env.RAPID_MESSAGES === "string"

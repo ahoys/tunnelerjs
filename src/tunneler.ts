@@ -1,7 +1,7 @@
-import { Client } from "discord.js";
+import { Client, Message } from "discord.js";
 import { config } from "dotenv";
 import { p } from "logscribe";
-import { rapidMessages } from "./heuristics/heuristic.rapidMessages";
+import { loadCommands } from "./loadCommands";
 
 config({ path: __dirname + "/.env" });
 const {
@@ -25,17 +25,18 @@ if (
   throw new Error("Missing the .env file that configures the bot.");
 }
 
-export interface IDbUser {
-  index: number;
-  timestamps: number[];
-  contentLengths: number[];
-}
-interface IDb {
-  [key: string]: IDbUser;
+export interface IFlags {
+  command: string;
+  isMentioned: boolean;
+  isDirectMessage: boolean;
+  isWhitelisted: boolean;
+  isAdmin: boolean;
+  isDevelopment: boolean;
 }
 
-const client = new Client();
-const db: IDb = {};
+export type TCmd = (client: Client, message: Message, flags?: IFlags) => void;
+let onMessages: TCmd[] = [];
+const client: Client = new Client();
 
 /**
  * Logs into Discord.
@@ -88,78 +89,36 @@ client.on("ready", () => {
  */
 client.on("message", (message) => {
   try {
-    const { member, author } = message;
-    const isWhitelisted =
-      whitelistedRoleId !== "" &&
-      member?.roles?.cache.some((r) => r.id === whitelistedRoleId);
-    // We won't analyze everyone.
-    // If the member is whitelisted or the owner, we'll skip the message.
-    if (
-      (!isWhitelisted &&
-        member &&
-        member.bannable &&
-        member.kickable &&
-        author.id !== OWNER_ID) ||
-      isDevelopment
-    ) {
-      // Update the database.
-      const { createdTimestamp, content } = message;
-      const dbUser: IDbUser = db[author.id]
-        ? { ...db[author.id] }
-        : {
-            index: 0,
-            timestamps: [],
-            contentLengths: [],
-          };
-      const { index } = dbUser;
-      dbUser.index = index >= 8 ? 0 : index + 1;
-      dbUser.timestamps[index] = createdTimestamp;
-      dbUser.contentLengths[index] = content.length;
-      // Save the changes.
-      db[author.id] = dbUser;
-      // Run heuristics.
-      let failed = false;
-      let reason = "";
-      if (rapidMessages(dbUser)) {
-        failed = true;
-        reason = "Too rapid messaging.";
-      }
-      // Condemn the user.
-      if (failed && member && message.guild) {
-        if (message.guild) {
-          p(
-            "Banning " +
-              author.username +
-              " " +
-              member.id +
-              " from " +
-              message.guild.name +
-              " for " +
-              reason.toLowerCase()
-          );
-        } else {
-          p(
-            "Banning " +
-              author.username +
-              " " +
-              member.id +
-              " for " +
-              reason.toLowerCase()
-          );
-        }
-        member
-          .ban({
-            days: 7,
-            reason,
-          })
-          .then(() => {
-            delete db[author.id];
-          });
-      }
+    if (client && client.user && message.author.id !== APPLICATION_ID) {
+      const isMentioned = message.mentions.has(client?.user?.id);
+      const isWhitelisted =
+        whitelistedRoleId !== "" &&
+        !!message.member?.roles?.cache.some((r) => r.id === whitelistedRoleId);
+      const isDirectMessage = !message.guild;
+      const command = message.content.split(" ")[isDirectMessage ? 0 : 1] ?? "";
+      const isAdmin = message.member?.hasPermission("ADMINISTRATOR") ?? false;
+      onMessages.forEach((cmd) => {
+        cmd(client, message, {
+          command,
+          isMentioned,
+          isDirectMessage,
+          isWhitelisted,
+          isAdmin,
+          isDevelopment,
+        });
+      });
     }
   } catch (err) {
     p(err);
   }
 });
 
-login();
+// Load commands and then login to Discord.
+loadCommands()
+  .then((cmds) => {
+    onMessages = [...cmds];
+    login();
+  })
+  .catch(() => {
+    p("Failed to load commands.");
+  });

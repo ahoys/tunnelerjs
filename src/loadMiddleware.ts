@@ -16,18 +16,18 @@ const loadMw = async (path: string): Promise<TMw | undefined> => {
 };
 
 /**
- * Returns all available middleware-functions inside the middlewares folder.
- * All middlewares need to follow a certain naming syntax (mw.example.ts)
+ * Returns all available middleware-functions inside the middleware folder.
+ * All middleware need to follow a certain naming syntax (mw.example.ts)
  * and need to be inside a folder that corresponds the name (example).
  *
- * So, for example: middlewares/example/mw.example.ts
+ * So, for example: middleware/example/mw.example.ts
  */
-export const loadMiddlewares = async (): Promise<TMw[]> =>
+export const loadMiddleware = async (): Promise<TMw[]> =>
   new Promise((resolve, reject) => {
     try {
       const folders: Promise<TMw | undefined>[] = [];
-      fs.readdirSync(__dirname + "/middlewares").forEach((folder) => {
-        const fPath = __dirname + "/middlewares/" + folder;
+      fs.readdirSync(__dirname + "/middleware").forEach((folder) => {
+        const fPath = __dirname + "/middleware/" + folder;
         if (fs.lstatSync(fPath).isDirectory()) {
           folders.push(loadMw(fPath + "/mw." + folder + ".js"));
         }

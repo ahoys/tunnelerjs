@@ -6,7 +6,7 @@ A super lightweight and robust Discord bot platform for your various Discord-nee
 
 Forget session handling, message handling, permissions and such. _Focus on your core feature needs._
 
-Comes with several ready-to-use commands and middlewares. Like a role assigner and an antispam guard. Use as-is or build _your_ dream bot.
+Comes with several ready-to-use commands and middleware. Like a role assigner and an antispam guard. Use as-is or build _your_ dream bot.
 
 # How to install
 
@@ -32,11 +32,11 @@ discord.owner_id=Your own Discord client id.
 
 You are all set. You can run the bot now with a `node tunneler` command. Make sure you give the bot suitable permissions to execute its tasks.
 
-# Commands and middlewares
+# Commands and middleware
 
 ## What are they?
 
-All the functionality the bot has is based on commands and middlewares. **A command** is something that is given as a command to the bot. **A middleware** is applied to all messages.
+All the functionality the bot has is based on commands and middleware. **A command** is something that is given as a command to the bot. **A middleware** is applied to all messages.
 
 You can enable or disable these functionalities in your .env-file:
 
@@ -56,13 +56,13 @@ Usage: `@Tunneler ping`
 
 Detects and bans spammers. Makes moderator's day a lot nicer.
 
-[Read more.](https://github.com/ahoys/tunnelerjs/blob/ts-build/src/middlewares/antispam/README.md)
+[Read more.](https://github.com/ahoys/tunnelerjs/blob/ts-build/src/middleware/antispam/README.md)
 
-## How to configure commands or middlewares?
+## How to configure commands or middleware?
 
-Some commands and middlewares do allow special configuration. See their corresponding folder for a README file to learn more.
+Some commands and middleware do allow special configuration. See their corresponding folder for a README file to learn more.
 
-For example `src/middlewares/antispam/README.md`
+For example `src/middleware/antispam/README.md`
 
 # Making custom commands and middleware for the bot
 
@@ -70,7 +70,7 @@ For example `src/middlewares/antispam/README.md`
 
 ## Technical background
 
-Tunneler will give you a fast access to developing your own commands and middlewares by allowing you to skip all the "how to connect Discord, handle messages, etc." hurdles.
+Tunneler will give you a fast access to developing your own commands and middleware by allowing you to skip all the "how to connect Discord, handle messages, etc." hurdles.
 
 Commands are something that always require two things:
 
@@ -78,15 +78,15 @@ Commands are something that always require two things:
 - The command is called by its name.
   - For example: `@tunneler ping` where ping is the name of the command.
 
-Middlewares apply to all messages with a one deliberate restriction:
+Middleware apply to all messages with a one deliberate restriction:
 
 - Direct messages are not monitored.
 
-All commands and middlewares are under a specific folder structure. Commands are in `src/commands` and middleware in `src/middlewares`.
+All commands and middleware are under a specific folder structure. Commands are in `src/commands` and middleware in `src/middleware`.
 
 ## Creating files
 
-All of the following instructions apply to middlewares as well. Just replace "command" with "middleware".
+All of the following instructions apply to middleware as well. Just replace "command" with "middleware".
 
 1. Create your command folder under `src/commands`
 2. Name your index file with a following syntax: `<cmd/mw>.<name>.ts`, for example `cmd.ping.ts`. Js-files may also be supported, not tested and using ts is recommended.
@@ -123,7 +123,7 @@ Run `npm run dist` to build production ready code. The development build can be 
 
 ### How to proceed?
 
-Tunneler has been 100% rewritten for this new release. This means that the backwards compatibility is broken. If you have your own custom commands made, see the chapter above about making your own commands to migrate your custom commands and middlewares to 1.x and above.
+Tunneler has been 100% rewritten for this new release. This means that the backwards compatibility is broken. If you have your own custom commands made, see the chapter above about making your own commands to migrate your custom commands and middleware to 1.x and above.
 
 It is highly recommended to remove the old Tunneler and everything related before using the new one.
 

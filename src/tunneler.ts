@@ -2,7 +2,7 @@ import { Client, Message } from "discord.js";
 import { config } from "dotenv";
 import { p } from "logscribe";
 import { loadCommands } from "./loadCommands";
-import { loadMiddlewares } from "./loadMiddlewares";
+import { loadMiddleware } from "./loadMiddleware";
 
 config({ path: __dirname + "/.env" });
 
@@ -25,7 +25,7 @@ export type TCmd = (client: Client, message: Message, flags?: IFlags) => void;
 export type TMw = (client: Client, message: Message, flags?: IFlags) => void;
 
 let commands: { name: string; command: TCmd }[] = [];
-let middlewares: TMw[] = [];
+let middleware: TMw[] = [];
 
 // This is the main Discord-client.
 const client: Client = new Client();
@@ -105,7 +105,7 @@ client.on("message", (message) => {
         }
       }
       if (!isDirectMessage) {
-        middlewares.forEach((cmd) => {
+        middleware.forEach((cmd) => {
           cmd(client, message, {
             isDirectMessage,
             isWhitelisted,
@@ -126,14 +126,14 @@ loadCommands()
   .then((cmds) => {
     commands = [...cmds];
     p("Enabled commands:", commands.map((c) => c.name).join(", "));
-    loadMiddlewares()
+    loadMiddleware()
       .then((mws) => {
-        middlewares = [...mws];
-        p("Enabled middlewares:", middlewares.map((c) => c.name).join(", "));
+        middleware = [...mws];
+        p("Enabled middleware:", middleware.map((c) => c.name).join(", "));
         login();
       })
       .catch(() => {
-        p("Failed to load middlewares.");
+        p("Failed to load middleware.");
       });
   })
   .catch(() => {

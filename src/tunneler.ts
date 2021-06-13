@@ -14,11 +14,11 @@ const whitelisted: string[] =
 const isDevelopment: boolean = process.env["bot.development"] === "true";
 
 export interface IFlags {
-  isDirectMessage: boolean;
-  isWhitelisted: boolean;
-  isAdmin: boolean;
-  isOwner: boolean;
-  isDevelopment: boolean;
+  isDirectMessage: boolean; // In a direct channel, not guild.
+  isWhitelisted: boolean; // Has a whitelisted role.
+  isAdmin: boolean; // Has administrative permissions.
+  isOwner: boolean; // Owner of the bot.
+  isDevelopment: boolean; // In development mode.
 }
 
 export type TCmd = (client: Client, message: Message, flags?: IFlags) => void;

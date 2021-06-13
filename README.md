@@ -66,6 +66,8 @@ For example `src/middlewares/antispam/README.md`
 
 # Making custom commands and middleware for the bot
 
+**Important**: Do not develop with a release build. Instead clone this repository with Git and apply `npm install` to it.
+
 ## Technical background
 
 Tunneler will give you a fast access to developing your own commands and middlewares by allowing you to skip all the "how to connect Discord, handle messages, etc." hurdles.

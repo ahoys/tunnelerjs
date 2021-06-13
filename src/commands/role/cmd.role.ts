@@ -18,7 +18,11 @@ const role = (client: Client, message: Message, flags: IFlags): void => {
   try {
     const { isDirectMessage } = flags;
     if (!isDirectMessage && roles.length) {
-      const requested = message.content.split(" ")[2]?.toLowerCase();
+      // Transform @tunneler role something something -> something something.
+      const inArr = message.content.split(" ");
+      inArr.shift();
+      inArr.shift();
+      const requested = inArr.join(" ").toLowerCase();
       const theRole = message.guild?.roles.cache.find(
         (r) => r.name.toLowerCase() === requested
       );

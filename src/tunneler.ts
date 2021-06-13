@@ -82,7 +82,7 @@ client.on("ready", () => {
 client.on("message", (message) => {
   try {
     if (client && client.user && message.author.id !== applicationId) {
-      const isMentioned = message.mentions.has(client?.user?.id);
+      const isMentioned = message.mentions.has(client.user.id);
       const isDirectMessage = !message.guild;
       const command = message.content.split(" ")[isDirectMessage ? 0 : 1] ?? "";
       const isAdmin = message.member?.hasPermission("ADMINISTRATOR") ?? false;

@@ -1,8 +1,10 @@
 import { Client, Message } from "discord.js";
 import { config } from "dotenv";
 import { p } from "logscribe";
+import { loadSettings } from "./loadSettings";
 import { loadCommands } from "./loadCommands";
 import { loadMiddleware } from "./loadMiddleware";
+import { IGuildSettings } from "./loadSettings";
 
 config({ path: __dirname + "/.env" });
 
@@ -21,11 +23,22 @@ export interface IFlags {
   isDevelopment: boolean; // In development mode.
 }
 
-export type TCmd = (client: Client, message: Message, flags?: IFlags) => void;
-export type TMw = (client: Client, message: Message, flags?: IFlags) => void;
+export type TCmd = (
+  client: Client,
+  message: Message,
+  settings: IGuildSettings,
+  flags?: IFlags
+) => void;
+export type TMw = (
+  client: Client,
+  message: Message,
+  settings: IGuildSettings,
+  flags?: IFlags
+) => void;
 
-let commands: { name: string; command: TCmd }[] = [];
-let middleware: TMw[] = [];
+const appSettings = loadSettings();
+let commands: { name: string; execute: TCmd }[] = [];
+let middleware: { name: string; execute: TMw }[] = [];
 
 // This is the main Discord-client.
 const client: Client = new Client();
@@ -90,12 +103,18 @@ client.on("message", (message) => {
       const isWhitelisted = !!message.member?.roles.cache.find((r) =>
         whitelisted.includes(r.id)
       );
+      const settings =
+        !message.guild || !message.guild.id
+          ? appSettings.defaults
+          : typeof appSettings[message.guild.id] === "object"
+          ? appSettings[message.guild.id]
+          : appSettings.defaults;
       if (isMentioned && command) {
         // The user seems to be asking for a command.
         // Look for the given command. If found, execute.
         const foundCmd = commands.find((cmd) => cmd.name === command);
-        if (foundCmd) {
-          foundCmd.command(client, message, {
+        if (foundCmd && settings["cmd." + foundCmd.name] === "true") {
+          foundCmd.execute(client, message, settings, {
             isDirectMessage,
             isWhitelisted,
             isAdmin,
@@ -105,14 +124,16 @@ client.on("message", (message) => {
         }
       }
       if (!isDirectMessage) {
-        middleware.forEach((cmd) => {
-          cmd(client, message, {
-            isDirectMessage,
-            isWhitelisted,
-            isAdmin,
-            isOwner,
-            isDevelopment,
-          });
+        middleware.forEach((mw) => {
+          if (settings["mw." + mw.name] === "true") {
+            mw.execute(client, message, settings, {
+              isDirectMessage,
+              isWhitelisted,
+              isAdmin,
+              isOwner,
+              isDevelopment,
+            });
+          }
         });
       }
     }
@@ -125,11 +146,10 @@ client.on("message", (message) => {
 loadCommands()
   .then((cmds) => {
     commands = [...cmds];
-    p("Enabled commands:", commands.map((c) => c.name).join(", "));
     loadMiddleware()
       .then((mws) => {
         middleware = [...mws];
-        p("Enabled middleware:", middleware.map((c) => c.name).join(", "));
+        p(appSettings);
         login();
       })
       .catch(() => {

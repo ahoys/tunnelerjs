@@ -2,16 +2,7 @@ import { Client, Message } from "discord.js";
 import { p } from "logscribe";
 import { IFlags } from "../../tunneler";
 import { rapidMessages } from "./heuristics/heuristic.rapidMessages";
-
-const maxWarnings: number =
-  typeof process.env["mw.antispam.warnings"] === "string"
-    ? Number(process.env["mw.antispam.warnings"])
-    : 2;
-
-const banDays: number =
-  typeof process.env["mw.antispam.ban_days"] === "string"
-    ? Number(process.env["mw.antispam.ban_days"])
-    : 1;
+import { IGuildSettings } from "../../loadSettings";
 
 export interface IDbUser {
   index: number;
@@ -30,9 +21,26 @@ const db: IDb = {};
  * An antispam middleware with various heuristics against
  * various spammers.
  */
-const antispam = (client: Client, message: Message, flags: IFlags): void => {
+const antispam = (
+  client: Client,
+  message: Message,
+  settings: IGuildSettings,
+  flags: IFlags
+): void => {
   try {
     const { isWhitelisted, isAdmin, isDevelopment } = flags;
+    const maxWarnings: number =
+      typeof settings["mw.antispam.warnings"] === "string"
+        ? Number(settings["mw.antispam.warnings"])
+        : 2;
+    const banDays: number =
+      typeof settings["mw.antispam.ban_days"] === "string"
+        ? Number(settings["mw.antispam.ban_days"])
+        : 1;
+    const limit: number =
+      typeof settings["mw.antispam.rapid_messaging_avg"] === "string"
+        ? Number(settings["mw.antispam.rapid_messaging_avg"])
+        : 1024;
     if (
       (!isWhitelisted && !isAdmin && message.member?.bannable) ||
       isDevelopment
@@ -54,7 +62,7 @@ const antispam = (client: Client, message: Message, flags: IFlags): void => {
       dbUser.index = index < 7 ? index + 1 : 0;
       // Investigate if the user has violated anything based on
       // the recorded information.
-      if (rapidMessages(dbUser)) {
+      if (rapidMessages(dbUser, limit)) {
         dbUser.warnings = dbUser.warnings + 1;
       }
       if (dbUser.warnings > maxWarnings) {

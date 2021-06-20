@@ -1,22 +1,27 @@
 import { Client, Message } from "discord.js";
 import { p } from "logscribe";
 import { IFlags } from "../../tunneler";
+import { IGuildSettings } from "../../loadSettings";
 
-const roles: string[] =
-  typeof process.env["cmd.role.allowed_role_ids"] === "string"
-    ? process.env["cmd.role.allowed_role_ids"].split(",")
-    : [];
-
-const allowMultiple: boolean =
-  typeof process.env["cmd.role.allow_multiple_roles"] === "string"
-    ? process.env["cmd.role.allow_multiple_roles"] === "true"
-    : false;
 /**
  * Gives the requested role for the requester, if allowed.
  */
-const role = (client: Client, message: Message, flags: IFlags): void => {
+const role = (
+  client: Client,
+  message: Message,
+  settings: IGuildSettings,
+  flags: IFlags
+): void => {
   try {
     const { isDirectMessage } = flags;
+    const roles: string[] =
+      typeof settings["cmd.role.allowed_role_ids"] === "string"
+        ? settings["cmd.role.allowed_role_ids"].split(",")
+        : [];
+    const allowMultiple: boolean =
+      typeof settings["cmd.role.allow_multiple_roles"] === "string"
+        ? settings["cmd.role.allow_multiple_roles"] === "true"
+        : false;
     if (!isDirectMessage && roles.length) {
       // Transform @tunneler role something something -> something something.
       const inArr = message.content.split(" ");

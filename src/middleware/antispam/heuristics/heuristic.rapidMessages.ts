@@ -1,18 +1,13 @@
 import { p } from "logscribe";
 import { IDbUser } from "../mw.antispam";
 
-const limit: number =
-  typeof process.env["mw.antispam.rapid_messaging_avg"] === "string"
-    ? Number(process.env["mw.antispam.rapid_messaging_avg"])
-    : 1024;
-
 /**
  * Flags rapid messages heuristic if the user
  * has sent messages too often on average.
  * @param dbUser
  * @returns
  */
-export const rapidMessages = (dbUser: IDbUser): boolean => {
+export const rapidMessages = (dbUser: IDbUser, limit: number): boolean => {
   try {
     const timestamps = dbUser.timestamps.sort();
     if (timestamps.length > 1) {

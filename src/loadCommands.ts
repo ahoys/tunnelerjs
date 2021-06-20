@@ -29,7 +29,7 @@ const loadCmd = async (
  * So, for example: commands/example/cmd.example.ts
  */
 export const loadCommands = async (): Promise<
-  { name: string; command: TCmd }[]
+  { name: string; execute: TCmd }[]
 > =>
   new Promise((resolve, reject) => {
     try {
@@ -42,12 +42,12 @@ export const loadCommands = async (): Promise<
         }
       });
       Promise.all(folders).then((cmds) => {
-        const commands: { name: string; command: TCmd }[] = [];
+        const commands: { name: string; execute: TCmd }[] = [];
         cmds.forEach((cmd) => {
-          if (cmd && process.env[`cmd.${cmd.name}`] === "true") {
+          if (cmd) {
             commands.push({
               name: cmd.name,
-              command: cmd.command,
+              execute: cmd.command,
             });
           }
         });

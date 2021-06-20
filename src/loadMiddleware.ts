@@ -22,7 +22,9 @@ const loadMw = async (path: string): Promise<TMw | undefined> => {
  *
  * So, for example: middleware/example/mw.example.ts
  */
-export const loadMiddleware = async (): Promise<TMw[]> =>
+export const loadMiddleware = async (): Promise<
+  { name: string; execute: TMw }[]
+> =>
   new Promise((resolve, reject) => {
     try {
       const folders: Promise<TMw | undefined>[] = [];
@@ -33,10 +35,13 @@ export const loadMiddleware = async (): Promise<TMw[]> =>
         }
       });
       Promise.all(folders).then((mws) => {
-        const onMessages: TMw[] = [];
+        const onMessages: { name: string; execute: TMw }[] = [];
         mws.forEach((mw) => {
-          if (mw && process.env[`mw.${mw.name}`] === "true") {
-            onMessages.push(mw);
+          if (mw) {
+            onMessages.push({
+              name: mw.name,
+              execute: mw,
+            });
           }
         });
         resolve(onMessages);

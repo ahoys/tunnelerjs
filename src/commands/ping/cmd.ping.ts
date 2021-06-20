@@ -1,11 +1,17 @@
 import { Client, Message } from "discord.js";
 import { p } from "logscribe";
 import { IFlags } from "../../tunneler";
+import { IGuildSettings } from "../../loadSettings";
 
 /**
  * Returns the current latencies as a reply.
  */
-const ping = (client: Client, message: Message, flags: IFlags): void => {
+const ping = (
+  client: Client,
+  message: Message,
+  settings: IGuildSettings,
+  flags: IFlags
+): void => {
   try {
     const { isDirectMessage } = flags;
     const apiLatency = Math.round(client.ws.ping);

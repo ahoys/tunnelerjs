@@ -30,6 +30,8 @@ discord.application_id=Your bot's application id.
 discord.owner_id=Your own Discord client id.
 ```
 
+You can use this same file to give default settings for the bot (see below, commands and middleware).
+
 You are all set. You can run the bot now with a `node tunneler` command. Make sure you give the bot suitable permissions to execute its tasks.
 
 # Commands and middleware
@@ -60,9 +62,15 @@ Detects and bans spammers. Makes moderator's day a lot nicer.
 
 ## How to configure commands or middleware?
 
-Some commands and middleware do allow special configuration. See their corresponding folder for a README file to learn more.
+Some commands and middleware do allow special configuration. See their corresponding folder for a README file to learn more:
 
 For example `src/middleware/antispam/README.md`
+
+You can either set **global settings** or **guild specific** settings. Use the .env file to set global settings and separate guild files for guild specific settings.
+
+`<guild id>.settings` or `123456789.settings` is the naming syntax for the guild file. It must be in the same folder as the .env file.
+
+All settings missing from the guild settings file will be read from the global settings instead. If global setting is missing, a default value is used.
 
 # Making custom commands and middleware for the bot
 

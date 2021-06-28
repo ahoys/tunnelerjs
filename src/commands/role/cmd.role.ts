@@ -1,3 +1,4 @@
+import cmdJson from "./cmd.role.json";
 import { Client, Message } from "discord.js";
 import { p } from "logscribe";
 import { IFlags } from "../../tunneler";
@@ -66,5 +67,7 @@ const role = (
     p(err);
   }
 };
+
+export const slashCommands = cmdJson;
 
 export default role;

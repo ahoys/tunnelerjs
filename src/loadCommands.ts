@@ -2,19 +2,28 @@ import fs from "fs";
 import { TCmd } from "./tunneler";
 import { p } from "logscribe";
 
+type TSlashCommand = { [key: string]: string | number };
+
+export interface ICommand {
+  name: string;
+  execute: TCmd;
+  slashCommands?: TSlashCommand;
+}
+
 /**
  * Returns a singular function.
  */
 const loadCmd = async (
   name: string,
   path: string
-): Promise<{ name: string; command: TCmd } | undefined> => {
+): Promise<ICommand | undefined> => {
   if (fs.existsSync(path)) {
     const cmd = await import(path);
     if (typeof cmd.default === "function") {
       return {
         name,
-        command: cmd.default,
+        execute: cmd.default,
+        slashCommands: cmd.slashCommands,
       };
     }
   }
@@ -28,13 +37,10 @@ const loadCmd = async (
  *
  * So, for example: commands/example/cmd.example.ts
  */
-export const loadCommands = async (): Promise<
-  { name: string; execute: TCmd }[]
-> =>
+export const loadCommands = async (): Promise<ICommand[]> =>
   new Promise((resolve, reject) => {
     try {
-      const folders: Promise<{ name: string; command: TCmd } | undefined>[] =
-        [];
+      const folders: Promise<ICommand | undefined>[] = [];
       fs.readdirSync(__dirname + "/commands").forEach((folder) => {
         const fPath = __dirname + "/commands/" + folder;
         if (fs.lstatSync(fPath).isDirectory()) {
@@ -42,12 +48,13 @@ export const loadCommands = async (): Promise<
         }
       });
       Promise.all(folders).then((cmds) => {
-        const commands: { name: string; execute: TCmd }[] = [];
+        const commands: ICommand[] = [];
         cmds.forEach((cmd) => {
           if (cmd) {
             commands.push({
               name: cmd.name,
-              execute: cmd.command,
+              execute: cmd.execute,
+              slashCommands: cmd.slashCommands,
             });
           }
         });

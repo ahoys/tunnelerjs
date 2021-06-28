@@ -2,10 +2,12 @@ import { Client, Message } from "discord.js";
 import { config } from "dotenv";
 import { p } from "logscribe";
 import { loadSettings } from "./loadSettings";
-import { loadCommands } from "./loadCommands";
+import { loadCommands, ICommand } from "./loadCommands";
 import { loadMiddleware } from "./loadMiddleware";
 import { IGuildSettings } from "./loadSettings";
+import { getGuildSlashBodies, postSlashCommands } from "./loadSlash";
 
+p("Staring Tunneler...");
 config({ path: __dirname + "/.env" });
 
 const token: string = process.env["discord.token"] ?? "";
@@ -37,7 +39,7 @@ export type TMw = (
 ) => void;
 
 const appSettings = loadSettings();
-let commands: { name: string; execute: TCmd }[] = [];
+let commands: ICommand[] = [];
 let middleware: { name: string; execute: TMw }[] = [];
 
 // This is the main Discord-client.
@@ -149,13 +151,23 @@ loadCommands()
     loadMiddleware()
       .then((mws) => {
         middleware = [...mws];
-        p(appSettings);
-        login();
+        p("The settings active", appSettings);
+        postSlashCommands(
+          applicationId,
+          token,
+          getGuildSlashBodies(applicationId, appSettings, commands)
+        )
+          .then(() => {
+            login();
+          })
+          .catch(() => {
+            p("Failed to create slash commands. Aborting...");
+          });
       })
       .catch(() => {
-        p("Failed to load middleware.");
+        p("Failed to load middleware. Aborting...");
       });
   })
   .catch(() => {
-    p("Failed to load commands.");
+    p("Failed to load commands. Aborting...");
   });

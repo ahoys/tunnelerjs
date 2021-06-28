@@ -1,0 +1,5 @@
+{
+  "id": "cmd.ping",
+  "name": "ping",
+  "description": "Returns the current latency with the service."
+}

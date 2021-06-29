@@ -1,11 +1,10 @@
-import { Client, Message } from "discord.js";
+import { Client, Message, WSEventType } from "discord.js";
 import { config } from "dotenv";
 import { p } from "logscribe";
 import { loadSettings } from "./loadSettings";
 import { loadCommands, ICommand } from "./loadCommands";
 import { loadMiddleware } from "./loadMiddleware";
 import { IGuildSettings } from "./loadSettings";
-import { getGuildSlashBodies, postSlashCommands } from "./loadSlash";
 
 p("Staring Tunneler...");
 config({ path: __dirname + "/.env" });
@@ -144,6 +143,20 @@ client.on("message", (message) => {
   }
 });
 
+/**
+ * Listen to interactions and act on them accordingly.
+ */
+client.ws.on("INTERACTION_CREATE" as WSEventType, async (interaction) => {
+  try {
+    const { data, guild_id, channel_id, member } = interaction;
+    const cmdName = data?.name ?? "";
+    const cmd = commands.find((cmd) => cmd.name === cmdName);
+    console.log(interaction, cmd);
+  } catch (err) {
+    p(err);
+  }
+});
+
 // Load commands and then login to Discord.
 loadCommands()
   .then((cmds) => {
@@ -152,17 +165,7 @@ loadCommands()
       .then((mws) => {
         middleware = [...mws];
         p("The settings active", appSettings);
-        postSlashCommands(
-          applicationId,
-          token,
-          getGuildSlashBodies(applicationId, appSettings, commands)
-        )
-          .then(() => {
-            login();
-          })
-          .catch(() => {
-            p("Failed to create slash commands. Aborting...");
-          });
+        login();
       })
       .catch(() => {
         p("Failed to load middleware. Aborting...");

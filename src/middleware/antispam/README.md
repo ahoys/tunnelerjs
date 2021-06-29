@@ -17,9 +17,13 @@ For example: `mw.antispam.ban_days=3`
 - `mw.antispam.ban_days`
   - How many days does the ban last.
   - Default 1
-- `mw.antispam.rapid_messaging_avg`
+- `mw.antispam.rapid_messages_avg`
   - How fast must the users send messages to be considered spamming (on average).
   - Default 1024
+- `mw.antispam.repeating_messages_percentage`
+  - How much of the content written by the user needs to be equal to be considered as spam.
+  - Give in percentages, as in 0 = 0%, 0.5 = 50%, 1 = 100%.
+  - Default 0.5
 
 ---
 

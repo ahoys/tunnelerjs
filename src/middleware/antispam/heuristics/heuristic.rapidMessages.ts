@@ -4,8 +4,6 @@ import { IDbUser } from "../mw.antispam";
 /**
  * Flags rapid messages heuristic if the user
  * has sent messages too often on average.
- * @param dbUser
- * @returns
  */
 export const rapidMessages = (dbUser: IDbUser, limit: number): boolean => {
   try {

@@ -54,6 +54,12 @@ A simple ping command that returns the current latency the bot experiences towar
 
 Usage: `@Tunneler ping`
 
+### cmd.role
+
+The user can request a specific role with the role command.
+
+Usage: `@Tunneler role example`
+
 ### mw.antispam
 
 Detects and bans spammers. Makes moderator's day a lot nicer.
@@ -136,6 +142,10 @@ Tunneler has been 100% rewritten for this new release. This means that the backw
 It is highly recommended to remove the old Tunneler and everything related before using the new one.
 
 You can re-use the Discord application (id and token).
+
+### Slash commands
+
+Slash commands will emerge after the Discord API matures a bit more.
 
 ### Why so drastic update?
 
